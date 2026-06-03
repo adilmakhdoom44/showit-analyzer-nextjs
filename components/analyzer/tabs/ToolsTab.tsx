@@ -13,9 +13,9 @@ import BulkAnalyzer from '@/components/analyzer/BulkAnalyzer';
 import ScanDiff from '@/components/analyzer/ScanDiff';
 import { exportToExcel } from '@/lib/excel-export';
 import { Rocket, Target, MapPin, History, BarChart2, Share2, ExternalLink, TrendingUp, Download, Compass, RefreshCw } from 'lucide-react';
+import CompetitorAnalysis from '@/components/analyzer/CompetitorAnalysis';
 
 export default function ToolsTab({ result }: { result: AnalysisResult }) {
-  const [competitor, setCompetitor] = useState('');
   const [copied, setCopied] = useState(false);
   const { analyze } = useAnalyzer();
   const [history, setHistory] = useState<ReturnType<typeof getScoreHistory>>([]);
@@ -30,11 +30,6 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
     navigator.clipboard.writeText(shareUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
-  };
-
-  const runCompetitor = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (competitor.trim()) analyze(competitor.trim());
   };
 
   const handlePrint = () => window.open('/report', '_blank');
@@ -338,39 +333,11 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
         </CardContent>
       </Card>
 
-      {/* Competitor Comparison */}
+      {/* Competitor Analysis */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><TrendingUp size={16} className="inline mr-1.5" /> Competitor Comparison</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><TrendingUp size={16} className="inline mr-1.5" /> Competitor Analysis</CardTitle></CardHeader>
         <CardContent>
-          <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Analyze a competitor and compare scores side by side.</p>
-          <form onSubmit={runCompetitor} className="flex gap-2">
-            <Input value={competitor} onChange={e => setCompetitor(e.target.value)}
-              placeholder="https://competitor.com"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#e2e8f0' }} />
-            <Button type="submit" style={{ background: 'linear-gradient(135deg,#6366f1,#4f46e5)', color: 'white' }}>
-              Analyze
-            </Button>
-          </form>
-          {competitor && (
-            <div className="mt-3 p-3 rounded-lg text-xs text-indigo-300"
-              style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
-              💡 After analyzing the competitor, switch to the <strong className="text-white">Overview tab</strong> to compare results.
-            </div>
-          )}
-          <div className="grid grid-cols-2 gap-2 mt-3">
-            {[
-              { label: 'Compare on SimilarWeb', href: `https://www.similarweb.com/website/${encodeURIComponent(competitor || domain)}/` },
-              { label: 'Ahrefs comparison', href: `https://ahrefs.com/website-authority-checker/?target=${encodeURIComponent(competitor || domain)}` },
-              { label: 'GTmetrix speed test', href: `https://gtmetrix.com/?url=${encodeURIComponent(competitor || result.url)}` },
-              { label: 'PageSpeed Insights', href: `https://pagespeed.web.dev/?url=${encodeURIComponent(competitor || result.url)}` },
-            ].map(t => (
-              <a key={t.label} href={t.href} target="_blank" rel="noopener noreferrer"
-                className="text-xs p-2 rounded-lg text-center transition-colors"
-                style={{ color: 'var(--text-secondary)', background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}>
-                {t.label} ↗
-              </a>
-            ))}
-          </div>
+          <CompetitorAnalysis result={result} />
         </CardContent>
       </Card>
 
