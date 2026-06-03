@@ -65,23 +65,25 @@ export default function ResultsDashboard({ result }: { result: AnalysisResult })
         <div className="flex flex-col md:flex-row gap-4">
           {/* Tab nav — horizontal scroll on mobile, vertical sidebar on desktop */}
           <div className="nav-sidebar flex-shrink-0 md:w-48 md:self-start md:sticky md:top-16">
-            {/* Mobile: scrollable tab strip */}
-            <div className="flex md:hidden w-full overflow-x-auto gap-1 p-2 rounded-2xl"
-              style={{ background: '#0d1630', border: '1px solid rgba(99,102,241,0.2)', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
-              {TABS.map(t => (
-                <button
-                  key={t.id}
-                  onClick={() => setActiveTab(t.id)}
-                  className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium transition-all whitespace-nowrap"
-                  style={{
-                    background: activeTab === t.id ? 'rgba(99,102,241,0.25)' : 'transparent',
-                    color: activeTab === t.id ? '#a5b4fc' : '#64748b',
-                    border: 'none', cursor: 'pointer',
-                  }}>
-                  <t.icon size={13} />
-                  {t.label}
-                </button>
-              ))}
+            {/* Mobile: wrapped grid — all tabs visible, nothing hidden */}
+            <div className="md:hidden w-full p-1.5 rounded-2xl"
+              style={{ background: '#0d1630', border: '1px solid rgba(99,102,241,0.2)' }}>
+              <div className="grid grid-cols-4 gap-1">
+                {TABS.map(t => (
+                  <button
+                    key={t.id}
+                    onClick={() => setActiveTab(t.id)}
+                    className="flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl font-medium transition-all"
+                    style={{
+                      background: activeTab === t.id ? 'rgba(99,102,241,0.25)' : 'transparent',
+                      color: activeTab === t.id ? '#a5b4fc' : '#94a3b8',
+                      border: 'none', cursor: 'pointer', fontSize: 10, lineHeight: 1.2,
+                    }}>
+                    <t.icon size={15} />
+                    <span>{t.label === 'AI Visibility' ? 'AI' : t.label === 'Technical' ? 'Tech' : t.label === 'Overview' ? 'Overview' : t.label}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Desktop: vertical sidebar */}
