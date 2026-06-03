@@ -60,12 +60,12 @@ export default function ContactPage() {
       <main>
         {/* Hero */}
         <section className="py-16 px-4" style={{ borderBottom: '1px solid var(--divider)' }}>
-          <div className="max-w-3xl mx-auto">
+          <div className="max-w-3xl mx-auto text-center">
             <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: 'var(--text-faint)' }}>Get in touch</p>
             <h1 className="font-serif-display text-4xl md:text-5xl font-bold mb-4" style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
               We are here to help
             </h1>
-            <p className="text-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-lg leading-relaxed mx-auto" style={{ color: 'var(--text-secondary)', maxWidth: '560px' }}>
               Have a question about your analysis results? Need hands-on help fixing your Showit site? Want to report a bug or suggest a feature? Reach out and we will get back to you.
             </p>
           </div>
