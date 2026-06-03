@@ -3,9 +3,10 @@ import SiteHeader from '@/components/layout/SiteHeader';
 import SiteFooter from '@/components/layout/SiteFooter';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service - Showit Site Analyzer',
-  description: 'Terms of service for Showit Site Analyzer. Free tool for analyzing Showit websites.',
+  title: 'Terms of Service — Showit Site Analyzer',
+  description: 'Terms of service for Showit Site Analyzer. Free, no-signup SEO and speed analysis tool for Showit website creators.',
   alternates: { canonical: 'https://showitanalyzer.com/terms' },
+  robots: { index: false, follow: true },
 };
 
 const TERMS = [

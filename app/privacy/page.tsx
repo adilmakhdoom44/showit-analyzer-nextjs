@@ -3,9 +3,10 @@ import SiteHeader from '@/components/layout/SiteHeader';
 import SiteFooter from '@/components/layout/SiteFooter';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy - Showit Site Analyzer',
-  description: 'Privacy policy for Showit Site Analyzer. We do not collect, store, or sell any personal data.',
+  title: 'Privacy Policy — Showit Site Analyzer',
+  description: 'Privacy policy for Showit Site Analyzer. We do not collect, store, log, or sell any personal data. No account required, no tracking.',
   alternates: { canonical: 'https://showitanalyzer.com/privacy' },
+  robots: { index: false, follow: true },
 };
 
 const SECTIONS = [

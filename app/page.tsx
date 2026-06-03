@@ -11,6 +11,7 @@ import ResultsDashboard from '@/components/analyzer/ResultsDashboard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import ThemeToggle from '@/components/ThemeToggle';
+import HomeSchema from '@/components/HomeSchema';
 
 export default function HomePage() {
   const { result, loading, loadingStep, error, analyze, reset } = useAnalyzer();
@@ -26,6 +27,7 @@ export default function HomePage() {
 
   return (
     <main style={{ minHeight: '100vh', background: 'var(--bg-body)' }}>
+      <HomeSchema />
 
       {/* ── Sticky Header ── */}
       <header className="sticky top-0 z-40"

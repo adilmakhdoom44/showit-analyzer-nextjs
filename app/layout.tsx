@@ -18,29 +18,67 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: 'Showit Site Analyzer - Free SEO & Speed Tool for Showit Websites',
+  metadataBase: new URL('https://showitanalyzer.com'),
+  title: {
+    default: 'Showit Site Analyzer - Free SEO & Speed Tool for Showit Websites',
+    template: '%s | Showit Site Analyzer',
+  },
   description:
     'Free SEO, speed, and AI visibility analyzer built for Showit creators. Analyze your photographer or creative business website and get Showit-specific fixes in 30 seconds. No signup required.',
-  keywords: 'Showit SEO, Showit website analyzer, photographer website SEO, Showit speed test, Core Web Vitals, AI visibility, free SEO tool',
+  keywords: [
+    'Showit SEO',
+    'Showit website analyzer',
+    'photographer website SEO',
+    'Showit speed test',
+    'Core Web Vitals Showit',
+    'AI visibility score',
+    'free SEO tool for photographers',
+    'Showit site audit',
+    'Showit performance tool',
+    'creative entrepreneur SEO',
+  ],
+  authors: [{ name: 'Adil Makhdoom', url: 'https://showitanalyzer.com' }],
+  creator: 'Adil Makhdoom',
+  publisher: 'Showit Site Analyzer',
+  category: 'technology',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
     title: 'Showit Site Analyzer - Free SEO & Speed Tool',
     description: 'Analyze your Showit website for SEO, speed, and AI visibility. Get Showit-specific fixes in 30 seconds - free, no signup.',
     type: 'website',
     url: 'https://showitanalyzer.com',
+    siteName: 'Showit Site Analyzer',
+    locale: 'en_US',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Showit Site Analyzer - Free SEO, Speed & AI Visibility Tool',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Showit Site Analyzer - Free SEO Tool',
+    title: 'Showit Site Analyzer - Free SEO Tool for Showit Websites',
     description: 'Free SEO, speed, and AI visibility analysis for Showit websites. Built for photographers, coaches, and creative entrepreneurs.',
+    images: ['/opengraph-image'],
+    creator: '@adilmakhdoom44',
+    site: '@showitanalyzer',
   },
   alternates: { canonical: 'https://showitanalyzer.com' },
   icons: {
-    icon: [
-      { url: '/icon', type: 'image/png', sizes: '32x32' },
-    ],
-    apple: [
-      { url: '/apple-icon', type: 'image/png', sizes: '180x180' },
-    ],
+    icon: [{ url: '/icon', type: 'image/png', sizes: '32x32' }],
+    apple: [{ url: '/apple-icon', type: 'image/png', sizes: '180x180' }],
   },
 };
 
