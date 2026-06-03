@@ -65,16 +65,36 @@ export default function ResultsDashboard({ result }: { result: AnalysisResult })
         <div className="flex flex-col md:flex-row gap-4">
           {/* Tab nav — horizontal scroll on mobile, vertical sidebar on desktop */}
           <div className="nav-sidebar flex-shrink-0 md:w-48 md:self-start md:sticky md:top-16">
+            {/* Mobile: scrollable tab strip */}
+            <div className="flex md:hidden w-full overflow-x-auto gap-1 p-2 rounded-2xl"
+              style={{ background: '#0d1630', border: '1px solid rgba(99,102,241,0.2)', scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' } as React.CSSProperties}>
+              {TABS.map(t => (
+                <button
+                  key={t.id}
+                  onClick={() => setActiveTab(t.id)}
+                  className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium transition-all whitespace-nowrap"
+                  style={{
+                    background: activeTab === t.id ? 'rgba(99,102,241,0.25)' : 'transparent',
+                    color: activeTab === t.id ? '#a5b4fc' : '#64748b',
+                    border: 'none', cursor: 'pointer',
+                  }}>
+                  <t.icon size={13} />
+                  {t.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Desktop: vertical sidebar */}
             <TabsList
-              className="flex md:flex-col w-full gap-1 p-2 rounded-2xl overflow-x-auto md:overflow-x-visible"
-              style={{ background: '#0d1630', border: '1px solid rgba(99,102,241,0.2)', height: 'auto', scrollbarWidth: 'none' }}>
+              className="hidden md:flex md:flex-col w-full gap-1 p-2 rounded-2xl"
+              style={{ background: '#0d1630', border: '1px solid rgba(99,102,241,0.2)', height: 'auto' }}>
               {TABS.map(t => (
                 <TabsTrigger
                   key={t.id}
                   value={t.id}
-                  className="flex-shrink-0 md:flex-1 md:w-full md:justify-start rounded-xl text-xs md:text-sm font-medium transition-all px-3 py-2.5 data-[state=active]:text-white data-[state=active]:shadow-none flex items-center gap-1.5 whitespace-nowrap"
+                  className="md:w-full md:justify-start rounded-xl text-sm font-medium transition-all px-3 py-2.5 data-[state=active]:text-white data-[state=active]:shadow-none flex items-center gap-2"
                   style={{ color: '#64748b' }}>
-                  <t.icon size={13} />
+                  <t.icon size={14} />
                   {t.label}
                 </TabsTrigger>
               ))}

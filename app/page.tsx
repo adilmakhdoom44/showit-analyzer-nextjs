@@ -78,9 +78,9 @@ export default function HomePage() {
             ))}
           </nav>
 
-          {/* Compact search - only when results are showing */}
+          {/* Compact search - only when results are showing, hidden on mobile */}
           {(result || error) && !loading && (
-            <form onSubmit={handleHeaderAnalyze} className="flex-1 flex gap-2 max-w-xl mx-4">
+            <form onSubmit={handleHeaderAnalyze} className="hidden md:flex flex-1 gap-2 max-w-xl mx-4">
               <Input
                 value={headerUrl}
                 onChange={e => setHeaderUrl(e.target.value)}
@@ -155,6 +155,26 @@ export default function HomePage() {
           </div>
         )}
       </header>
+
+      {/* Mobile-only search bar shown below header when results are visible */}
+      {(result || error) && !loading && (
+        <div className="md:hidden px-4 py-2 sticky top-14 z-30"
+          style={{ background: 'var(--bg-header)', borderBottom: '1px solid var(--border-header)', backdropFilter: 'blur(16px)' }}>
+          <form onSubmit={handleHeaderAnalyze} className="flex gap-2">
+            <Input
+              value={headerUrl}
+              onChange={e => setHeaderUrl(e.target.value)}
+              placeholder="Analyze another URL…"
+              className="h-9 text-sm flex-1"
+              style={{ background: 'var(--input-bg)', border: '1px solid var(--input-border)', color: 'var(--text-primary)' }}
+            />
+            <Button type="submit" size="sm" className="h-9 px-3 flex-shrink-0 text-white text-xs"
+              style={{ background: 'linear-gradient(135deg,#6366f1,#4f46e5)' }}>
+              Analyze
+            </Button>
+          </form>
+        </div>
+      )}
 
       {/* ── Page content ── */}
       {loading && <LoadingScreen step={loadingStep} />}
