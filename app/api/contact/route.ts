@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const TO_EMAIL = 'adil.makhdoom44@gmail.com';
 
 const MC_API_KEY    = process.env.MAILCHIMP_API_KEY!;
@@ -62,6 +61,7 @@ export async function POST(req: NextRequest) {
 
     // ── 2. Send notification email ───────────────────────────────────────
     if (process.env.RESEND_API_KEY) {
+      const resend = new Resend(process.env.RESEND_API_KEY);
       const html = `
         <div style="font-family:sans-serif;max-width:580px;margin:0 auto;padding:24px;color:#111;">
           <div style="background:#6366f1;border-radius:10px;padding:20px 24px;margin-bottom:24px;">
