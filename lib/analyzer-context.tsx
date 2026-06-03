@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { AnalysisResult } from '@/types/analyzer';
 import { saveUrlHistory, saveScoreHistory } from '@/lib/storage';
 import { getGrade, countIssues } from '@/lib/scoring';
@@ -16,11 +16,21 @@ interface AnalyzerState {
 
 const AnalyzerContext = createContext<AnalyzerState | null>(null);
 
+const RESULT_KEY = 'sac_last_result';
+
 export function AnalyzerProvider({ children }: { children: React.ReactNode }) {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
   const [error, setError] = useState<string | null>(null);
+
+  // Restore last result on page load
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(RESULT_KEY);
+      if (saved) setResult(JSON.parse(saved));
+    } catch {}
+  }, []);
 
   const analyze = useCallback(async (url: string) => {
     setLoading(true);
@@ -62,6 +72,7 @@ export function AnalyzerProvider({ children }: { children: React.ReactNode }) {
       });
 
       setResult(data);
+      try { localStorage.setItem(RESULT_KEY, JSON.stringify(data)); } catch {}
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Analysis failed');
     } finally {
@@ -76,6 +87,7 @@ export function AnalyzerProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     setLoading(false);
     setLoadingStep(0);
+    try { localStorage.removeItem(RESULT_KEY); } catch {}
   }, []);
 
   return (
