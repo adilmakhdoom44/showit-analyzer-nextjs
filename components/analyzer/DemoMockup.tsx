@@ -194,8 +194,8 @@ export default function DemoMockup() {
   const [step, setStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [playing, setPlaying] = useState(true);
-  const rafRef = useRef<number>();
-  const startRef = useRef<number>();
+  const rafRef = useRef<number>(0);
+  const startRef = useRef<number>(0);
 
   useEffect(() => {
     if (!playing) return;
@@ -210,7 +210,7 @@ export default function DemoMockup() {
         rafRef.current = requestAnimationFrame(tick);
       } else {
         setTimeout(() => {
-          startRef.current = undefined;
+          startRef.current = 0;
           setProgress(0);
           setStep(s => (s + 1) % STEPS.length);
         }, 400);
@@ -223,7 +223,7 @@ export default function DemoMockup() {
 
   const goTo = (i: number) => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    startRef.current = undefined;
+    startRef.current = 0;
     setStep(i);
     setProgress(0);
     setPlaying(true);

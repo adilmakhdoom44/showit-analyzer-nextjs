@@ -367,7 +367,7 @@ export default function HeroSection() {
                 position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4,
                 background: 'var(--bg-card)', border: '1px solid var(--border-card)',
                 borderRadius: 12, overflow: 'hidden', zIndex: 50,
-                boxShadow: '0 8px 24px rgba(0,0,0,0.15)', zIndex: 9999,
+                boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
               }}>
                 {filtered.map(u => (
                   <button key={u} type="button"

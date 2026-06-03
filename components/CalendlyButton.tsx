@@ -42,7 +42,6 @@ export default function CalendlyButton() {
           fontSize: '13px',
           fontWeight: 600,
           letterSpacing: '-0.01em',
-          boxShadow: '0 2px 12px rgba(0,0,0,0.12)',
           transition: 'transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease',
           transform: hovered ? 'translateY(-2px)' : 'translateY(0)',
           boxShadow: hovered
