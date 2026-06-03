@@ -1,8 +1,10 @@
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import SiteHeader from '@/components/layout/SiteHeader';
 import SiteFooter from '@/components/layout/SiteFooter';
+import { Search, Zap, Bot, Link2, Wrench, Settings2, CheckCircle2, Clock } from 'lucide-react';
 
 const STATS = [
   { value: '40+', label: 'Checks per audit' },
@@ -26,6 +28,214 @@ const SHOWIT_PROBLEMS = [
   { problem: 'Raw Lighthouse scores with no context', fix: 'We translate every metric into a plain-English Showit fix.' },
   { problem: 'SEO guides written for WordPress developers', fix: 'Everything here is written for Showit\'s canvas-based editor.' },
 ];
+
+const ENGINE_CHECKS = [
+  { icon: Search,    label: 'SEO',          color: '#6366f1', checks: ['Title tag', 'Meta description', 'H1-H4 structure', 'Open Graph', 'Canonical URL', 'Keywords'], duration: 1.2 },
+  { icon: Zap,       label: 'Speed',        color: '#f59e0b', checks: ['LCP', 'CLS', 'TBT', 'FCP', 'Speed Index', 'TTI'], duration: 1.8 },
+  { icon: Bot,       label: 'AI Visibility',color: '#8b5cf6', checks: ['Schema markup', 'E-E-A-T signals', 'AEO score', 'AI crawlability'], duration: 1.5 },
+  { icon: Link2,     label: 'Links',        color: '#06b6d4', checks: ['Broken links', 'Empty anchors', 'Internal links', 'External links'], duration: 0.9 },
+  { icon: Wrench,    label: 'Technical',    color: '#10b981', checks: ['Analytics setup', 'robots.txt', 'Sitemap', 'HTTPS', 'noindex tags'], duration: 1.1 },
+  { icon: Settings2, label: 'Action Plan',  color: '#f43f5e', checks: ['Quick wins ranked', 'SERP estimator', 'Fix checklist', 'Score history'], duration: 0.7 },
+];
+
+function useCountUp(target: number, duration: number, trigger: boolean) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!trigger) return;
+    let start = 0;
+    const step = target / (duration * 60);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { setCount(target); clearInterval(timer); }
+      else setCount(Math.floor(start));
+    }, 1000 / 60);
+    return () => clearInterval(timer);
+  }, [trigger, target, duration]);
+  return count;
+}
+
+function AnalysisEngine() {
+  const [active, setActive] = useState(0);
+  const [running, setRunning] = useState(false);
+  const [done, setDone] = useState<boolean[]>(Array(ENGINE_CHECKS.length).fill(false));
+  const [triggered, setTriggered] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  const checksCount = useCountUp(40, 1.5, triggered);
+  const timeCount = useCountUp(30, 1.5, triggered);
+
+  // Intersection observer to trigger animation when in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setTriggered(true); observer.disconnect(); }
+    }, { threshold: 0.3 });
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  // Auto-run the engine demo
+  useEffect(() => {
+    if (!triggered) return;
+    setRunning(true);
+    setDone(Array(ENGINE_CHECKS.length).fill(false));
+    let timeouts: ReturnType<typeof setTimeout>[] = [];
+    let cumulative = 0;
+    ENGINE_CHECKS.forEach((c, i) => {
+      cumulative += c.duration * 600;
+      const t = setTimeout(() => {
+        setDone(prev => { const n = [...prev]; n[i] = true; return n; });
+        if (i === ENGINE_CHECKS.length - 1) setRunning(false);
+      }, cumulative);
+      timeouts.push(t);
+    });
+    return () => timeouts.forEach(clearTimeout);
+  }, [triggered]);
+
+  const replay = () => {
+    setDone(Array(ENGINE_CHECKS.length).fill(false));
+    setRunning(true);
+    let cumulative = 0;
+    ENGINE_CHECKS.forEach((c, i) => {
+      cumulative += c.duration * 600;
+      setTimeout(() => {
+        setDone(prev => { const n = [...prev]; n[i] = true; return n; });
+        if (i === ENGINE_CHECKS.length - 1) setRunning(false);
+      }, cumulative);
+    });
+  };
+
+  return (
+    <section ref={ref} className="py-20 px-4" style={{ background: 'var(--bg-sidebar)', borderBottom: '1px solid var(--divider)' }}>
+      <div className="max-w-6xl mx-auto">
+
+        {/* Header */}
+        <div className="text-center mb-16">
+          <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: 'var(--text-faint)' }}>Under the hood</p>
+          <h2 className="font-bold mb-4" style={{ fontFamily: 'var(--font-serif), Georgia, serif', fontSize: 'clamp(2rem, 4vw, 3.2rem)', letterSpacing: '-0.03em', color: 'var(--text-primary)' }}>
+            The Analysis Engine
+          </h2>
+          <p className="text-base max-w-xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+            6 checks run simultaneously the moment you paste your URL. No waiting for one to finish before the next starts.
+          </p>
+        </div>
+
+        {/* Live counter stats */}
+        <div className="grid grid-cols-3 gap-4 mb-12 max-w-lg mx-auto">
+          {[
+            { value: checksCount, suffix: '+', label: 'checks run' },
+            { value: timeCount, suffix: 's', label: 'average time' },
+            { value: 6, suffix: '', label: 'parallel engines' },
+          ].map((s, i) => (
+            <div key={i} className="text-center p-4 rounded-2xl" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}>
+              <div className="font-black" style={{ fontSize: '2rem', color: 'var(--text-primary)', fontFamily: 'var(--font-serif), Georgia, serif', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                {s.value}{s.suffix}
+              </div>
+              <div className="text-xs mt-1" style={{ color: 'var(--text-faint)' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Main layout: checks + detail */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          {/* Left: engine cards */}
+          <div className="space-y-3">
+            {ENGINE_CHECKS.map((c, i) => {
+              const Icon = c.icon;
+              const isDone = done[i];
+              const isActive = !isDone && running && done.filter(Boolean).length === i;
+              return (
+                <div key={c.label}
+                  onClick={() => setActive(i)}
+                  className="flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all"
+                  style={{
+                    background: active === i ? 'var(--bg-card)' : 'var(--bg-body)',
+                    border: `1px solid ${active === i ? c.color + '40' : 'var(--border-card)'}`,
+                    boxShadow: active === i ? `0 0 0 1px ${c.color}20` : 'none',
+                    transform: active === i ? 'scale(1.01)' : 'scale(1)',
+                  }}>
+                  {/* Icon */}
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: c.color + '18' }}>
+                    <Icon size={18} style={{ color: c.color }} />
+                  </div>
+
+                  {/* Label + progress */}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-sm font-semibold" style={{ color: 'var(--text-primary)' }}>{c.label}</span>
+                      {isDone
+                        ? <CheckCircle2 size={15} style={{ color: '#10b981' }} />
+                        : isActive
+                        ? <Clock size={15} style={{ color: c.color }} className="animate-spin" />
+                        : <span className="text-xs" style={{ color: 'var(--text-faint)' }}>{c.checks.length} checks</span>
+                      }
+                    </div>
+                    {/* Progress bar */}
+                    <div className="h-1 rounded-full overflow-hidden" style={{ background: 'var(--bg-sidebar)' }}>
+                      <div className="h-full rounded-full transition-all"
+                        style={{
+                          width: isDone ? '100%' : isActive ? '60%' : '0%',
+                          background: isDone ? '#10b981' : c.color,
+                          transitionDuration: isDone ? `${c.duration * 0.6}s` : '0.4s',
+                        }} />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+            {/* Replay button */}
+            <button onClick={replay} disabled={running}
+              className="w-full py-3 rounded-xl text-sm font-semibold transition-all mt-2"
+              style={{
+                background: running ? 'var(--bg-sidebar)' : 'var(--bg-card)',
+                border: '1px solid var(--border-card)',
+                color: running ? 'var(--text-faint)' : 'var(--text-primary)',
+                cursor: running ? 'not-allowed' : 'pointer',
+              }}>
+              {running ? 'Analyzing...' : '▶ Run again'}
+            </button>
+          </div>
+
+          {/* Right: detail panel */}
+          <div className="p-6 rounded-2xl h-fit sticky top-24" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}>
+            {(() => {
+              const c = ENGINE_CHECKS[active];
+              const Icon = c.icon;
+              return (
+                <>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: c.color + '18' }}>
+                      <Icon size={22} style={{ color: c.color }} />
+                    </div>
+                    <div>
+                      <div className="font-bold text-lg" style={{ color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>{c.label}</div>
+                      <div className="text-xs" style={{ color: 'var(--text-faint)' }}>{c.checks.length} individual checks</div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    {c.checks.map((check, i) => (
+                      <div key={i} className="flex items-center gap-3 p-3 rounded-xl" style={{ background: 'var(--bg-sidebar)' }}>
+                        <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: c.color }} />
+                        <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>{check}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-5 pt-4" style={{ borderTop: '1px solid var(--divider)' }}>
+                    <div className="text-xs" style={{ color: 'var(--text-faint)' }}>
+                      💡 Click any engine on the left to explore what it checks
+                    </div>
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function AboutPage() {
 
@@ -156,49 +366,8 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── WHAT WE CHECK - Card grid ── */}
-        <section className="py-20 px-4" style={{ background: 'var(--bg-sidebar)', borderBottom: '1px solid var(--divider)' }}>
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-14">
-              <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: 'var(--text-faint)' }}>Full analysis</p>
-              <h2
-                className="font-bold"
-                style={{
-                  fontFamily: 'var(--font-serif), Georgia, serif',
-                  fontSize: 'clamp(1.8rem, 3vw, 2.8rem)',
-                  letterSpacing: '-0.02em',
-                  color: 'var(--text-primary)',
-                }}
-              >
-                Everything your Showit site needs to rank
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {WHAT_WE_CHECK.map((item, i) => (
-                <div
-                  key={item.title}
-                  className="p-6 rounded-2xl transition-all hover:-translate-y-1"
-                  style={{
-                    background: 'var(--bg-card)',
-                    border: '1px solid var(--border-card)',
-                    boxShadow: '0 2px 12px rgba(0,0,0,0.05)',
-                    transitionDuration: '0.2s',
-                  }}
-                >
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4"
-                    style={{ background: 'var(--bg-sidebar)' }}
-                  >
-                    {item.icon}
-                  </div>
-                  <h3 className="font-bold text-base mb-2" style={{ color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>{item.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* ── ANALYSIS ENGINE ── */}
+        <AnalysisEngine />
 
         {/* ── BENTO / PRINCIPLES GRID ── */}
         <section className="py-20 px-4" style={{ borderBottom: '1px solid var(--divider)' }}>
