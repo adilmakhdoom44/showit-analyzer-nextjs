@@ -8,7 +8,7 @@ function SignalRow({ label, ok, tip }: { label: string; ok: boolean; tip?: strin
     <div className="py-2.5 border-b border-white/5 last:border-0">
       <div className="flex items-center gap-2">
         <span className="text-base">{ok ? '✅' : '❌'}</span>
-        <span className="text-sm text-slate-300 flex-1">{label}</span>
+        <span className="text-sm flex-1" style={{ color: 'var(--text-primary)' }}>{label}</span>
         <span className="text-xs font-medium" style={{ color: ok ? '#10b981' : '#ef4444' }}>{ok ? 'Pass' : 'Fail'}</span>
       </div>
       {!ok && tip && (
@@ -74,14 +74,14 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
         <CardHeader>
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <CardTitle className="text-white text-base">🤖 AI Visibility Score</CardTitle>
-              <p className="text-xs text-slate-500 mt-1">How likely AI tools (ChatGPT, Perplexity, Google AI Overview) are to cite or reference your site</p>
+              <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🤖 AI Visibility Score</CardTitle>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>How likely AI tools (ChatGPT, Perplexity, Google AI Overview) are to cite or reference your site</p>
             </div>
             <div className="text-4xl font-black" style={{ color: scoreColor(overallAI) }}>{overallAI}%</div>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="h-3 rounded-full overflow-hidden mb-5" style={{ background: 'rgba(255,255,255,0.06)' }}>
+          <div className="h-3 rounded-full overflow-hidden mb-5" style={{ background: 'var(--bg-card)' }}>
             <div className="h-full rounded-full transition-all duration-700"
               style={{ width: `${overallAI}%`, background: `linear-gradient(90deg, #6366f1, ${scoreColor(overallAI)})` }} />
           </div>
@@ -91,9 +91,9 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
               { label: 'Citation Ready', value: citationScore },
               { label: 'AI Crawlability', value: aiScore },
             ].map(s => (
-              <div key={s.label} className="p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
+              <div key={s.label} className="p-3 rounded-xl" style={{ background: 'var(--bg-sidebar)' }}>
                 <div className="text-2xl font-black" style={{ color: scoreColor(s.value) }}>{s.value}%</div>
-                <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
+                <div className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -104,7 +104,7 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white text-base">🏷️ Schema / Structured Data</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🏷️ Schema / Structured Data</CardTitle>
             <span className="text-xs font-bold px-2 py-1 rounded-full" style={{
               background: hasSchema ? 'rgba(16,185,129,0.12)' : 'rgba(239,68,68,0.12)',
               color: hasSchema ? '#10b981' : '#ef4444',
@@ -124,13 +124,13 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
           ) : null}
           {!hasSchema && (
             <div className="p-4 rounded-xl mb-4" style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)' }}>
-              <p className="text-sm text-white font-medium mb-2">No schema markup detected</p>
-              <p className="text-xs text-slate-400 mb-3">Schema markup helps AI tools understand who you are, what you do, and where you&apos;re located. Without it, AI is guessing.</p>
+              <p className="text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>No schema markup detected</p>
+              <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>Schema markup helps AI tools understand who you are, what you do, and where you&apos;re located. Without it, AI is guessing.</p>
               <p className="text-xs text-indigo-300">💡 Add this to Showit → Site Settings → SEO → Custom Code (Head):</p>
             </div>
           )}
-          <div className="p-3 rounded-xl text-xs" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            <div className="text-slate-400 mb-2 font-medium">Recommended schema for photographers/creatives:</div>
+          <div className="p-3 rounded-xl text-xs" style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
+            <div className="mb-2 font-medium" style={{ color: 'var(--text-secondary)' }}>Recommended schema for photographers/creatives:</div>
             <div className="space-y-1.5">
               {[
                 { type: 'LocalBusiness', why: 'Tells Google/AI your name, address, phone, service area', priority: 'High' },
@@ -142,8 +142,8 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
               ].map(s => (
                 <div key={s.type} className="flex items-start gap-2 py-1.5 border-b border-white/5 last:border-0">
                   <span className="font-mono text-indigo-300 text-xs flex-shrink-0 w-44">{s.type}</span>
-                  <span className="text-slate-500 text-xs flex-1">{s.why}</span>
-                  <span className="text-xs flex-shrink-0" style={{ color: s.priority === 'High' ? '#10b981' : s.priority === 'Medium' ? '#f59e0b' : '#64748b' }}>{s.priority}</span>
+                  <span className="text-xs flex-1" style={{ color: 'var(--text-muted)' }}>{s.why}</span>
+                  <span className="text-xs flex-shrink-0" style={{ color: s.priority === 'High' ? '#10b981' : s.priority === 'Medium' ? '#f59e0b' : 'var(--text-muted)' }}>{s.priority}</span>
                 </div>
               ))}
             </div>
@@ -159,10 +159,10 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white text-base">📡 Answer Engine Optimization (AEO)</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📡 Answer Engine Optimization (AEO)</CardTitle>
             <div className="text-2xl font-black" style={{ color: scoreColor(aeoScore) }}>{aeoScore}%</div>
           </div>
-          <p className="text-xs text-slate-500 mt-1">Signals that help Google AI Overview, ChatGPT, and Perplexity understand and use your content</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Signals that help Google AI Overview, ChatGPT, and Perplexity understand and use your content</p>
         </CardHeader>
         <CardContent>
           {aeoSignals.map((s, i) => <SignalRow key={i} {...s} />)}
@@ -173,10 +173,10 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white text-base">📣 Citation Readiness</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📣 Citation Readiness</CardTitle>
             <div className="text-2xl font-black" style={{ color: scoreColor(citationScore) }}>{citationScore}%</div>
           </div>
-          <p className="text-xs text-slate-500 mt-1">Factors that make AI tools cite and recommend your site when users ask about your specialty or location</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Factors that make AI tools cite and recommend your site when users ask about your specialty or location</p>
         </CardHeader>
         <CardContent>
           {citationSignals.map((s, i) => <SignalRow key={i} {...s} />)}
@@ -187,16 +187,16 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white text-base">🕷️ AI Crawlability</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🕷️ AI Crawlability</CardTitle>
             <div className="text-2xl font-black" style={{ color: scoreColor(aiScore) }}>{aiScore}%</div>
           </div>
-          <p className="text-xs text-slate-500 mt-1">Technical factors that determine whether AI crawlers can access and index your content</p>
+          <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Technical factors that determine whether AI crawlers can access and index your content</p>
         </CardHeader>
         <CardContent>
           {aiReadinessSignals.map((s, i) => <SignalRow key={i} {...s} />)}
           <div className="mt-4 p-3 rounded-xl text-xs" style={{ background: 'rgba(99,102,241,0.07)', border: '1px solid rgba(99,102,241,0.15)' }}>
             <div className="text-indigo-300 font-medium mb-2">AI crawlers to allow in robots.txt:</div>
-            <div className="grid grid-cols-2 gap-1 font-mono text-slate-400">
+            <div className="grid grid-cols-2 gap-1 font-mono" style={{ color: 'var(--text-secondary)' }}>
               {['GPTBot (ChatGPT)', 'ClaudeBot (Claude)', 'PerplexityBot', 'GoogleBot (Gemini)', 'BingBot (Copilot)', 'YouBot (You.com)'].map(b => (
                 <div key={b} className="text-xs">✓ {b}</div>
               ))}
@@ -208,7 +208,7 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
       {/* Featured Snippet Optimization */}
       <Card className="glass border-0">
         <CardHeader>
-          <CardTitle className="text-white text-base">✨ Featured Snippet &amp; AI Overview Tips</CardTitle>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">✨ Featured Snippet &amp; AI Overview Tips</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           {[
@@ -238,11 +238,11 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
               icon: '✂️',
             },
           ].map((tip, i) => (
-            <div key={i} className="flex gap-3 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div key={i} className="flex gap-3 p-3 rounded-xl" style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
               <span className="text-xl flex-shrink-0">{tip.icon}</span>
               <div>
-                <div className="text-sm font-medium text-white mb-1">{tip.title}</div>
-                <div className="text-xs text-slate-400">{tip.desc}</div>
+                <div className="text-sm font-medium mb-1" style={{ color: 'var(--text-primary)' }}>{tip.title}</div>
+                <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>{tip.desc}</div>
               </div>
             </div>
           ))}

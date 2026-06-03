@@ -28,7 +28,7 @@ function ContrastSamples({ items }: { items: ContrastItem[] }) {
   if (!items.length) return null;
   return (
     <div className="mt-3 space-y-2">
-      <p className="text-xs text-slate-500 font-medium">Failing elements on your page:</p>
+      <p className="text-xs font-medium" style={{ color: 'var(--text-muted)' }}>Failing elements on your page:</p>
       {items.slice(0, 6).map((item, i) => {
         const label = item.node?.nodeLabel ?? item.nodeLabel ?? '';
         const snippet = item.node?.snippet ?? item.snippet ?? '';
@@ -59,15 +59,15 @@ function ContrastSamples({ items }: { items: ContrastItem[] }) {
             {(!fg || !bg) && (
               <div className="px-3 py-2 flex items-center gap-2">
                 <span className="text-red-400 text-xs">⚠</span>
-                <span className="text-xs text-slate-400 truncate">{label || snippet || 'Unknown element'}</span>
+                <span className="text-xs truncate" style={{ color: 'var(--text-secondary)' }}>{label || snippet || 'Unknown element'}</span>
               </div>
             )}
             {/* Color values */}
             {(fg || bg) && (
               <div className="px-3 py-1.5 flex gap-3 text-xs"
                 style={{ background: 'rgba(239,68,68,0.06)', borderTop: '1px solid rgba(239,68,68,0.1)' }}>
-                {fg && <span className="text-slate-500">Text: <span className="font-mono text-slate-300">{fg}</span></span>}
-                {bg && <span className="text-slate-500">BG: <span className="font-mono text-slate-300">{bg}</span></span>}
+                {fg && <span style={{ color: 'var(--text-muted)' }}>Text: <span className="font-mono" style={{ color: 'var(--text-primary)' }}>{fg}</span></span>}
+                {bg && <span style={{ color: 'var(--text-muted)' }}>BG: <span className="font-mono" style={{ color: 'var(--text-primary)' }}>{bg}</span></span>}
               </div>
             )}
           </div>
@@ -85,19 +85,19 @@ function FixCard({ fix, done, onToggle, auditItems }: { fix: FixItem; done: bool
   const [expanded, setExpanded] = useState(false);
   return (
     <div className={`rounded-xl transition-all overflow-hidden ${done ? 'opacity-50' : ''}`}
-      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+      style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
       <div className="flex gap-4 p-4 cursor-pointer select-none" onClick={() => setExpanded(v => !v)}>
         <div className="text-2xl flex-shrink-0">{fix.icon}</div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
-            <span className={`font-semibold text-sm ${done ? 'line-through text-slate-500' : 'text-white'}`}>{fix.name}</span>
+            <span className="font-semibold text-sm" style={{ color: done ? 'var(--text-muted)' : 'var(--text-primary)', textDecoration: done ? 'line-through' : 'none' }}>{fix.name}</span>
             <Badge variant="secondary" className="text-xs capitalize">{fix.difficulty}</Badge>
-            <span className="text-xs text-slate-500">⏱ {fix.time}</span>
+            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>⏱ {fix.time}</span>
           </div>
-          <p className="text-xs text-slate-400 line-clamp-2">{fix.impact}</p>
+          <p className="text-xs line-clamp-2" style={{ color: 'var(--text-secondary)' }}>{fix.impact}</p>
         </div>
         <div className="flex items-start gap-2 flex-shrink-0 mt-0.5">
-          <span className="text-slate-600 text-xs mt-1">{expanded ? '▲' : '▼'}</span>
+          <span className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{expanded ? '▲' : '▼'}</span>
           <div className={`w-5 h-5 rounded flex items-center justify-center border transition-all
               ${done ? 'bg-indigo-500 border-indigo-500' : 'border-white/20 hover:border-indigo-400'}`}
             onClick={e => { e.stopPropagation(); onToggle(); }}>
@@ -112,14 +112,14 @@ function FixCard({ fix, done, onToggle, auditItems }: { fix: FixItem; done: bool
               <div key={i} className="flex gap-3 text-sm">
                 <span className="flex-shrink-0 w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold mt-0.5"
                   style={{ background: 'rgba(99,102,241,0.2)', color: '#a5b4fc' }}>{i + 1}</span>
-                <span className="text-slate-300">{step}</span>
+                <span style={{ color: 'var(--text-primary)' }}>{step}</span>
               </div>
             ))}
             {fix.tip && (
               <div className="mt-3 flex gap-2 p-3 rounded-lg text-xs"
                 style={{ background: 'rgba(6,182,212,0.08)', border: '1px solid rgba(6,182,212,0.15)' }}>
-                <span className="text-cyan-400">💡</span>
-                <span className="text-cyan-300">{fix.tip}</span>
+                <span style={{ color: '#0891b2' }}>💡</span>
+                <span style={{ color: '#0891b2' }}>{fix.tip}</span>
               </div>
             )}
             {/* Color contrast failing elements */}
@@ -136,9 +136,9 @@ function FixCard({ fix, done, onToggle, auditItems }: { fix: FixItem; done: bool
 function StatPill({ label, value, ok }: { label: string; value: string | number; ok?: boolean }) {
   return (
     <div className="flex items-center justify-between p-2.5 rounded-lg text-xs"
-      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-      <span className="text-slate-500">{label}</span>
-      <span className={ok === undefined ? 'text-slate-300' : ok ? 'text-green-400' : 'text-amber-400'} style={{ fontWeight: 600 }}>{value}</span>
+      style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
+      <span style={{ color: 'var(--text-muted)' }}>{label}</span>
+      <span className={ok === undefined ? '' : ok ? 'text-green-400' : 'text-amber-400'} style={{ fontWeight: 600, color: ok === undefined ? 'var(--text-primary)' : undefined }}>{value}</span>
     </div>
   );
 }
@@ -260,12 +260,12 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
         <CardContent className="p-6 flex flex-col md:flex-row items-center gap-8">
           <div className="flex flex-col items-center">
             <motion.div className="text-8xl font-black" style={{ color }} initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 18, delay: 0.1 }}>{grade}</motion.div>
-            <div className="text-sm text-slate-400 mt-1">Overall Grade</div>
-            <div className="text-xs text-slate-600 mt-1">Avg score: {avgScore}/100</div>
+            <div className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>Overall Grade</div>
+            <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Avg score: {avgScore}/100</div>
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-bold text-white mb-1">Site Health Overview</h3>
-            <p className="text-slate-400 text-sm mb-4">Based on {issueCount} issues across performance, SEO, and accessibility.</p>
+            <h3 className="text-lg font-bold mb-1" style={{ color: 'var(--text-primary)' }}>Site Health Overview</h3>
+            <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Based on {issueCount} issues across performance, SEO, and accessibility.</p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {scores.map(s => (
                 <div key={s.label} className="text-center">
@@ -279,7 +279,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
 
       {/* Page Details Snapshot */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">🌐 Page Details</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🌐 Page Details</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
             <StatPill label="Domain" value={domain} />
@@ -302,7 +302,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
 
       {/* Performance Snapshot */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base"><Zap size={16} className="inline mr-1.5" /> Performance Snapshot</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base"><Zap size={16} className="inline mr-1.5" /> Performance Snapshot</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
             {[
@@ -311,9 +311,9 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
               { label: 'LCP (Mobile)', value: lcpSec, unit: '', color: lcpMs <= 2500 ? '#10b981' : lcpMs <= 4000 ? '#f59e0b' : '#ef4444' },
               { label: 'Issues Found', value: issueCount, unit: '', color: issueCount === 0 ? '#10b981' : issueCount < 10 ? '#f59e0b' : '#ef4444' },
             ].map(s => (
-              <div key={s.label} className="p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
+              <div key={s.label} className="p-3 rounded-xl" style={{ background: 'var(--bg-sidebar)' }}>
                 <div className="text-2xl font-black" style={{ color: s.color }}>{s.value}{s.unit}</div>
-                <div className="text-xs text-slate-500 mt-1">{s.label}</div>
+                <div className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -325,7 +325,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
         <Card className="glass border-0">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-white text-base">📈 Score History</CardTitle>
+              <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📈 Score History</CardTitle>
               {history.length > 1 && (
                 <span className="text-xs font-medium px-2 py-1 rounded-full"
                   style={{
@@ -375,7 +375,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                       <Area type="monotone" dataKey="score" name="Avg Score" stroke="#6366f1" strokeWidth={2} fill="url(#scoreGrad)" dot={{ r: 3, fill: '#6366f1' }} activeDot={{ r: 5 }} />
                     </AreaChart>
                   </ResponsiveContainer>
-                  <div className="flex justify-between text-xs text-slate-600 mt-1">
+                  <div className="flex justify-between text-xs mt-1" style={{ color: 'var(--text-muted)' }}>
                     <span>Oldest</span>
                     <span>{history.length} scan{history.length > 1 ? 's' : ''} recorded</span>
                     <span>Latest</span>
@@ -408,8 +408,8 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
 
                       {/* Date + time */}
                       <div className="flex-1 min-w-0">
-                        <div className="text-sm font-medium text-white">{h.date}</div>
-                        <div className="text-xs text-slate-500">{h.time} {i === 0 && <span className="text-indigo-400 ml-1">• latest</span>}</div>
+                        <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{h.date}</div>
+                        <div className="text-xs" style={{ color: 'var(--text-muted)' }}>{h.time} {i === 0 && <span className="text-indigo-400 ml-1">• latest</span>}</div>
                       </div>
 
                       {/* Delete button */}
@@ -417,7 +417,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                         onClick={() => handleDeleteHistory(i)}
                         title="Remove this scan"
                         className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-colors hover:bg-red-500/20"
-                        style={{ color: '#475569', border: '1px solid rgba(255,255,255,0.08)' }}
+                        style={{ color: 'var(--text-muted)', border: '1px solid var(--border-card)' }}
                         onMouseEnter={e => (e.currentTarget.style.color = '#ef4444')}
                         onMouseLeave={e => (e.currentTarget.style.color = '#475569')}
                       >
@@ -426,7 +426,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
 
                       {/* Score */}
                       <div className="text-right flex-shrink-0">
-                        <div className="text-lg font-black" style={{ color: gradeColor }}>{h.score}<span className="text-xs text-slate-500 font-normal">/100</span></div>
+                        <div className="text-lg font-black" style={{ color: gradeColor }}>{h.score}<span className="text-xs font-normal" style={{ color: 'var(--text-muted)' }}>/100</span></div>
                         {delta !== null && (
                           <div className="text-xs font-medium" style={{ color: delta > 0 ? '#10b981' : delta < 0 ? '#ef4444' : '#64748b' }}>
                             {delta > 0 ? `↑ +${delta}` : delta < 0 ? `↓ ${delta}` : '→ 0'}
@@ -458,11 +458,11 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                             { label: 'A11y', val: h.a11y },
                             { label: 'BP', val: h.bp },
                           ].map(s => (
-                            <div key={s.label} className="text-center rounded-lg py-2" style={{ background: 'rgba(255,255,255,0.04)' }}>
-                              <div className="text-xl font-black" style={{ color: s.val === undefined ? '#475569' : (s.val >= 90 ? '#10b981' : s.val >= 50 ? '#f59e0b' : '#ef4444') }}>
+                            <div key={s.label} className="text-center rounded-lg py-2" style={{ background: 'var(--bg-card)' }}>
+                              <div className="text-xl font-black" style={{ color: s.val === undefined ? 'var(--text-muted)' : (s.val >= 90 ? '#10b981' : s.val >= 50 ? '#f59e0b' : '#ef4444') }}>
                                 {s.val ?? 'N/A'}
                               </div>
-                              <div className="text-xs text-slate-500 mt-0.5">{s.label}</div>
+                              <div className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{s.label}</div>
                             </div>
                           ))}
                         </div>
@@ -472,9 +472,9 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                               onClick={() => setExpandedIssues(expandedIssues === i ? null : i)}
                               className="w-full text-center text-xs rounded-lg px-2 py-1.5 transition-colors"
                               style={{
-                                background: expandedIssues === i ? 'rgba(99,102,241,0.12)' : 'rgba(255,255,255,0.03)',
-                                color: expandedIssues === i ? '#a5b4fc' : '#64748b',
-                                border: `1px solid ${expandedIssues === i ? 'rgba(99,102,241,0.25)' : 'rgba(255,255,255,0.06)'}`,
+                                background: expandedIssues === i ? 'rgba(99,102,241,0.12)' : 'var(--bg-sidebar)',
+                                color: expandedIssues === i ? '#a5b4fc' : 'var(--text-muted)',
+                                border: `1px solid ${expandedIssues === i ? 'rgba(99,102,241,0.25)' : 'var(--border-card)'}`,
                               }}>
                               {h.issues} issues found {expandedIssues === i ? '▴ hide' : '▾ tap to see'}
                             </button>
@@ -484,14 +484,14 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                                 {i === 0 ? (
                                   // Latest scan - show actual current failing audits
                                   <>
-                                    <p className="text-xs text-slate-500 mb-1">Current failing audits:</p>
+                                    <p className="text-xs mb-1" style={{ color: 'var(--text-muted)' }}>Current failing audits:</p>
                                     {failedAuditIds.slice(0, 10).map(id => {
                                       const a = audits[id];
                                       return (
                                         <div key={id} className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs"
                                           style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.1)' }}>
                                           <span className="text-red-400 flex-shrink-0">✗</span>
-                                          <span className="text-slate-300 flex-1 truncate">{a?.title ?? id}</span>
+                                          <span className="flex-1 truncate" style={{ color: 'var(--text-primary)' }}>{a?.title ?? id}</span>
                                           {a?.score !== null && a?.score !== undefined && (
                                             <span className="text-red-400 font-bold flex-shrink-0">{Math.round(a.score * 100)}</span>
                                           )}
@@ -499,20 +499,20 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                                       );
                                     })}
                                     {failedAuditIds.length > 10 && (
-                                      <p className="text-xs text-slate-600 text-center pt-1">+ {failedAuditIds.length - 10} more - check other tabs</p>
+                                      <p className="text-xs text-center pt-1" style={{ color: 'var(--text-muted)' }}>+ {failedAuditIds.length - 10} more - check other tabs</p>
                                     )}
                                   </>
                                 ) : (
                                   // Older scan - show the count + delta vs next scan
-                                  <div className="px-2 py-2 rounded-lg text-xs text-slate-400"
-                                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                                  <div className="px-2 py-2 rounded-lg text-xs"
+                                    style={{ color: 'var(--text-secondary)', background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
                                     {h.issues} issues were found on this scan.
                                     {prev?.issues !== undefined && (
                                       <span className="ml-1" style={{ color: h.issues > prev.issues ? '#ef4444' : '#10b981' }}>
                                         ({h.issues > prev.issues ? `+${h.issues - prev.issues} more` : `${h.issues - prev.issues} fewer`} vs previous scan)
                                       </span>
                                     )}
-                                    <p className="text-slate-600 mt-1">Re-analyze to see the full breakdown for today.</p>
+                                    <p className="mt-1" style={{ color: 'var(--text-muted)' }}>Re-analyze to see the full breakdown for today.</p>
                                   </div>
                                 )}
                               </div>
@@ -525,13 +525,13 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                 );
               })}
               {history.length > 5 && (
-                <div className="text-xs text-slate-600 text-center pt-1">+ {history.length - 5} older scans stored</div>
+                <div className="text-xs text-center pt-1" style={{ color: 'var(--text-muted)' }}>+ {history.length - 5} older scans stored</div>
               )}
             </div>
 
             {history.length === 1 && (
-              <div className="mt-3 p-3 rounded-lg text-xs text-slate-500 text-center"
-                style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.06)' }}>
+              <div className="mt-3 p-3 rounded-lg text-xs text-center"
+                style={{ color: 'var(--text-muted)', background: 'var(--bg-sidebar)', border: '1px dashed var(--border-card)' }}>
                 💡 Re-analyze this site after making improvements to track your progress over time.
               </div>
             )}
@@ -541,12 +541,12 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
 
       {/* Mobile vs Desktop comparison */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base"><MonitorSmartphone size={16} className="inline mr-1.5" /> Mobile vs Desktop</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base"><MonitorSmartphone size={16} className="inline mr-1.5" /> Mobile vs Desktop</CardTitle></CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-slate-500 text-xs uppercase">
+                <tr className="text-xs uppercase" style={{ color: 'var(--text-muted)' }}>
                   <th className="text-left pb-3">Category</th>
                   <th className="text-center pb-3">📱 Mobile</th>
                   <th className="text-center pb-3">🖥️ Desktop</th>
@@ -560,14 +560,14 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                   const gap = dsk - mob;
                   return (
                     <tr key={s.label} className="border-t border-white/5">
-                      <td className="py-3 text-slate-300">{s.label}</td>
+                      <td className="py-3" style={{ color: 'var(--text-primary)' }}>{s.label}</td>
                       <td className="py-3 text-center">
                         <span className={`font-bold score-${sClass(s.mob)}`}>{mob}</span>
-                        <span className="text-slate-600 text-xs ml-1">/ 100</span>
+                        <span className="text-xs ml-1" style={{ color: 'var(--text-muted)' }}>/ 100</span>
                       </td>
                       <td className="py-3 text-center">
                         <span className={`font-bold score-${sClass(s.dsk)}`}>{dsk}</span>
-                        <span className="text-slate-600 text-xs ml-1">/ 100</span>
+                        <span className="text-xs ml-1" style={{ color: 'var(--text-muted)' }}>/ 100</span>
                       </td>
                       <td className="py-3 text-center text-xs">
                         <span style={{ color: gap > 10 ? '#f59e0b' : gap > 0 ? '#94a3b8' : '#10b981' }}>
@@ -592,14 +592,14 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
       {/* What's Working */}
       {passing.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle className="text-white text-base">✅ What&apos;s Working</CardTitle></CardHeader>
+          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">✅ What&apos;s Working</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {passing.map((p, i) => (
                 <div key={i} className="flex items-center gap-2 text-sm py-1.5 px-3 rounded-lg"
                   style={{ background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.15)' }}>
                   <span>{p.icon}</span>
-                  <span className="text-slate-300 text-xs">{p.label}</span>
+                  <span className="text-xs" style={{ color: 'var(--text-primary)' }}>{p.label}</span>
                   <span className="ml-auto text-green-400 text-xs font-bold">✓</span>
                 </div>
               ))}
@@ -612,7 +612,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
       {failedAuditIds.length > 0 && (
         <Card className="glass border-0">
           <CardHeader>
-            <CardTitle className="text-white text-base flex items-center gap-2">
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
               <AlertTriangle size={16} className="inline mr-1.5 text-amber-500" /> What&apos;s Not Working
               <Badge variant="destructive">{failedAuditIds.length}</Badge>
             </CardTitle>
@@ -637,17 +637,17 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                     title={clickable ? `View in ${tab} tab →` : undefined}
                   >
                     <span className="text-red-400 flex-shrink-0">✗</span>
-                    <span className="text-slate-400 truncate">{audit?.title ?? id}</span>
+                    <span className="truncate" style={{ color: 'var(--text-secondary)' }}>{audit?.title ?? id}</span>
                     {audit?.score !== null && audit?.score !== undefined && (
                       <span className="text-red-400 font-bold ml-auto flex-shrink-0">{Math.round((audit.score) * 100)}</span>
                     )}
-                    {clickable && <span className="text-slate-600 flex-shrink-0 ml-1">→</span>}
+                    {clickable && <span className="flex-shrink-0 ml-1" style={{ color: 'var(--text-muted)' }}>→</span>}
                   </div>
                 );
               })}
             </div>
             {failedAuditIds.length > 12 && (
-              <div className="text-xs text-slate-600 text-center mt-2">+ {failedAuditIds.length - 12} more issues - see tabs for details</div>
+              <div className="text-xs text-center mt-2" style={{ color: 'var(--text-muted)' }}>+ {failedAuditIds.length - 12} more issues - see tabs for details</div>
             )}
           </CardContent>
         </Card>
@@ -658,12 +658,12 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
         <Card className="glass border-0">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-white text-base"><Wrench size={16} className="inline mr-1.5" /> Priority Fixes</CardTitle>
+              <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base"><Wrench size={16} className="inline mr-1.5" /> Priority Fixes</CardTitle>
               {completedCount > 0 && (
                 <span className="text-xs text-indigo-400 font-medium">{completedCount} / {fixes.length} done ✓</span>
               )}
             </div>
-            <p className="text-xs text-slate-500 mt-1">Click a card to see step-by-step instructions. Check the box when done.</p>
+            <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>Click a card to see step-by-step instructions. Check the box when done.</p>
           </CardHeader>
           <CardContent className="space-y-3">
             <div ref={fixListRef} className="space-y-3">
@@ -679,8 +679,8 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
         <Card className="glass border-0">
           <CardContent className="p-8 text-center">
             <div className="text-4xl mb-3">🎉</div>
-            <div className="text-white font-semibold mb-1">No Major Issues Found</div>
-            <div className="text-slate-400 text-sm">This site is performing well across all key metrics!</div>
+            <div className="font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>No Major Issues Found</div>
+            <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>This site is performing well across all key metrics!</div>
           </CardContent>
         </Card>
       )}

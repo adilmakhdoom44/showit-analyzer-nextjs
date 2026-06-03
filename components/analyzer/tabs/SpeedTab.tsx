@@ -159,14 +159,14 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
 
       {/* Performance score */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">⚡ Performance Score</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">⚡ Performance Score</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-6 mb-4">
             {[{ label: '📱 Mobile', score: mobPerf }, { label: '🖥️ Desktop', score: dskPerf }].map(({ label, score }) => (
               <div key={label} className="text-center">
                 <div className="text-5xl font-black mb-2" style={{ color: sColor(score / 100) }}>{score}</div>
-                <div className="text-sm text-slate-400">{label}</div>
-                <div className="mt-2 h-2 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>{label}</div>
+                <div className="mt-2 h-2 rounded-full overflow-hidden" style={{ background: 'var(--bg-card)' }}>
                   <div className="h-full rounded-full transition-all" style={{ width: `${score}%`, background: sColor(score / 100) }} />
                 </div>
               </div>
@@ -181,7 +181,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
             ].map(s => (
               <div key={s.label} className="p-2 rounded-lg" style={{ background: s.bg, border: `1px solid ${s.color}22` }}>
                 <div className="font-bold" style={{ color: s.color }}>{s.range}</div>
-                <div className="text-slate-500">{s.label}</div>
+                <div style={{ color: 'var(--text-muted)' }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -190,12 +190,12 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
 
       {/* Core Web Vitals */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">📊 Core Web Vitals</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📊 Core Web Vitals</CardTitle></CardHeader>
         <CardContent>
           <div className="overflow-x-auto mb-4">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-slate-500 text-xs uppercase">
+                <tr className="text-xs uppercase" style={{ color: 'var(--text-muted)' }}>
                   <th className="text-left pb-3">Metric</th>
                   <th className="text-center pb-3">📱 Mobile</th>
                   <th className="text-center pb-3">🖥️ Desktop</th>
@@ -212,12 +212,12 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
                     <tr key={v.id} className="border-t border-white/5">
                       <td className="py-3">
                         <span className="font-mono text-xs font-bold text-indigo-400">{v.abbr}</span>
-                        <span className="ml-2 text-slate-400 text-xs hidden md:inline">{v.label}</span>
+                        <span className="ml-2 text-xs hidden md:inline" style={{ color: 'var(--text-secondary)' }}>{v.label}</span>
                       </td>
-                      <td className="py-3 text-center font-mono text-sm" style={{ color: mobVal !== undefined ? clsColor : '#64748b' }}>
+                      <td className="py-3 text-center font-mono text-sm" style={{ color: mobVal !== undefined ? clsColor : 'var(--text-muted)' }}>
                         {mobVal !== undefined ? formatVal(mobVal, v.div, v.unit) : 'N/A'}
                       </td>
-                      <td className="py-3 text-center font-mono text-sm text-slate-400">
+                      <td className="py-3 text-center font-mono text-sm" style={{ color: 'var(--text-secondary)' }}>
                         {dskVal !== undefined ? formatVal(dskVal, v.div, v.unit) : 'N/A'}
                       </td>
                       <td className="py-3 text-center">
@@ -238,7 +238,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
           {/* Fix guides for poor/warn vitals */}
           {(poorVitals.length > 0 || warnVitals.length > 0) && (
             <div className="space-y-3">
-              <div className="text-xs font-semibold text-slate-400 uppercase tracking-wide">How to improve your scores:</div>
+              <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: 'var(--text-secondary)' }}>How to improve your scores:</div>
               {[...poorVitals, ...warnVitals].map(v => {
                 const steps = VITALS_FIX[v.id];
                 if (!steps) return null;
@@ -252,14 +252,14 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
                     }}>
                     <div className="flex items-center gap-2 mb-2">
                       <span className="font-mono text-xs font-bold text-indigo-400">{v.abbr}</span>
-                      <span className="text-sm text-white">{v.label}</span>
+                      <span className="text-sm" style={{ color: 'var(--text-primary)' }}>{v.label}</span>
                       <span className="text-xs ml-auto" style={{ color: cls === 'poor' ? '#ef4444' : '#f59e0b' }}>
                         {val !== undefined ? formatVal(val, v.div, v.unit) : 'N/A'}
                       </span>
                     </div>
                     <div className="space-y-1">
                       {steps.map((step, i) => (
-                        <div key={i} className="flex gap-2 text-xs text-slate-400">
+                        <div key={i} className="flex gap-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
                           <span className="flex-shrink-0 text-indigo-400 font-bold">{i + 1}.</span>
                           <span>{step}</span>
                         </div>
@@ -276,17 +276,17 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
       {/* LCP Element */}
       {lcpElement && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle className="text-white text-base">🎯 LCP Element (Largest Contentful Paint)</CardTitle></CardHeader>
+          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🎯 LCP Element (Largest Contentful Paint)</CardTitle></CardHeader>
           <CardContent>
-            <p className="text-xs text-slate-400 mb-2">This element triggers your LCP - it must load fast as it&apos;s what Google measures for perceived speed.</p>
+            <p className="text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>This element triggers your LCP - it must load fast as it&apos;s what Google measures for perceived speed.</p>
             <div className="p-3 rounded-lg font-mono text-xs text-indigo-300 overflow-x-auto mb-3"
               style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.15)' }}>
               {JSON.stringify(lcpElement).slice(0, 200)}
             </div>
-            <div className="p-3 rounded-lg text-xs text-slate-400"
-              style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
-              <div className="font-medium text-slate-300 mb-1">To speed up this element:</div>
-              <ol className="space-y-0.5 list-decimal ml-4">
+            <div className="p-3 rounded-lg text-xs"
+              style={{ background: 'var(--bg-sidebar)', border: '1px dashed var(--border-card)' }}>
+              <div className="font-medium mb-1" style={{ color: 'var(--text-primary)' }}>To speed up this element:</div>
+              <ol className="space-y-0.5 list-decimal ml-4" style={{ color: 'var(--text-secondary)' }}>
                 <li>If it&apos;s an image: compress it to under 200KB and convert to WebP</li>
                 <li>Ensure it&apos;s not lazy-loaded (remove loading=&quot;lazy&quot; from the LCP image)</li>
                 <li>Add &lt;link rel=&quot;preload&quot; as=&quot;image&quot; href=&quot;...&quot;&gt; in your &lt;head&gt; for this image</li>
@@ -300,7 +300,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
       {/* Render-blocking resources */}
       {renderBlockingAudits.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle className="text-white text-base">🚧 Render-Blocking Resources</CardTitle></CardHeader>
+          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🚧 Render-Blocking Resources</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             {renderBlockingAudits.map(a => (
               <div key={a.id} className="p-3 rounded-xl"
@@ -308,11 +308,11 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
                 <div className="flex items-start gap-3 mb-2">
                   <span className="text-red-400 mt-0.5">🚧</span>
                   <div>
-                    <div className="text-sm font-medium text-white">{a.title}</div>
+                    <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{a.title}</div>
                     {a.displayValue && <div className="text-xs text-red-400 mt-0.5">{a.displayValue}</div>}
                   </div>
                 </div>
-                <div className="ml-6 space-y-1 text-xs text-slate-400">
+                <div className="ml-6 space-y-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
                   {a.id === 'render-blocking-resources' && <>
                     <div>1. Add <code className="text-indigo-300">defer</code> attribute to non-critical scripts: <code className="text-indigo-300">&lt;script defer src=&quot;...&quot;&gt;</code></div>
                     <div>2. Load non-critical CSS asynchronously using <code className="text-indigo-300">media=&quot;print&quot; onload</code> technique</div>
@@ -341,7 +341,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
       {/* Image optimization */}
       {imageAudits.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle className="text-white text-base">🖼️ Image Optimization Opportunities</CardTitle></CardHeader>
+          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🖼️ Image Optimization Opportunities</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             {imageAudits.map(a => (
               <div key={a.id} className="p-3 rounded-xl"
@@ -349,12 +349,12 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
                 <div className="flex items-start gap-3 mb-2">
                   <span className="text-amber-400 mt-0.5">⚠️</span>
                   <div>
-                    <div className="text-sm font-medium text-white">{a.title}</div>
+                    <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{a.title}</div>
                     {a.displayValue && <div className="text-xs text-amber-400 mt-0.5">Potential saving: {a.displayValue}</div>}
                   </div>
                 </div>
                 {IMAGE_FIXES[a.id] && (
-                  <div className="ml-6 space-y-1 text-xs text-slate-400">
+                  <div className="ml-6 space-y-1 text-xs" style={{ color: 'var(--text-secondary)' }}>
                     {IMAGE_FIXES[a.id].map((step, i) => (
                       <div key={i}>{i + 1}. {step}</div>
                     ))}
@@ -368,15 +368,15 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
 
       {/* Font Detector */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">🔤 Font Detection</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🔤 Font Detection</CardTitle></CardHeader>
         <CardContent className="space-y-2">
           {fonts.map((f, i) => (
             <div key={i} className="p-3 rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
               <div className="flex items-center gap-3 mb-1">
                 <span className="text-lg">🔤</span>
                 <div className="flex-1 flex items-center gap-2">
-                  <span className="text-sm font-medium text-white">{f.name}</span>
+                  <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{f.name}</span>
                   <Badge variant="outline" className="text-xs">{f.type}</Badge>
                 </div>
               </div>
@@ -386,12 +386,12 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
                   <div>
                     <div>{f.warning}</div>
                     {f.name === 'Google Fonts' && (
-                      <div className="mt-1 text-slate-500">
+                      <div className="mt-1" style={{ color: 'var(--text-muted)' }}>
                         Fix: Add <code className="text-indigo-300">&amp;display=swap</code> to your Google Fonts URL, or self-host the font files for best performance.
                       </div>
                     )}
                     {f.name === 'Font Awesome' && (
-                      <div className="mt-1 text-slate-500">
+                      <div className="mt-1" style={{ color: 'var(--text-muted)' }}>
                         Fix: Replace Font Awesome with inline SVG icons or a subset icon font that only loads the icons you use.
                       </div>
                     )}
@@ -401,10 +401,10 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
             </div>
           ))}
           {fonts.some(f => f.type === 'CDN') && (
-            <div className="p-3 rounded-lg text-xs text-slate-400"
-              style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
-              <div className="font-medium text-slate-300 mb-1">💡 How to self-host fonts for best speed:</div>
-              <ol className="space-y-0.5 list-decimal ml-4">
+            <div className="p-3 rounded-lg text-xs"
+              style={{ background: 'var(--bg-sidebar)', border: '1px dashed var(--border-card)' }}>
+              <div className="font-medium mb-1" style={{ color: 'var(--text-primary)' }}>💡 How to self-host fonts for best speed:</div>
+              <ol className="space-y-0.5 list-decimal ml-4" style={{ color: 'var(--text-secondary)' }}>
                 <li>Use google-webfonts-helper.herokuapp.com to download font files</li>
                 <li>Upload the .woff2 files to your Showit site&apos;s assets</li>
                 <li>Add @font-face rules with font-display: swap in your custom CSS</li>
@@ -419,7 +419,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white text-base">📦 Third-Party Script Audit</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📦 Third-Party Script Audit</CardTitle>
             {highImpact > 0 && (
               <Badge style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444' }}>
                 {highImpact} high impact
@@ -429,7 +429,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
         </CardHeader>
         <CardContent>
           {scripts.length === 0 ? (
-            <p className="text-sm text-slate-400">No third-party scripts detected.</p>
+            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>No third-party scripts detected.</p>
           ) : (
             <div className="space-y-2 mb-3">
               {scripts.map((s, i) => (
@@ -437,7 +437,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
                   style={{ background: IMPACT_BG[s.impact], border: `1px solid ${IMPACT_COLOR[s.impact]}22` }}>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm font-medium text-white">{s.name}</span>
+                      <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{s.name}</span>
                       <Badge variant="outline" className="text-xs">{s.category}</Badge>
                     </div>
                   </div>
@@ -453,10 +453,10 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
             </div>
           )}
           {highImpact > 0 && (
-            <div className="p-3 rounded-lg text-xs text-slate-400"
+            <div className="p-3 rounded-lg text-xs"
               style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
               <div className="font-medium text-amber-300 mb-1">💡 How to fix high-impact scripts:</div>
-              <ol className="space-y-0.5 list-decimal ml-4 text-slate-400">
+              <ol className="space-y-0.5 list-decimal ml-4" style={{ color: 'var(--text-secondary)' }}>
                 <li>Audit which scripts you actually use - remove anything inactive</li>
                 <li>Lazy-load chat widgets: only load them after the visitor interacts with the page</li>
                 <li>For video embeds (YouTube/Vimeo): use a facade/placeholder image that loads the iframe only on click</li>
@@ -470,9 +470,9 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
 
       {/* Recommended tools not detected */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">💡 Recommended Tracking Tools Not Detected</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">💡 Recommended Tracking Tools Not Detected</CardTitle></CardHeader>
         <CardContent>
-          <p className="text-xs text-slate-400 mb-3">These free tools are not currently detected on your site. Adding them can improve your marketing, analytics, and conversion tracking.</p>
+          <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>These free tools are not currently detected on your site. Adding them can improve your marketing, analytics, and conversion tracking.</p>
           <div className="space-y-2">
             {[
               { name: 'Google Analytics 4', icon: '📊', desc: 'Track visitors, traffic sources, and conversions. The most important free analytics tool.', link: 'https://analytics.google.com', detected: scripts.some(s => s.name?.toLowerCase().includes('analytics') || s.name?.toLowerCase().includes('ga4') || s.name?.toLowerCase().includes('gtag')) },
@@ -483,11 +483,11 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
               { name: 'TikTok Pixel', icon: '🎵', desc: 'Track conversions and build retargeting audiences from TikTok ads.', link: 'https://ads.tiktok.com', detected: scripts.some(s => s.name?.toLowerCase().includes('tiktok')) },
             ].filter(t => !t.detected).map((tool, i) => (
               <div key={i} className="flex items-start gap-3 p-3 rounded-xl"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
                 <span className="text-xl flex-shrink-0">{tool.icon}</span>
                 <div className="flex-1 min-w-0">
-                  <div className="text-sm font-medium text-white">{tool.name}</div>
-                  <div className="text-xs text-slate-400 mt-0.5">{tool.desc}</div>
+                  <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{tool.name}</div>
+                  <div className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{tool.desc}</div>
                 </div>
                 <a href={tool.link} target="_blank" rel="noopener noreferrer"
                   className="text-xs px-3 py-1.5 rounded-lg flex-shrink-0 transition-colors"
@@ -502,7 +502,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
 
       {/* General speed improvement checklist */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">📋 Complete Speed Improvement Checklist</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📋 Complete Speed Improvement Checklist</CardTitle></CardHeader>
         <CardContent>
           {[
             { category: 'Images', items: [
@@ -543,7 +543,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
                       <span className={`flex-shrink-0 w-4 h-4 rounded border flex items-center justify-center transition-all ${done ? 'bg-indigo-500 border-indigo-500' : 'border-white/20 hover:border-indigo-400'}`}>
                         {done && <span className="text-white text-xs leading-none">✓</span>}
                       </span>
-                      <span className={done ? 'line-through text-slate-600' : 'text-slate-400'}>{item}</span>
+                      <span style={{ color: done ? 'var(--text-muted)' : 'var(--text-secondary)', textDecoration: done ? 'line-through' : 'none' }}>{item}</span>
                     </button>
                   );
                 })}

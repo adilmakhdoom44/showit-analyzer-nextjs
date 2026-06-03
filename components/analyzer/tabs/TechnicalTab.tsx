@@ -13,8 +13,8 @@ function CheckRow({ label, found, icon, good = true, detail }: {
     <div className="flex items-center gap-3 py-2.5 border-b border-white/5 last:border-0">
       <span className="text-xl">{icon}</span>
       <div className="flex-1">
-        <span className="text-sm text-slate-300">{label}</span>
-        {detail && <div className="text-xs text-slate-500 mt-0.5 truncate max-w-xs">{detail}</div>}
+        <span className="text-sm" style={{ color: 'var(--text-primary)' }}>{label}</span>
+        {detail && <div className="text-xs mt-0.5 truncate max-w-xs" style={{ color: 'var(--text-muted)' }}>{detail}</div>}
       </div>
       <span className="text-xs font-medium" style={{ color: ok ? '#10b981' : '#ef4444' }}>
         {ok ? '✓ Found' : '✗ Missing'}
@@ -93,7 +93,7 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
 
       {/* Analytics */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">📊 Analytics &amp; Tracking</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📊 Analytics &amp; Tracking</CardTitle></CardHeader>
         <CardContent>
           <CheckRow label="Google Analytics 4 (GA4)" found={!!analytics?.ga4} icon="📈" />
           <CheckRow label="Google Tag Manager (GTM)" found={!!analytics?.gtm} icon="🏷️" />
@@ -102,7 +102,7 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
           <CheckRow label="Hotjar" found={!!analytics?.hotjar} icon="🔥" />
           {(!analytics?.ga4 && !analytics?.gtm) && (
             <div className="mt-3 p-3 rounded-lg text-xs text-indigo-300" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
-              💡 Add GA4 or GTM in Showit: <strong className="text-white">Site Settings → Integrations → Google Analytics</strong> or paste the GTM snippet in <strong className="text-white">Site Settings → SEO → Custom Code (Head)</strong>
+              💡 Add GA4 or GTM in Showit: <strong style={{ color: 'var(--text-primary)' }}>Site Settings → Integrations → Google Analytics</strong> or paste the GTM snippet in <strong style={{ color: 'var(--text-primary)' }}>Site Settings → SEO → Custom Code (Head)</strong>
             </div>
           )}
         </CardContent>
@@ -112,7 +112,7 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white text-base">🏢 Business Page Essentials</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🏢 Business Page Essentials</CardTitle>
             <span className="text-xs" style={{ color: passedBusiness >= 6 ? '#10b981' : passedBusiness >= 4 ? '#f59e0b' : '#ef4444' }}>
               {passedBusiness}/{businessChecks.length} found
             </span>
@@ -127,7 +127,7 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
                   border: `1px solid ${c.found ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.12)'}`,
                 }}>
                 <span>{c.icon}</span>
-                <span className="flex-1 text-xs text-slate-300">{c.label}</span>
+                <span className="flex-1 text-xs" style={{ color: 'var(--text-primary)' }}>{c.label}</span>
                 <span className="text-xs font-bold" style={{ color: c.found ? '#10b981' : '#ef4444' }}>
                   {c.found ? '✓' : '✗'}
                 </span>
@@ -147,20 +147,20 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white text-base">🤖 AI &amp; Answer Engine Optimization (AEO)</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🤖 AI &amp; Answer Engine Optimization (AEO)</CardTitle>
             <div className="text-2xl font-black" style={{ color: aeoScore >= 70 ? '#10b981' : aeoScore >= 40 ? '#f59e0b' : '#ef4444' }}>
               {aeoScore}%
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-xs text-slate-400 mb-3">How visible is your site to AI tools like ChatGPT, Perplexity, and Google&apos;s AI Overview?</p>
+          <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>How visible is your site to AI tools like ChatGPT, Perplexity, and Google&apos;s AI Overview?</p>
           <div className="space-y-1.5">
             {aeoSignals.map((s, i) => (
               <div key={i} className="py-1.5 border-b border-white/5 last:border-0">
                 <div className="flex items-center gap-2 text-xs">
                   <span>{s.ok ? '✅' : '❌'}</span>
-                  <span className="text-slate-300">{s.label}</span>
+                  <span style={{ color: 'var(--text-primary)' }}>{s.label}</span>
                 </div>
                 {!s.ok && <div className="text-xs text-indigo-300 mt-1 pl-1">💡 {s.tip}</div>}
               </div>
@@ -173,20 +173,20 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white text-base">🏅 E-E-A-T Trust Signals</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🏅 E-E-A-T Trust Signals</CardTitle>
             <div className="text-2xl font-black" style={{ color: eeatScore >= 70 ? '#10b981' : eeatScore >= 40 ? '#f59e0b' : '#ef4444' }}>
               {eeatScore}%
             </div>
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-xs text-slate-400 mb-3">Experience, Expertise, Authoritativeness, Trustworthiness - Google&apos;s quality signals.</p>
+          <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>Experience, Expertise, Authoritativeness, Trustworthiness - Google&apos;s quality signals.</p>
           <div className="space-y-1.5">
             {eeatSignals.map((s, i) => (
               <div key={i} className="py-1.5 border-b border-white/5 last:border-0">
                 <div className="flex items-center gap-2 text-xs">
                   <span>{s.ok ? '✅' : '❌'}</span>
-                  <span className="text-slate-300">{s.label}</span>
+                  <span style={{ color: 'var(--text-primary)' }}>{s.label}</span>
                 </div>
                 {!s.ok && <div className="text-xs text-indigo-300 mt-1 pl-1">💡 {s.tip}</div>}
               </div>
@@ -197,7 +197,7 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
 
       {/* Page Structure */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">🏗️ Page Structure</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🏗️ Page Structure</CardTitle></CardHeader>
         <CardContent>
           <CheckRow label="Language attribute (lang=)" found={!!pageData?.lang} icon="🌐" detail={pageData?.lang} />
           <CheckRow label="Favicon" found={!!pageData?.favicon} icon="🖼️" />
@@ -215,7 +215,7 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
       {/* Technical Standards */}
       {techAudits.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle className="text-white text-base">🔐 Technical Standards</CardTitle></CardHeader>
+          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🔐 Technical Standards</CardTitle></CardHeader>
           <CardContent className="space-y-2">
             {techAudits.map(a => (
               <div key={a.id} className="flex items-start gap-3 py-2 border-b border-white/5 last:border-0">
@@ -223,8 +223,8 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
                   {a.score === 1 ? '✓' : '✗'}
                 </span>
                 <div>
-                  <div className="text-sm text-slate-300">{a.title}</div>
-                  {a.displayValue && <div className="text-xs text-slate-500 mt-0.5">{a.displayValue}</div>}
+                  <div className="text-sm" style={{ color: 'var(--text-primary)' }}>{a.title}</div>
+                  {a.displayValue && <div className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{a.displayValue}</div>}
                 </div>
               </div>
             ))}
@@ -234,7 +234,7 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
 
       {/* Security Quick Check */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">🔐 Security Quick Check</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🔐 Security Quick Check</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-3">
             {securityAudits.map(s => {
@@ -243,12 +243,12 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
               return (
                 <div key={s.id} className="p-3 rounded-xl text-center"
                   style={{
-                    background: unknown ? 'rgba(255,255,255,0.03)' : passed ? 'rgba(16,185,129,0.07)' : 'rgba(239,68,68,0.06)',
-                    border: `1px solid ${unknown ? 'rgba(255,255,255,0.08)' : passed ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.12)'}`,
+                    background: unknown ? 'var(--bg-sidebar)' : passed ? 'rgba(16,185,129,0.07)' : 'rgba(239,68,68,0.06)',
+                    border: `1px solid ${unknown ? 'var(--border-card)' : passed ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.12)'}`,
                   }}>
                   <div className="text-lg mb-1">{unknown ? '❓' : passed ? '✅' : '❌'}</div>
-                  <div className="text-xs font-medium text-slate-300 leading-tight">{s.label}</div>
-                  <div className="text-xs text-slate-500 mt-0.5 leading-tight">{s.desc}</div>
+                  <div className="text-xs font-medium leading-tight" style={{ color: 'var(--text-primary)' }}>{s.label}</div>
+                  <div className="text-xs mt-0.5 leading-tight" style={{ color: 'var(--text-muted)' }}>{s.desc}</div>
                   {!unknown && (
                     <div className="mt-1.5 text-xs font-bold" style={{ color: passed ? '#10b981' : '#ef4444' }}>
                       {passed ? 'Pass' : 'Fail'}
@@ -263,7 +263,7 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
 
       {/* Robots & Sitemap quick links */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">🗂️ Robots.txt &amp; Sitemap</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🗂️ Robots.txt &amp; Sitemap</CardTitle></CardHeader>
         <CardContent className="space-y-2">
           {[
             { label: 'robots.txt', href: `${rootUrl}/robots.txt`, desc: 'Check if Googlebot can crawl your site' },
@@ -272,12 +272,12 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
           ].map(link => (
             <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
               className="flex items-center justify-between p-3 rounded-xl transition-colors hover:bg-white/5"
-              style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
               <div>
                 <div className="text-sm font-medium text-indigo-400">{link.label}</div>
-                <div className="text-xs text-slate-500">{link.desc}</div>
+                <div className="text-xs" style={{ color: 'var(--text-muted)' }}>{link.desc}</div>
               </div>
-              <span className="text-slate-600">↗</span>
+              <span style={{ color: 'var(--text-muted)' }}>↗</span>
             </a>
           ))}
         </CardContent>
@@ -286,13 +286,13 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
       {/* Accessibility Issues */}
       {accessibilityAudits.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle className="text-white text-base">♿ Accessibility Issues</CardTitle></CardHeader>
+          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">♿ Accessibility Issues</CardTitle></CardHeader>
           <CardContent className="space-y-2">
             {accessibilityAudits.map(a => (
               <div key={a.id} className="p-3 rounded-xl"
                 style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)' }}>
-                <div className="text-sm font-medium text-white">{a.title}</div>
-                {a.description && <div className="text-xs text-slate-400 mt-1 line-clamp-2">{a.description.replace(/\[.*?\]/g, '')}</div>}
+                <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{a.title}</div>
+                {a.description && <div className="text-xs mt-1 line-clamp-2" style={{ color: 'var(--text-secondary)' }}>{a.description.replace(/\[.*?\]/g, '')}</div>}
                 {a11yFixes[a.id] && <div className="text-xs text-indigo-300 mt-1">💡 Fix in Showit: {a11yFixes[a.id]}</div>}
               </div>
             ))}
@@ -302,7 +302,7 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
 
       {/* Content Stats */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">📝 Content Stats</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📝 Content Stats</CardTitle></CardHeader>
         <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {[
             { label: 'Word Count', value: pageData?.wordCount ?? 'N/A', icon: '📝', color: wcColor },
@@ -312,10 +312,10 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
             { label: 'Forms', value: pageData?.forms ?? 0, icon: '📋', color: '#10b981' },
             { label: 'Schema Types', value: pageData?.schema ?? 0, icon: '🏷️', color: (pageData?.schema ?? 0) > 0 ? '#10b981' : '#f59e0b' },
           ].map(s => (
-            <div key={s.label} className="text-center p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
+            <div key={s.label} className="text-center p-3 rounded-xl" style={{ background: 'var(--bg-sidebar)' }}>
               <div className="text-2xl mb-1">{s.icon}</div>
               <div className="text-xl font-bold" style={{ color: s.color }}>{s.value}</div>
-              <div className="text-xs text-slate-500">{s.label}</div>
+              <div className="text-xs" style={{ color: 'var(--text-muted)' }}>{s.label}</div>
             </div>
           ))}
         </CardContent>
