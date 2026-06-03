@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
 import { useAnalyzer } from '@/lib/analyzer-context';
 import HeroSection from '@/components/analyzer/HeroSection';
 import DemoMockup from '@/components/analyzer/DemoMockup';
@@ -16,6 +17,7 @@ import HomeSchema from '@/components/HomeSchema';
 export default function HomePage() {
   const { result, loading, loadingStep, error, analyze, reset } = useAnalyzer();
   const [headerUrl, setHeaderUrl] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleHeaderAnalyze = (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,7 +100,7 @@ export default function HomePage() {
           )}
 
           {/* Right side */}
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-2">
             {result && !loading && (
               <button
                 onClick={reset}
@@ -108,8 +110,50 @@ export default function HomePage() {
               </button>
             )}
             <ThemeToggle />
+            {/* Hamburger — mobile only */}
+            <button
+              className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg transition-colors"
+              style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)', color: 'var(--text-primary)' }}
+              onClick={() => setMobileMenuOpen(v => !v)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden"
+            style={{
+              background: 'var(--bg-header)',
+              backdropFilter: 'blur(16px)',
+              WebkitBackdropFilter: 'blur(16px)',
+              borderTop: '1px solid var(--border-header)',
+              padding: '8px 16px 16px',
+            }}>
+            <button onClick={() => { reset(); setMobileMenuOpen(false); }}
+              className="flex items-center w-full px-4 py-3 rounded-xl text-sm font-medium border-none bg-transparent cursor-pointer mb-1"
+              style={{ color: 'var(--text-primary)', background: 'var(--bg-sidebar)' }}>
+              Home
+            </button>
+            <Link href="/about" onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center px-4 py-3 rounded-xl text-sm font-medium no-underline mb-1"
+              style={{ color: 'var(--text-secondary)' }}>
+              About
+            </Link>
+            <Link href="/contact" onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center px-4 py-3 rounded-xl text-sm font-medium no-underline mb-2"
+              style={{ color: 'var(--text-secondary)' }}>
+              Contact
+            </Link>
+            <Link href="/" onClick={() => { reset(); setMobileMenuOpen(false); }}
+              className="flex items-center justify-center px-4 py-3 rounded-xl text-sm font-semibold no-underline"
+              style={{ background: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)', border: '1px solid var(--btn-primary-border)' }}>
+              Analyze my site →
+            </Link>
+          </div>
+        )}
       </header>
 
       {/* ── Page content ── */}
