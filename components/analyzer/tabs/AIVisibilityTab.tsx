@@ -116,7 +116,7 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
             <div className="flex flex-wrap gap-2 mb-4">
               {schemaTypes.map((t: string) => (
                 <span key={t} className="text-xs px-3 py-1 rounded-full font-medium"
-                  style={{ background: 'rgba(99,102,241,0.15)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.3)' }}>
+                  style={{ background: 'rgba(99,102,241,0.15)', color: '#4f46e5', border: '1px solid rgba(99,102,241,0.3)' }}>
                   {t}
                 </span>
               ))}

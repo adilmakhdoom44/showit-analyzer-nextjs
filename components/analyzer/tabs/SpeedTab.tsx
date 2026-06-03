@@ -491,7 +491,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
                 </div>
                 <a href={tool.link} target="_blank" rel="noopener noreferrer"
                   className="text-xs px-3 py-1.5 rounded-lg flex-shrink-0 transition-colors"
-                  style={{ background: 'rgba(99,102,241,0.15)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.25)' }}>
+                  style={{ background: 'rgba(99,102,241,0.15)', color: '#4f46e5', border: '1px solid rgba(99,102,241,0.25)' }}>
                   Add →
                 </a>
               </div>

@@ -111,7 +111,7 @@ function FixCard({ fix, done, onToggle, auditItems }: { fix: FixItem; done: bool
             {fix.steps.map((step, i) => (
               <div key={i} className="flex gap-3 text-sm">
                 <span className="flex-shrink-0 w-5 h-5 rounded-full text-xs flex items-center justify-center font-bold mt-0.5"
-                  style={{ background: 'rgba(99,102,241,0.2)', color: '#a5b4fc' }}>{i + 1}</span>
+                  style={{ background: 'rgba(99,102,241,0.2)', color: '#4f46e5' }}>{i + 1}</span>
                 <span style={{ color: 'var(--text-primary)' }}>{step}</span>
               </div>
             ))}
@@ -369,8 +369,8 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                       <YAxis domain={[0, 100]} tick={{ fontSize: 10, fill: '#475569' }} tickLine={false} axisLine={false} />
                       <Tooltip
                         contentStyle={{ background: '#0d1117', border: '1px solid rgba(99,102,241,0.3)', borderRadius: 8, fontSize: 12 }}
-                        labelStyle={{ color: '#94a3b8' }}
-                        itemStyle={{ color: '#a5b4fc' }}
+                        labelStyle={{ color: 'var(--text-secondary)' }}
+                        itemStyle={{ color: '#4f46e5' }}
                       />
                       <Area type="monotone" dataKey="score" name="Avg Score" stroke="#6366f1" strokeWidth={2} fill="url(#scoreGrad)" dot={{ r: 3, fill: '#6366f1' }} activeDot={{ r: 5 }} />
                     </AreaChart>

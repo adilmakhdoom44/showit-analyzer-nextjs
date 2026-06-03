@@ -157,7 +157,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
             ].map(link => (
               <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
                 className="flex flex-col items-center gap-2 p-4 rounded-xl text-center transition-all hover:bg-white/5"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
                 <span className="text-2xl">{link.icon}</span>
                 <span className="text-xs " style={{ color: 'var(--text-primary)' }}>{link.label}</span>
               </a>
@@ -173,7 +173,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
             ].map((s, i) => (
               <div key={i} className="flex items-center gap-3 text-sm  p-2" style={{ color: 'var(--text-secondary)' }}>
                 <span className="w-6 h-6 rounded-full text-xs flex items-center justify-center font-bold flex-shrink-0"
-                  style={{ background: 'rgba(99,102,241,0.2)', color: '#a5b4fc' }}>{s.step}</span>
+                  style={{ background: 'rgba(99,102,241,0.2)', color: '#4f46e5' }}>{s.step}</span>
                 {s.label}
               </div>
             ))}
@@ -199,13 +199,13 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
             <div className="space-y-2">
               {history.map((h, i) => (
                 <div key={i} className="flex items-center gap-3 p-3 rounded-xl"
-                  style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
                   <div className="flex-1">
                     <div className="text-xs " style={{ color: 'var(--text-secondary)' }}>{h.date} at {h.time}</div>
                     <div className="flex gap-1 mt-1 flex-wrap">
                       {h.perf !== undefined && (
                         <span className="text-xs px-1.5 py-0.5 rounded"
-                          style={{ background: 'rgba(99,102,241,0.15)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.2)' }}>
+                          style={{ background: 'rgba(99,102,241,0.15)', color: '#4f46e5', border: '1px solid rgba(99,102,241,0.2)' }}>
                           P:{h.perf}
                         </span>
                       )}
@@ -223,7 +223,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
                       )}
                       {h.bp !== undefined && (
                         <span className="text-xs px-1.5 py-0.5 rounded"
-                          style={{ background: 'rgba(99,102,241,0.1)', color: '#818cf8', border: '1px solid rgba(99,102,241,0.15)' }}>
+                          style={{ background: 'rgba(99,102,241,0.1)', color: '#4f46e5', border: '1px solid rgba(99,102,241,0.15)' }}>
                           B:{h.bp}
                         </span>
                       )}
@@ -255,7 +255,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
               { label: 'Accessibility', value: a11y, icon: '♿' },
               { label: 'Best Practices', value: bp, icon: '✅' },
             ].map(s => (
-              <div key={s.label} className="p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)' }}>
+              <div key={s.label} className="p-4 rounded-xl" style={{ background: 'var(--bg-sidebar)' }}>
                 <div className="text-2xl mb-1">{s.icon}</div>
                 <div className="text-3xl font-black" style={{ color: s.value >= 90 ? '#10b981' : s.value >= 50 ? '#f59e0b' : '#ef4444' }}>
                   {s.value}
@@ -265,7 +265,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
             ))}
           </div>
           <div className="p-3 rounded-xl text-xs text-center"
-            style={{ color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
+            style={{ color: 'var(--text-secondary)', background: 'var(--bg-sidebar)', border: '1px dashed rgba(255,255,255,0.08)' }}>
             {result.url}
           </div>
         </CardContent>
@@ -278,21 +278,21 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
           <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Share your analysis with your designer or client.</p>
           <div className="flex gap-2">
             <Input value={shareUrl} readOnly className="text-xs"
-              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }} />
+              style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', color: 'var(--text-secondary)' }} />
             <Button onClick={copyShare} variant="outline" className="flex-shrink-0"
-              style={{ borderColor: 'rgba(99,102,241,0.4)', color: '#a5b4fc' }}>
+              style={{ borderColor: '#6366f1', color: '#4f46e5' }}>
               {copied ? '✓ Copied!' : '📋 Copy'}
             </Button>
           </div>
           <div className="flex gap-2 mt-3">
             <Button onClick={handlePrint} variant="outline" className="flex-1 text-sm"
-              style={{ borderColor: 'rgba(255,255,255,0.1)', color: '#94a3b8' }}>
+              style={{ borderColor: 'var(--border-card)', color: 'var(--text-secondary)' }}>
               🖨️ Print / Save as PDF
             </Button>
             <a href={`mailto:?subject=SEO Report for ${domain}&body=Here is the full SEO report for ${result.url}%0A%0AOverall Grade: ${(() => { try { const c = result.mobile.lighthouseResult?.categories ?? result.mobile.categories; const avg = Math.round(((c?.performance?.score??0)+(c?.seo?.score??0)+(c?.accessibility?.score??0)+(c?.['best-practices']?.score??0))/4*100); return avg>=90?'A':avg>=80?'B':avg>=70?'C':avg>=60?'D':'F'; } catch { return '—'; } })()}%0APerformance: ${Math.round((result.mobile.lighthouseResult?.categories?.performance?.score??result.mobile.categories?.performance?.score??0)*100)}%2F100%0ASEO: ${Math.round((result.mobile.lighthouseResult?.categories?.seo?.score??result.mobile.categories?.seo?.score??0)*100)}%2F100%0AAccessibility: ${Math.round((result.mobile.lighthouseResult?.categories?.accessibility?.score??result.mobile.categories?.accessibility?.score??0)*100)}%2F100%0A%0AView full report: ${shareUrl}%0A%0AGenerated by Showit Site Analyzer — showitanalyzer.com`}
               className="flex-1">
               <Button variant="outline" className="w-full text-sm"
-                style={{ borderColor: 'rgba(255,255,255,0.1)', color: '#94a3b8' }}>
+                style={{ borderColor: 'var(--border-card)', color: 'var(--text-secondary)' }}>
                 ✉️ Email Report
               </Button>
             </a>
@@ -313,7 +313,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
             ].map(tool => (
               <a key={tool.name} href={tool.href} target="_blank" rel="noopener noreferrer"
                 className="flex flex-col items-center gap-2 p-4 rounded-xl text-center transition-all hover:bg-white/5"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
                 <span className="text-2xl">{tool.icon}</span>
                 <span className="text-xs font-medium text-white">{tool.name}</span>
                 <span className="text-xs " style={{ color: 'var(--text-secondary)' }}>{tool.desc}</span>
@@ -321,7 +321,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
             ))}
           </div>
           <div className="p-3 rounded-lg text-xs"
-            style={{ color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            style={{ color: 'var(--text-secondary)', background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
             <div className="font-medium  mb-2" style={{ color: 'var(--text-primary)' }}>💡 Quick backlink wins for photographers &amp; creatives:</div>
             <ul className="space-y-1 " style={{ color: 'var(--text-secondary)' }}>
               <li>• Get listed in local business directories (Yelp, Google, Bing)</li>
@@ -363,7 +363,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
               📥 Download Excel (.xlsx)
             </Button>
             <Button onClick={handlePrint} variant="outline" className="w-full"
-              style={{ borderColor: 'rgba(255,255,255,0.1)', color: '#94a3b8' }}>
+              style={{ borderColor: 'var(--border-card)', color: 'var(--text-secondary)' }}>
               🖨️ Print / Save as PDF
             </Button>
           </div>
@@ -385,10 +385,10 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
             {freeTools.map(tool => (
               <a key={tool.name} href={tool.href} target="_blank" rel="noopener noreferrer"
                 className="flex items-start gap-3 p-3 rounded-xl transition-all hover:bg-white/5"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
                 <span className="text-xl flex-shrink-0">{tool.icon}</span>
                 <div>
-                  <div className="text-xs font-medium" style={{ color: '#a5b4fc' }}>{tool.name} ↗</div>
+                  <div className="text-xs font-medium" style={{ color: '#4f46e5' }}>{tool.name} ↗</div>
                   <div className="text-xs mt-0.5" style={{ color: '#64748b' }}>{tool.desc}</div>
                 </div>
               </a>

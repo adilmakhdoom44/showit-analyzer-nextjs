@@ -397,7 +397,7 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
                     style={{ background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.15)' }}>
                     <div className="flex items-start gap-2 mb-2">
                       <Badge variant="outline" className="text-xs font-mono flex-shrink-0"
-                        style={{ color: '#a5b4fc' }}>{h.tag}</Badge>
+                        style={{ color: '#4f46e5' }}>{h.tag}</Badge>
                       <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{h.text}</span>
                     </div>
                     <div className="flex items-center gap-2 mb-2">
@@ -434,7 +434,7 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
           <CardHeader>
             <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
               🏷️ Structured Data (Schema)
-              <Badge style={{ background: 'rgba(99,102,241,0.2)', color: '#a5b4fc' }}>{pageData?.schema} type{(pageData?.schema ?? 0) > 1 ? 's' : ''}</Badge>
+              <Badge style={{ background: 'rgba(99,102,241,0.2)', color: '#4f46e5' }}>{pageData?.schema} type{(pageData?.schema ?? 0) > 1 ? 's' : ''}</Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -638,7 +638,7 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
                           {item.fix.map((step, si) => (
                             <div key={si} className="flex gap-2 text-xs">
                               <span className="flex-shrink-0 w-4 h-4 rounded-full text-xs flex items-center justify-center font-bold"
-                                style={{ background: 'rgba(99,102,241,0.2)', color: '#a5b4fc' }}>{si + 1}</span>
+                                style={{ background: 'rgba(99,102,241,0.2)', color: '#4f46e5' }}>{si + 1}</span>
                               <span style={{ color: 'var(--text-secondary)' }}>{step}</span>
                             </div>
                           ))}
