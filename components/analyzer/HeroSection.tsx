@@ -164,7 +164,7 @@ export default function HeroSection() {
       }} />
 
       {/* Floating score cards — pointer-events ON so mouse proximity works */}
-      <div aria-hidden style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+      <div aria-hidden className="hidden md:block" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, overflow: 'hidden', pointerEvents: 'none' }}>
 
         {/* SEO card — flee wrapper → float inner */}
         <div
