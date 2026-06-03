@@ -293,6 +293,7 @@ export default function HeroSection() {
         {/* Headline */}
         <h1
           className="h-fade-2"
+          aria-label="Free Showit SEO Analyzer — Your Showit site, honestly evaluated."
           style={{
             fontFamily: 'var(--font-serif), Georgia, serif',
             fontSize: 'clamp(3rem, 8vw, 5.6rem)',

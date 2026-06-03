@@ -3,10 +3,13 @@ export default function HomeSchema() {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'Organization',
+        '@type': ['Organization', 'LocalBusiness'],
         '@id': 'https://showitanalyzer.com/#organization',
         name: 'Showit Site Analyzer',
         url: 'https://showitanalyzer.com',
+        description: 'Free SEO, speed, and AI visibility analyzer built specifically for Showit website creators.',
+        priceRange: 'Free',
+        areaServed: 'Worldwide',
         logo: {
           '@type': 'ImageObject',
           url: 'https://showitanalyzer.com/icon',
