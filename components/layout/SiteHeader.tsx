@@ -26,7 +26,7 @@ export default function SiteHeader() {
         borderBottom: '1px solid var(--border-header)',
       }}
     >
-      <div className="flex items-center gap-4 px-4 md:px-8 py-3 max-w-6xl mx-auto">
+      <div className="flex items-center gap-2 md:gap-4 px-4 md:px-8 py-3 max-w-6xl mx-auto">
 
         {/* Logo */}
         <Link
