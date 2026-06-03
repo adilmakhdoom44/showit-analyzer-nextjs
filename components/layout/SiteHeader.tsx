@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import ThemeToggle from '@/components/ThemeToggle';
+import { Menu, X } from 'lucide-react';
 
 const NAV = [
   { href: '/', label: 'Home' },
@@ -12,6 +14,7 @@ const NAV = [
 
 export default function SiteHeader() {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
 
   return (
     <header
@@ -24,6 +27,7 @@ export default function SiteHeader() {
       }}
     >
       <div className="flex items-center gap-4 px-4 md:px-8 py-3 max-w-6xl mx-auto">
+
         {/* Logo */}
         <Link
           href="/"
@@ -41,8 +45,8 @@ export default function SiteHeader() {
           </span>
         </Link>
 
-        {/* Nav links */}
-        <nav className="flex items-center gap-1 ml-2">
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-1 ml-2">
           {NAV.map(n => {
             const active = pathname === n.href;
             return (
@@ -65,10 +69,68 @@ export default function SiteHeader() {
         </nav>
 
         {/* Right side */}
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex items-center gap-2">
           <ThemeToggle />
+
+          {/* Hamburger — mobile only */}
+          <button
+            className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg transition-colors"
+            style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)', color: 'var(--text-primary)' }}
+            onClick={() => setOpen(v => !v)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X size={16} /> : <Menu size={16} />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div
+          className="md:hidden"
+          style={{
+            background: 'var(--bg-header)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            borderTop: '1px solid var(--border-header)',
+            padding: '8px 16px 16px',
+          }}
+        >
+          {NAV.map(n => {
+            const active = pathname === n.href;
+            return (
+              <Link
+                key={n.href}
+                href={n.href}
+                onClick={() => setOpen(false)}
+                className="flex items-center px-4 py-3 rounded-xl text-sm font-medium no-underline transition-colors"
+                style={{
+                  color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  background: active ? 'var(--bg-sidebar)' : 'transparent',
+                  fontWeight: active ? 600 : 400,
+                  marginBottom: 4,
+                }}
+              >
+                {n.label}
+              </Link>
+            );
+          })}
+
+          {/* CTA */}
+          <Link
+            href="/"
+            onClick={() => setOpen(false)}
+            className="flex items-center justify-center px-4 py-3 rounded-xl text-sm font-semibold no-underline mt-2"
+            style={{
+              background: 'var(--btn-primary-bg)',
+              color: 'var(--btn-primary-text)',
+              border: '1px solid var(--btn-primary-border)',
+            }}
+          >
+            Analyze my site →
+          </Link>
+        </div>
+      )}
     </header>
   );
 }
