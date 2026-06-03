@@ -67,20 +67,21 @@ export default function ResultsDashboard({ result }: { result: AnalysisResult })
           <div className="nav-sidebar flex-shrink-0 md:w-48 md:self-start md:sticky md:top-16">
             {/* Mobile: wrapped grid — all tabs visible, nothing hidden */}
             <div className="md:hidden w-full p-1.5 rounded-2xl"
-              style={{ background: '#0d1630', border: '1px solid rgba(99,102,241,0.2)' }}>
+              style={{ background: '#0f0f13', border: '1px solid rgba(255,255,255,0.08)' }}>
               <div className="grid grid-cols-4 gap-1">
                 {TABS.map(t => (
                   <button
                     key={t.id}
                     onClick={() => setActiveTab(t.id)}
-                    className="flex flex-col items-center justify-center gap-1 py-2 px-1 rounded-xl font-medium transition-all"
+                    className="flex flex-col items-center justify-center gap-1 py-2.5 px-1 rounded-xl font-medium transition-all"
                     style={{
-                      background: activeTab === t.id ? 'rgba(99,102,241,0.25)' : 'transparent',
-                      color: activeTab === t.id ? '#a5b4fc' : '#94a3b8',
-                      border: 'none', cursor: 'pointer', fontSize: 10, lineHeight: 1.2,
+                      background: activeTab === t.id ? '#1e1b4b' : 'transparent',
+                      color: activeTab === t.id ? '#ffffff' : '#64748b',
+                      border: activeTab === t.id ? '1px solid rgba(255,255,255,0.12)' : '1px solid transparent',
+                      cursor: 'pointer', fontSize: 10, lineHeight: 1.2,
                     }}>
                     <t.icon size={15} />
-                    <span>{t.label === 'AI Visibility' ? 'AI' : t.label === 'Technical' ? 'Tech' : t.label === 'Overview' ? 'Overview' : t.label}</span>
+                    <span>{t.label === 'AI Visibility' ? 'AI' : t.label === 'Technical' ? 'Tech' : t.label}</span>
                   </button>
                 ))}
               </div>
