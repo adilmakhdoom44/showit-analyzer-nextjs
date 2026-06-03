@@ -12,6 +12,7 @@ import type { AnalysisResult, FixItem } from '@/types/analyzer';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { Zap, MonitorSmartphone, AlertTriangle, Wrench } from 'lucide-react';
 
 interface ContrastItem {
   nodeLabel?: string;
@@ -301,7 +302,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
 
       {/* Performance Snapshot */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">⚡ Performance Snapshot</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-white text-base"><Zap size={16} className="inline mr-1.5" /> Performance Snapshot</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-center">
             {[
@@ -540,7 +541,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
 
       {/* Mobile vs Desktop comparison */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">📊 Mobile vs Desktop</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-white text-base"><MonitorSmartphone size={16} className="inline mr-1.5" /> Mobile vs Desktop</CardTitle></CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -612,7 +613,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
         <Card className="glass border-0">
           <CardHeader>
             <CardTitle className="text-white text-base flex items-center gap-2">
-              ⚠️ What&apos;s Not Working
+              <AlertTriangle size={16} className="inline mr-1.5 text-amber-500" /> What&apos;s Not Working
               <Badge variant="destructive">{failedAuditIds.length}</Badge>
             </CardTitle>
           </CardHeader>
@@ -657,7 +658,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
         <Card className="glass border-0">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle className="text-white text-base">🛠️ Priority Fixes</CardTitle>
+              <CardTitle className="text-white text-base"><Wrench size={16} className="inline mr-1.5" /> Priority Fixes</CardTitle>
               {completedCount > 0 && (
                 <span className="text-xs text-indigo-400 font-medium">{completedCount} / {fixes.length} done ✓</span>
               )}

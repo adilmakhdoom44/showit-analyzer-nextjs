@@ -12,6 +12,7 @@ import type { AnalysisResult } from '@/types/analyzer';
 import BulkAnalyzer from '@/components/analyzer/BulkAnalyzer';
 import ScanDiff from '@/components/analyzer/ScanDiff';
 import { exportToExcel } from '@/lib/excel-export';
+import { Rocket, Target, MapPin, History, BarChart2, Share2, ExternalLink, TrendingUp, Download, Compass, RefreshCw } from 'lucide-react';
 
 export default function ToolsTab({ result }: { result: AnalysisResult }) {
   const [competitor, setCompetitor] = useState('');
@@ -75,7 +76,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       {quickWins.length > 0 && (
         <Card className="glass border-0">
           <CardHeader>
-            <CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🚀 Quick Wins</CardTitle>
+            <CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><Rocket size={16} className="inline mr-1.5" /> Quick Wins</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>Highest-impact actions ranked by effort - do these first.</p>
@@ -115,7 +116,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🎯 SERP Position Estimator</CardTitle>
+            <CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><Target size={16} className="inline mr-1.5" /> SERP Position Estimator</CardTitle>
             <div className="text-right">
               <div className="text-2xl font-black" style={{ color: positionColor }}>{totalScore}/100</div>
               <div className="text-xs " style={{ color: 'var(--text-secondary)' }}>{position}</div>
@@ -151,7 +152,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Google Business Profile Checker */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>📍 Google Business Profile</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><MapPin size={16} className="inline mr-1.5" /> Google Business Profile</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             {[
@@ -198,7 +199,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       {/* Score History */}
       {history.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>📅 Score History</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><History size={16} className="inline mr-1.5" /> Score History</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
               {history.map((h, i) => (
@@ -250,7 +251,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Current Score Summary */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>📊 Current Score Summary</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><BarChart2 size={16} className="inline mr-1.5" /> Current Score Summary</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mb-4">
             {[
@@ -277,7 +278,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Share Report */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🔗 Share This Report</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><Share2 size={16} className="inline mr-1.5" /> Share This Report</CardTitle></CardHeader>
         <CardContent>
           <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Share your analysis with your designer or client.</p>
           <div className="flex gap-2">
@@ -306,7 +307,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Backlink Tools */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🔗 Backlink Research Tools</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><ExternalLink size={16} className="inline mr-1.5" /> Backlink Research Tools</CardTitle></CardHeader>
         <CardContent>
           <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Check your backlink profile using these free tools:</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
@@ -339,7 +340,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Competitor Comparison */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>⚔️ Competitor Comparison</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><TrendingUp size={16} className="inline mr-1.5" /> Competitor Comparison</CardTitle></CardHeader>
         <CardContent>
           <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Analyze a competitor and compare scores side by side.</p>
           <form onSubmit={runCompetitor} className="flex gap-2">
@@ -381,7 +382,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Excel Export */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>📊 Export Report</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><Download size={16} className="inline mr-1.5" /> Export Report</CardTitle></CardHeader>
         <CardContent className="space-y-3">
           <p className="text-sm " style={{ color: 'var(--text-secondary)' }}>Download a full professional report with 5 sheets - Summary, SEO, Speed, Issues, and Score History.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -411,7 +412,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Free SEO Tools Directory */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🔧 Free SEO Tools Directory</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><Compass size={16} className="inline mr-1.5" /> Free SEO Tools Directory</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3">
             {freeTools.map(tool => (
@@ -431,7 +432,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Re-analyze */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🔄 Re-Analyze</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><RefreshCw size={16} className="inline mr-1.5" /> Re-Analyze</CardTitle></CardHeader>
         <CardContent>
           <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Run a fresh scan after making changes to see your improvement.</p>
           <Button onClick={() => analyze(result.url)} className="w-full"

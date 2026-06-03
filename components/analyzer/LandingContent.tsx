@@ -3,54 +3,55 @@
 import Link from 'next/link';
 import { useAnalyzer } from '@/lib/analyzer-context';
 import DemoMockup from '@/components/analyzer/DemoMockup';
+import { Camera, Video, Heart, Palette, Briefcase, BookOpen, Search, Zap, Bot, Link2, Wrench, Settings2, BarChart2 } from 'lucide-react';
 
 const WHO_ITS_FOR = [
-  { emoji: '📷', title: 'Photographers', desc: 'Wedding, portrait, commercial, boudoir, newborn - if your site is on Showit, this was built for you.' },
-  { emoji: '🎥', title: 'Videographers', desc: 'Film and video pros who need their Showit portfolio to rank on Google and load fast on every device.' },
-  { emoji: '💍', title: 'Wedding Professionals', desc: 'Planners, florists, DJs, officiants - anyone in the wedding industry running a Showit site.' },
-  { emoji: '🎨', title: 'Designers & Artists', desc: 'Brand designers, illustrators, and creative studios who use Showit to showcase their work.' },
-  { emoji: '💼', title: 'Coaches & Consultants', desc: 'Business coaches, life coaches, and strategists who need their Showit site to convert visitors.' },
-  { emoji: '✍️', title: 'Bloggers & Educators', desc: 'Content creators using Showit + WordPress blog who want their posts to rank and get found.' },
+  { icon: Camera, title: 'Photographers', desc: 'Wedding, portrait, commercial, boudoir, newborn - if your site is on Showit, this was built for you.' },
+  { icon: Video, title: 'Videographers', desc: 'Film and video pros who need their Showit portfolio to rank on Google and load fast on every device.' },
+  { icon: Heart, title: 'Wedding Professionals', desc: 'Planners, florists, DJs, officiants - anyone in the wedding industry running a Showit site.' },
+  { icon: Palette, title: 'Designers & Artists', desc: 'Brand designers, illustrators, and creative studios who use Showit to showcase their work.' },
+  { icon: Briefcase, title: 'Coaches & Consultants', desc: 'Business coaches, life coaches, and strategists who need their Showit site to convert visitors.' },
+  { icon: BookOpen, title: 'Bloggers & Educators', desc: 'Content creators using Showit + WordPress blog who want their posts to rank and get found.' },
 ];
 
 const WHAT_WE_CHECK = [
   {
-    icon: '🔍',
+    icon: Search,
     label: 'SEO Analysis',
     items: ['Page title & meta description', 'H1–H4 heading structure', 'Keyword density & distribution', 'Open Graph & Twitter Card tags', 'Canonical URL', 'Robots meta directives'],
     color: 'rgba(99,102,241,0.08)',
     border: 'rgba(99,102,241,0.2)',
   },
   {
-    icon: '⚡',
+    icon: Zap,
     label: 'Speed & Core Web Vitals',
     items: ['Largest Contentful Paint (LCP)', 'Cumulative Layout Shift (CLS)', 'Total Blocking Time (TBT)', 'First Contentful Paint (FCP)', 'Image optimization score', 'Font loading performance'],
     color: 'rgba(245,158,11,0.08)',
     border: 'rgba(245,158,11,0.2)',
   },
   {
-    icon: '🤖',
+    icon: Bot,
     label: 'AI Visibility',
     items: ['AEO (Answer Engine) score', 'Citation readiness for ChatGPT', 'AI crawlability check', 'Structured data detection', 'E-E-A-T signal audit', 'Featured snippet readiness'],
     color: 'rgba(16,185,129,0.08)',
     border: 'rgba(16,185,129,0.2)',
   },
   {
-    icon: '🔗',
+    icon: Link2,
     label: 'Link Audit',
     items: ['Broken link detection', 'Empty anchor tags', 'Internal vs external links', 'Missing link text', 'Contact link check', 'Navigation structure'],
     color: 'rgba(239,68,68,0.08)',
     border: 'rgba(239,68,68,0.2)',
   },
   {
-    icon: '🛠️',
+    icon: Wrench,
     label: 'Technical Audit',
     items: ['Schema / structured data', 'Analytics setup (GA4, GTM)', 'HTTPS & security', 'Booking tool detection', 'Contact form check', 'Business page essentials'],
     color: 'rgba(6,182,212,0.08)',
     border: 'rgba(6,182,212,0.2)',
   },
   {
-    icon: '🔧',
+    icon: Settings2,
     label: 'Bonus Tools',
     items: ['SERP position estimator', 'Competitor comparison', 'Local SEO score', 'Bulk URL analyzer', 'Score history tracker', 'CSV / Excel export'],
     color: 'rgba(168,85,247,0.08)',
@@ -162,7 +163,7 @@ export default function LandingContent() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {WHO_ITS_FOR.map(w => (
               <div key={w.title} className="glass rounded-xl p-5" style={{ border: '1px solid var(--border-card)' }}>
-                <div className="text-2xl mb-3">{w.emoji}</div>
+                <div className="mb-3" style={{ color: 'var(--text-primary)' }}><w.icon size={22} /></div>
                 <h3 className="font-semibold text-sm mb-1.5" style={{ color: 'var(--text-primary)' }}>{w.title}</h3>
                 <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>{w.desc}</p>
               </div>
@@ -217,7 +218,7 @@ export default function LandingContent() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {WHAT_WE_CHECK.map(c => (
               <div key={c.label} className="rounded-xl p-5" style={{ background: c.color, border: `1px solid ${c.border}` }}>
-                <div className="text-xl mb-3">{c.icon}</div>
+                <div className="mb-3" style={{ color: 'var(--text-primary)' }}><c.icon size={22} /></div>
                 <h3 className="font-semibold text-sm mb-3" style={{ color: 'var(--text-primary)' }}>{c.label}</h3>
                 <ul className="space-y-1.5">
                   {c.items.map(item => (
@@ -329,15 +330,15 @@ export default function LandingContent() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {[
-              { icon: '📊', title: 'Overview & grade', desc: 'An overall site health grade (A–F) based on performance, SEO, accessibility, and best practices. Pinpoints your biggest wins and your biggest problems.' },
-              { icon: '🔍', title: 'SEO deep-dive', desc: 'Title tag, meta description, headings, keywords, Open Graph, canonical URL, indexed pages - with exact Showit settings to fix each issue.' },
-              { icon: '⚡', title: 'Speed breakdown', desc: 'Mobile and desktop scores with drill-down into exactly which images, fonts, or scripts are hurting your load time.' },
-              { icon: '🤖', title: 'AI Visibility score', desc: 'How ready your site is to be cited in AI-generated answers. Checks AEO signals, structured data, E-E-A-T, and AI crawlability.' },
-              { icon: '🔗', title: 'Full link audit', desc: 'Every link on your page - broken ones, empty ones, internal vs external - sorted so you can fix the most important ones first.' },
-              { icon: '🔧', title: 'Bonus tools', desc: 'SERP position estimator, competitor comparison side-by-side, local SEO score, score history over time, and CSV export.' },
+              { icon: BarChart2, title: 'Overview & grade', desc: 'An overall site health grade (A–F) based on performance, SEO, accessibility, and best practices. Pinpoints your biggest wins and your biggest problems.' },
+              { icon: Search, title: 'SEO deep-dive', desc: 'Title tag, meta description, headings, keywords, Open Graph, canonical URL, indexed pages - with exact Showit settings to fix each issue.' },
+              { icon: Zap, title: 'Speed breakdown', desc: 'Mobile and desktop scores with drill-down into exactly which images, fonts, or scripts are hurting your load time.' },
+              { icon: Bot, title: 'AI Visibility score', desc: 'How ready your site is to be cited in AI-generated answers. Checks AEO signals, structured data, E-E-A-T, and AI crawlability.' },
+              { icon: Link2, title: 'Full link audit', desc: 'Every link on your page - broken ones, empty ones, internal vs external - sorted so you can fix the most important ones first.' },
+              { icon: Settings2, title: 'Bonus tools', desc: 'SERP position estimator, competitor comparison side-by-side, local SEO score, score history over time, and CSV export.' },
             ].map(item => (
               <div key={item.title} className="flex gap-4 p-4 glass rounded-xl" style={{ border: '1px solid var(--border-card)' }}>
-                <div className="text-2xl flex-shrink-0">{item.icon}</div>
+                <div className="flex-shrink-0" style={{ color: 'var(--text-primary)' }}><item.icon size={22} /></div>
                 <div>
                   <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-primary)' }}>{item.title}</h3>
                   <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>{item.desc}</p>

@@ -12,15 +12,16 @@ import TechnicalTab from './tabs/TechnicalTab';
 import ToolsTab from './tabs/ToolsTab';
 import AIVisibilityTab from './tabs/AIVisibilityTab';
 import { getGrade, countIssues } from '@/lib/scoring';
+import { LayoutDashboard, Search, Zap, Link2, Wrench, Bot, Settings2 } from 'lucide-react';
 
 const TABS = [
-  { id: 'overview', label: '📋 Overview' },
-  { id: 'seo', label: '🔍 SEO' },
-  { id: 'speed', label: '⚡ Speed' },
-  { id: 'links', label: '🔗 Links' },
-  { id: 'technical', label: '🛠️ Technical' },
-  { id: 'ai', label: '🤖 AI Visibility' },
-  { id: 'tools', label: '🔧 Tools' },
+  { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+  { id: 'seo', label: 'SEO', icon: Search },
+  { id: 'speed', label: 'Speed', icon: Zap },
+  { id: 'links', label: 'Links', icon: Link2 },
+  { id: 'technical', label: 'Technical', icon: Wrench },
+  { id: 'ai', label: 'AI Visibility', icon: Bot },
+  { id: 'tools', label: 'Tools', icon: Settings2 },
 ];
 
 export default function ResultsDashboard({ result }: { result: AnalysisResult }) {
@@ -71,8 +72,9 @@ export default function ResultsDashboard({ result }: { result: AnalysisResult })
                 <TabsTrigger
                   key={t.id}
                   value={t.id}
-                  className="flex-1 md:w-full md:justify-start rounded-xl text-xs md:text-sm font-medium transition-all px-3 py-2.5 text-left data-[state=active]:text-white data-[state=active]:shadow-none"
+                  className="flex-1 md:w-full md:justify-start rounded-xl text-xs md:text-sm font-medium transition-all px-3 py-2.5 text-left data-[state=active]:text-white data-[state=active]:shadow-none flex items-center gap-2"
                   style={{ color: '#64748b' }}>
+                  <t.icon size={14} />
                   {t.label}
                 </TabsTrigger>
               ))}
