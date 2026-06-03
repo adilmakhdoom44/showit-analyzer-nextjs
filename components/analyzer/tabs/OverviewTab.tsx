@@ -142,7 +142,42 @@ function StatPill({ label, value, ok }: { label: string; value: string | number;
   );
 }
 
-export default function OverviewTab({ result }: { result: AnalysisResult }) {
+const AUDIT_TAB_MAP: Record<string, string> = {
+  // Speed
+  'speed-index': 'speed', 'interactive': 'speed', 'total-blocking-time': 'speed',
+  'first-contentful-paint': 'speed', 'largest-contentful-paint': 'speed',
+  'cumulative-layout-shift': 'speed', 'render-blocking-resources': 'speed',
+  'unused-javascript': 'speed', 'unused-css-rules': 'speed',
+  'uses-optimized-images': 'speed', 'uses-webp-images': 'speed',
+  'uses-long-cache-ttl': 'speed', 'server-response-time': 'speed',
+  'mainthread-work-breakdown': 'speed', 'bootup-time': 'speed',
+  'font-display': 'speed', 'critical-request-chains': 'speed',
+  'network-requests': 'speed', 'network-rtt': 'speed',
+  'network-server-latency': 'speed', 'uses-rel-preload': 'speed',
+  'uses-rel-preconnect': 'speed', 'efficient-animated-content': 'speed',
+  'uses-text-compression': 'speed', 'uses-responsive-images': 'speed',
+  'offscreen-images': 'speed', 'lcp-lazy-loaded': 'speed',
+  // SEO
+  'meta-description': 'seo', 'document-title': 'seo', 'viewport': 'seo',
+  'canonical': 'seo', 'robots-txt': 'seo', 'hreflang': 'seo',
+  'link-text': 'seo', 'is-crawlable': 'seo', 'structured-data': 'seo',
+  'plugins': 'seo', 'image-alt': 'seo', 'crawlable-anchors': 'seo',
+  // Technical / Accessibility
+  'color-contrast': 'technical', 'tap-targets': 'technical',
+  'heading-order': 'technical', 'duplicate-id-active': 'technical',
+  'label': 'technical', 'bypass': 'technical', 'tabindex': 'technical',
+  'accesskeys': 'technical', 'valid-lang': 'technical',
+  'html-has-lang': 'technical', 'html-lang-valid': 'technical',
+  'frame-title': 'technical',
+  // Links
+  'links-crawlable': 'links',
+};
+
+function auditTab(id: string): string {
+  return AUDIT_TAB_MAP[id] ?? 'technical';
+}
+
+export default function OverviewTab({ result, onNavigateToTab }: { result: AnalysisResult; onNavigateToTab?: (tab: string) => void }) {
   const { mobile, desktop, url, pageData } = result;
   const audits = mobile.lighthouseResult?.audits ?? mobile.audits ?? {};
   const categories = mobile.lighthouseResult?.categories ?? mobile.categories;
@@ -585,14 +620,27 @@ export default function OverviewTab({ result }: { result: AnalysisResult }) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {failedAuditIds.slice(0, 12).map((id, i) => {
                 const audit = audits[id];
+                const tab = auditTab(id);
+                const clickable = !!onNavigateToTab;
                 return (
-                  <div key={i} className="flex items-center gap-2 p-2 rounded-lg text-xs"
-                    style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.08)' }}>
+                  <div key={i}
+                    className="flex items-center gap-2 p-2 rounded-lg text-xs transition-all"
+                    style={{
+                      background: 'rgba(239,68,68,0.06)',
+                      border: '1px solid rgba(239,68,68,0.08)',
+                      cursor: clickable ? 'pointer' : 'default',
+                    }}
+                    onClick={() => onNavigateToTab?.(tab)}
+                    onMouseEnter={e => { if (clickable) { (e.currentTarget as HTMLElement).style.background = 'rgba(239,68,68,0.14)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(239,68,68,0.3)'; }}}
+                    onMouseLeave={e => { if (clickable) { (e.currentTarget as HTMLElement).style.background = 'rgba(239,68,68,0.06)'; (e.currentTarget as HTMLElement).style.borderColor = 'rgba(239,68,68,0.08)'; }}}
+                    title={clickable ? `View in ${tab} tab →` : undefined}
+                  >
                     <span className="text-red-400 flex-shrink-0">✗</span>
                     <span className="text-slate-400 truncate">{audit?.title ?? id}</span>
                     {audit?.score !== null && audit?.score !== undefined && (
                       <span className="text-red-400 font-bold ml-auto flex-shrink-0">{Math.round((audit.score) * 100)}</span>
                     )}
+                    {clickable && <span className="text-slate-600 flex-shrink-0 ml-1">→</span>}
                   </div>
                 );
               })}

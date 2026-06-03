@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { motion } from 'motion/react';
 import type { AnalysisResult } from '@/types/analyzer';
@@ -23,6 +24,7 @@ const TABS = [
 ];
 
 export default function ResultsDashboard({ result }: { result: AnalysisResult }) {
+  const [activeTab, setActiveTab] = useState('overview');
   const audits = result.mobile.lighthouseResult?.audits ?? result.mobile.audits ?? {};
   const categories = result.mobile.lighthouseResult?.categories ?? result.mobile.categories;
   const issueCount = countIssues(audits);
@@ -58,7 +60,7 @@ export default function ResultsDashboard({ result }: { result: AnalysisResult })
       </div>
 
       {/* Vertical tab layout */}
-      <Tabs defaultValue="overview">
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="flex flex-col md:flex-row gap-4">
           {/* Left sidebar */}
           <div className="nav-sidebar flex-shrink-0 md:w-48 md:self-start md:sticky md:top-16">
@@ -82,7 +84,7 @@ export default function ResultsDashboard({ result }: { result: AnalysisResult })
             {['overview','seo','speed','links','technical','ai','tools'].map((tab) => (
               <TabsContent key={tab} value={tab} className="mt-0">
                 <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-                  {tab === 'overview' && <OverviewTab result={result} />}
+                  {tab === 'overview' && <OverviewTab result={result} onNavigateToTab={setActiveTab} />}
                   {tab === 'seo' && <SEOTab result={result} />}
                   {tab === 'speed' && <SpeedTab result={result} />}
                   {tab === 'links' && <LinksTab result={result} />}
