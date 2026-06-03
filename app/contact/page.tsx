@@ -221,7 +221,7 @@ export default function ContactPage() {
                 {/* Topic */}
                 <div style={{ marginBottom: '20px' }}>
                   <label style={labelStyle}>Topic <span style={{ color: '#ef4444' }}>*</span></label>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px' }}>
                     {TYPES.map(t => (
                       <button key={t.value} type="button" onClick={() => set('type', t.value)}
                         style={{
@@ -239,7 +239,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* Name + Email */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', marginBottom: '12px' }}>
                   <div>
                     <label style={labelStyle}>Full Name <span style={{ color: '#ef4444' }}>*</span></label>
                     <input required value={form.name} onChange={e => set('name', e.target.value)} placeholder="Jane Smith" style={inputStyle} />

@@ -381,7 +381,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><Compass size={16} className="inline mr-1.5" /> Free SEO Tools Directory</CardTitle></CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {freeTools.map(tool => (
               <a key={tool.name} href={tool.href} target="_blank" rel="noopener noreferrer"
                 className="flex items-start gap-3 p-3 rounded-xl transition-all hover:bg-white/5"

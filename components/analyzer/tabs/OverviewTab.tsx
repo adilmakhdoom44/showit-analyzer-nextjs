@@ -451,7 +451,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                     {/* Sub-scores */}
                     {(h.perf !== undefined || h.seo !== undefined) && (
                       <div className="mt-3 pt-3 border-t border-white/5">
-                        <div className="grid grid-cols-4 gap-3">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
                           {[
                             { label: 'Perf', val: h.perf },
                             { label: 'SEO', val: h.seo },

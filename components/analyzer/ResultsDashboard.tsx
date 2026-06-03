@@ -63,18 +63,18 @@ export default function ResultsDashboard({ result }: { result: AnalysisResult })
       {/* Vertical tab layout */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <div className="flex flex-col md:flex-row gap-4">
-          {/* Left sidebar */}
+          {/* Tab nav — horizontal scroll on mobile, vertical sidebar on desktop */}
           <div className="nav-sidebar flex-shrink-0 md:w-48 md:self-start md:sticky md:top-16">
             <TabsList
-              className="flex md:flex-col w-full gap-1 p-2 rounded-2xl"
-              style={{ background: '#0d1630', border: '1px solid rgba(99,102,241,0.2)', height: 'auto' }}>
+              className="flex md:flex-col w-full gap-1 p-2 rounded-2xl overflow-x-auto md:overflow-x-visible"
+              style={{ background: '#0d1630', border: '1px solid rgba(99,102,241,0.2)', height: 'auto', scrollbarWidth: 'none' }}>
               {TABS.map(t => (
                 <TabsTrigger
                   key={t.id}
                   value={t.id}
-                  className="flex-1 md:w-full md:justify-start rounded-xl text-xs md:text-sm font-medium transition-all px-3 py-2.5 text-left data-[state=active]:text-white data-[state=active]:shadow-none flex items-center gap-2"
+                  className="flex-shrink-0 md:flex-1 md:w-full md:justify-start rounded-xl text-xs md:text-sm font-medium transition-all px-3 py-2.5 data-[state=active]:text-white data-[state=active]:shadow-none flex items-center gap-1.5 whitespace-nowrap"
                   style={{ color: '#64748b' }}>
-                  <t.icon size={14} />
+                  <t.icon size={13} />
                   {t.label}
                 </TabsTrigger>
               ))}
