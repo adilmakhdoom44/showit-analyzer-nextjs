@@ -75,31 +75,33 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       {quickWins.length > 0 && (
         <Card className="glass border-0">
           <CardHeader>
-            <CardTitle className="text-white text-base">🚀 Quick Wins</CardTitle>
+            <CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🚀 Quick Wins</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-xs text-slate-400 mb-3">Highest-impact actions ranked by effort - do these first.</p>
+            <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>Highest-impact actions ranked by effort - do these first.</p>
             <ol className="space-y-2">
               {quickWins.map((w, i) => (
                 <li key={i} className="flex items-center gap-3 p-3 rounded-xl"
-                  style={{ background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.15)' }}>
+                  style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}>
                   <span className="w-6 h-6 rounded-full text-xs flex items-center justify-center font-bold flex-shrink-0"
-                    style={{ background: 'rgba(99,102,241,0.25)', color: '#a5b4fc' }}>{i + 1}</span>
+                    style={{ background: 'rgba(99,102,241,0.2)', color: '#6366f1' }}>{i + 1}</span>
                   <div className="flex-1">
                     {w.link ? (
-                      <a href={w.link} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-200 hover:text-white transition-colors">
+                      <a href={w.link} target="_blank" rel="noopener noreferrer"
+                        className="text-sm transition-colors"
+                        style={{ color: 'var(--text-primary)', textDecoration: 'none' }}>
                         {w.label} ↗
                       </a>
                     ) : (
-                      <span className="text-sm text-slate-200">{w.label}</span>
+                      <span className="text-sm" style={{ color: 'var(--text-primary)' }}>{w.label}</span>
                     )}
                   </div>
                   <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0"
-                    style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: '1px solid rgba(245,158,11,0.2)' }}>
+                    style={{ background: 'rgba(245,158,11,0.15)', color: '#d97706', border: '1px solid rgba(245,158,11,0.25)' }}>
                     ⏱ {w.time}
                   </span>
-                  <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0"
-                    style={{ background: 'rgba(16,185,129,0.12)', color: '#10b981', border: '1px solid rgba(16,185,129,0.2)' }}>
+                  <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0 font-medium"
+                    style={{ background: 'rgba(16,185,129,0.12)', color: '#059669', border: '1px solid rgba(16,185,129,0.25)' }}>
                     {w.impact}
                   </span>
                 </li>
@@ -113,10 +115,10 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between flex-wrap gap-2">
-            <CardTitle className="text-white text-base">🎯 SERP Position Estimator</CardTitle>
+            <CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🎯 SERP Position Estimator</CardTitle>
             <div className="text-right">
               <div className="text-2xl font-black" style={{ color: positionColor }}>{totalScore}/100</div>
-              <div className="text-xs text-slate-400">{position}</div>
+              <div className="text-xs " style={{ color: 'var(--text-secondary)' }}>{position}</div>
             </div>
           </div>
         </CardHeader>
@@ -136,7 +138,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
                 <span className="flex-shrink-0 mt-0.5">{f.passed ? '✅' : '❌'}</span>
                 <div className="flex-1">
                   <span className={f.passed ? 'text-slate-300' : 'text-slate-400'}>{f.label}</span>
-                  {!f.passed && <div className="text-xs text-slate-500 mt-0.5">💡 {f.tip}</div>}
+                  {!f.passed && <div className="text-xs  mt-0.5" style={{ color: 'var(--text-secondary)' }}>💡 {f.tip}</div>}
                 </div>
                 <span className="text-xs font-bold flex-shrink-0" style={{ color: f.passed ? '#10b981' : '#64748b' }}>
                   +{f.pts} pts
@@ -149,7 +151,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Google Business Profile Checker */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">📍 Google Business Profile</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>📍 Google Business Profile</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             {[
@@ -161,7 +163,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
                 className="flex flex-col items-center gap-2 p-4 rounded-xl text-center transition-all hover:bg-white/5"
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <span className="text-2xl">{link.icon}</span>
-                <span className="text-xs text-slate-300">{link.label}</span>
+                <span className="text-xs " style={{ color: 'var(--text-primary)' }}>{link.label}</span>
               </a>
             ))}
           </div>
@@ -173,7 +175,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
               { step: '4', label: 'Collect Google reviews from clients', done: false },
               { step: '5', label: 'Post updates weekly to stay active', done: false },
             ].map((s, i) => (
-              <div key={i} className="flex items-center gap-3 text-sm text-slate-400 p-2">
+              <div key={i} className="flex items-center gap-3 text-sm  p-2" style={{ color: 'var(--text-secondary)' }}>
                 <span className="w-6 h-6 rounded-full text-xs flex items-center justify-center font-bold flex-shrink-0"
                   style={{ background: 'rgba(99,102,241,0.2)', color: '#a5b4fc' }}>{s.step}</span>
                 {s.label}
@@ -183,11 +185,11 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
           <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
             <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(99,102,241,0.08)' }}>
               <div className="text-indigo-400 font-bold text-lg">+42%</div>
-              <div className="text-slate-500">more direction requests with photos</div>
+              <div className="" style={{ color: 'var(--text-secondary)' }}>more direction requests with photos</div>
             </div>
             <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(99,102,241,0.08)' }}>
               <div className="text-indigo-400 font-bold text-lg">#1</div>
-              <div className="text-slate-500">local ranking factor: Google reviews</div>
+              <div className="" style={{ color: 'var(--text-secondary)' }}>local ranking factor: Google reviews</div>
             </div>
           </div>
         </CardContent>
@@ -196,14 +198,14 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       {/* Score History */}
       {history.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle className="text-white text-base">📅 Score History</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>📅 Score History</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
               {history.map((h, i) => (
                 <div key={i} className="flex items-center gap-3 p-3 rounded-xl"
                   style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
                   <div className="flex-1">
-                    <div className="text-xs text-slate-400">{h.date} at {h.time}</div>
+                    <div className="text-xs " style={{ color: 'var(--text-secondary)' }}>{h.date} at {h.time}</div>
                     <div className="flex gap-1 mt-1 flex-wrap">
                       {h.perf !== undefined && (
                         <span className="text-xs px-1.5 py-0.5 rounded"
@@ -238,7 +240,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
                   }}>
                     Grade {h.grade} - {h.score}/100
                   </Badge>
-                  {i === 0 && <span className="text-xs text-slate-600">latest</span>}
+                  {i === 0 && <span className="text-xs " style={{ color: 'var(--text-muted)' }}>latest</span>}
                 </div>
               ))}
             </div>
@@ -248,7 +250,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Current Score Summary */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">📊 Current Score Summary</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>📊 Current Score Summary</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mb-4">
             {[
@@ -262,12 +264,12 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
                 <div className="text-3xl font-black" style={{ color: s.value >= 90 ? '#10b981' : s.value >= 50 ? '#f59e0b' : '#ef4444' }}>
                   {s.value}
                 </div>
-                <div className="text-xs text-slate-500 mt-1">{s.label}</div>
+                <div className="text-xs  mt-1" style={{ color: 'var(--text-secondary)' }}>{s.label}</div>
               </div>
             ))}
           </div>
-          <div className="p-3 rounded-xl text-xs text-slate-500 text-center"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
+          <div className="p-3 rounded-xl text-xs text-center"
+            style={{ color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
             {result.url}
           </div>
         </CardContent>
@@ -275,9 +277,9 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Share Report */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">🔗 Share This Report</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🔗 Share This Report</CardTitle></CardHeader>
         <CardContent>
-          <p className="text-sm text-slate-400 mb-4">Share your analysis with your designer or client.</p>
+          <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Share your analysis with your designer or client.</p>
           <div className="flex gap-2">
             <Input value={shareUrl} readOnly className="text-xs"
               style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }} />
@@ -304,9 +306,9 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Backlink Tools */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">🔗 Backlink Research Tools</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🔗 Backlink Research Tools</CardTitle></CardHeader>
         <CardContent>
-          <p className="text-sm text-slate-400 mb-4">Check your backlink profile using these free tools:</p>
+          <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Check your backlink profile using these free tools:</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
             {[
               { name: 'Ahrefs Free', desc: 'Free backlink checker', href: `https://ahrefs.com/backlink-checker?input=${encodeURIComponent(result.url)}`, icon: '📊' },
@@ -318,14 +320,14 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <span className="text-2xl">{tool.icon}</span>
                 <span className="text-xs font-medium text-white">{tool.name}</span>
-                <span className="text-xs text-slate-500">{tool.desc}</span>
+                <span className="text-xs " style={{ color: 'var(--text-secondary)' }}>{tool.desc}</span>
               </a>
             ))}
           </div>
-          <div className="p-3 rounded-lg text-xs text-slate-400"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div className="font-medium text-slate-300 mb-2">💡 Quick backlink wins for photographers &amp; creatives:</div>
-            <ul className="space-y-1 text-slate-500">
+          <div className="p-3 rounded-lg text-xs"
+            style={{ color: 'var(--text-secondary)', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="font-medium  mb-2" style={{ color: 'var(--text-primary)' }}>💡 Quick backlink wins for photographers &amp; creatives:</div>
+            <ul className="space-y-1 " style={{ color: 'var(--text-secondary)' }}>
               <li>• Get listed in local business directories (Yelp, Google, Bing)</li>
               <li>• Ask past clients to link from their website to yours</li>
               <li>• Submit to photography community sites and vendor lists</li>
@@ -337,9 +339,9 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Competitor Comparison */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">⚔️ Competitor Comparison</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>⚔️ Competitor Comparison</CardTitle></CardHeader>
         <CardContent>
-          <p className="text-sm text-slate-400 mb-4">Analyze a competitor and compare scores side by side.</p>
+          <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Analyze a competitor and compare scores side by side.</p>
           <form onSubmit={runCompetitor} className="flex gap-2">
             <Input value={competitor} onChange={e => setCompetitor(e.target.value)}
               placeholder="https://competitor.com"
@@ -362,8 +364,8 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
               { label: 'PageSpeed Insights', href: `https://pagespeed.web.dev/?url=${encodeURIComponent(competitor || result.url)}` },
             ].map(t => (
               <a key={t.label} href={t.href} target="_blank" rel="noopener noreferrer"
-                className="text-xs p-2 rounded-lg text-center text-slate-400 hover:text-white transition-colors"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                className="text-xs p-2 rounded-lg text-center transition-colors"
+                style={{ color: 'var(--text-secondary)', background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}>
                 {t.label} ↗
               </a>
             ))}
@@ -379,9 +381,9 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Excel Export */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">📊 Export Report</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>📊 Export Report</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-sm text-slate-400">Download a full professional report with 5 sheets - Summary, SEO, Speed, Issues, and Score History.</p>
+          <p className="text-sm " style={{ color: 'var(--text-secondary)' }}>Download a full professional report with 5 sheets - Summary, SEO, Speed, Issues, and Score History.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Button
               onClick={async () => {
@@ -399,7 +401,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
           </div>
           <div className="grid grid-cols-3 gap-2 text-xs text-center">
             {['Summary sheet', 'SEO Details', 'Speed & CWV', 'All Issues', 'Score History', 'Color-coded cells'].map(f => (
-              <div key={f} className="p-2 rounded-lg text-slate-500" style={{ background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.1)' }}>
+              <div key={f} className="p-2 rounded-lg" style={{ color: 'var(--text-secondary)', background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.1)' }}>
                 ✓ {f}
               </div>
             ))}
@@ -409,7 +411,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Free SEO Tools Directory */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">🔧 Free SEO Tools Directory</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🔧 Free SEO Tools Directory</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-3">
             {freeTools.map(tool => (
@@ -429,9 +431,9 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
 
       {/* Re-analyze */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle className="text-white text-base">🔄 Re-Analyze</CardTitle></CardHeader>
+        <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}>🔄 Re-Analyze</CardTitle></CardHeader>
         <CardContent>
-          <p className="text-sm text-slate-400 mb-4">Run a fresh scan after making changes to see your improvement.</p>
+          <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Run a fresh scan after making changes to see your improvement.</p>
           <Button onClick={() => analyze(result.url)} className="w-full"
             style={{ background: 'linear-gradient(135deg,#6366f1,#06b6d4)', color: 'white' }}>
             Re-Analyze {domain}
