@@ -1,22 +1,34 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Showit Site Analyzer — Built Specifically for Showit Creators',
+  title: 'About Showit Site Analyzer — Free SEO Tool Built for Showit Creators',
   description:
-    'Learn how Showit Site Analyzer gives photographers, coaches, and creative entrepreneurs the SEO fixes generic tools can\'t — with Showit-native instructions for every recommendation.',
+    'Learn how Showit Site Analyzer works. Built for Showit photographers, coaches, and designers who need real SEO fixes — not generic WordPress advice. Free, no signup, results in 30 seconds.',
   alternates: { canonical: 'https://showitanalyzer.com/about' },
+  keywords: [
+    'about Showit Site Analyzer',
+    'Showit SEO tool',
+    'how to improve Showit SEO',
+    'Showit website audit tool',
+    'free Showit SEO checker',
+    'Showit photographer SEO',
+    'Showit Core Web Vitals',
+    'AI visibility for Showit',
+  ],
+  robots: { index: true, follow: true },
   openGraph: {
     title: 'About Showit Site Analyzer — Built for Showit, Not WordPress',
     description:
       'Generic SEO tools give Showit creators the wrong instructions. Showit Site Analyzer was built specifically for how Showit works — so every fix is one you can actually implement.',
     url: 'https://showitanalyzer.com/about',
     type: 'website',
+    siteName: 'Showit Site Analyzer',
     images: [
       {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'About Showit Site Analyzer',
+        alt: 'About Showit Site Analyzer — Free SEO Tool for Showit Creators',
       },
     ],
   },

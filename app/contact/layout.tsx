@@ -1,22 +1,32 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact — Get Help or Book a Free Showit Strategy Call',
+  title: 'Contact — Showit Site Analyzer | Get Help With Your Showit SEO',
   description:
-    'Have a question about your Showit SEO, found a bug, or want a free 30-minute strategy session? Reach out to the Showit Site Analyzer team.',
+    'Get help with your Showit SEO analysis, report a bug, request a feature, or book a free 30-minute strategy call with a Showit expert. We reply within 24 hours.',
   alternates: { canonical: 'https://showitanalyzer.com/contact' },
+  keywords: [
+    'contact Showit Site Analyzer',
+    'Showit SEO help',
+    'Showit expert strategy call',
+    'Showit website help',
+    'Showit SEO consultation free',
+    'Showit photographer SEO help',
+  ],
+  robots: { index: true, follow: true },
   openGraph: {
     title: 'Contact Showit Site Analyzer — Questions & Free Strategy Calls',
     description:
       'Get help with your Showit website SEO, report a bug, or book a free 30-minute strategy call with a Showit expert.',
     url: 'https://showitanalyzer.com/contact',
     type: 'website',
+    siteName: 'Showit Site Analyzer',
     images: [
       {
         url: '/opengraph-image',
         width: 1200,
         height: 630,
-        alt: 'Contact Showit Site Analyzer',
+        alt: 'Contact Showit Site Analyzer — Get Showit SEO Help',
       },
     ],
   },

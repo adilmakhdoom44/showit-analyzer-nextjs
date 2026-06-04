@@ -242,21 +242,6 @@ export default function AboutPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-body)' }}>
 
-      {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'WebPage',
-            name: 'About Showit Site Analyzer',
-            url: 'https://showitanalyzer.com/about',
-            description: 'Free SEO, speed, and AI visibility analyzer built specifically for Showit website creators.',
-            isPartOf: { '@type': 'WebSite', url: 'https://showitanalyzer.com', name: 'Showit Site Analyzer' },
-          }),
-        }}
-      />
-
       <SiteHeader />
 
       <main>

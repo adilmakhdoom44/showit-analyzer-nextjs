@@ -3,7 +3,7 @@ export default function HomeSchema() {
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': ['Organization', 'LocalBusiness'],
+        '@type': 'Organization',
         '@id': 'https://showitanalyzer.com/#organization',
         name: 'Showit Site Analyzer',
         url: 'https://showitanalyzer.com',
@@ -78,6 +78,52 @@ export default function HomeSchema() {
           'PDF export of fix checklist',
         ],
         screenshot: 'https://showitanalyzer.com/opengraph-image',
+      },
+      {
+        '@type': 'HowTo',
+        '@id': 'https://showitanalyzer.com/#howto',
+        name: 'How to Analyze Your Showit Website for SEO',
+        description:
+          'Use Showit Site Analyzer to get a free SEO, speed, and AI visibility report for your Showit website in under 30 seconds.',
+        totalTime: 'PT1M',
+        tool: [{ '@type': 'HowToTool', name: 'Showit Site Analyzer' }],
+        step: [
+          {
+            '@type': 'HowToStep',
+            position: 1,
+            name: 'Enter your Showit website URL',
+            text: 'Go to showitanalyzer.com and paste your Showit website URL into the analyzer input field.',
+            url: 'https://showitanalyzer.com',
+          },
+          {
+            '@type': 'HowToStep',
+            position: 2,
+            name: 'Click Analyze',
+            text: 'Click the Analyze button. The tool calls the Google PageSpeed Insights API and fetches your page HTML simultaneously.',
+            url: 'https://showitanalyzer.com',
+          },
+          {
+            '@type': 'HowToStep',
+            position: 3,
+            name: 'Review your results across 6 tabs',
+            text: 'In about 30 seconds, your full report appears across 6 tabs: Overview, SEO, Speed, Links, Technical, and AI Visibility.',
+            url: 'https://showitanalyzer.com',
+          },
+          {
+            '@type': 'HowToStep',
+            position: 4,
+            name: 'Fix issues using Showit-specific instructions',
+            text: 'Each issue includes instructions for the exact Showit panel you need to open — Page Settings, Site Settings, or the canvas editor.',
+            url: 'https://showitanalyzer.com',
+          },
+          {
+            '@type': 'HowToStep',
+            position: 5,
+            name: 'Export your fix checklist as PDF',
+            text: 'Click the Print Report button to export a prioritized PDF checklist of all issues ranked by impact.',
+            url: 'https://showitanalyzer.com/report',
+          },
+        ],
       },
       {
         '@type': 'FAQPage',
