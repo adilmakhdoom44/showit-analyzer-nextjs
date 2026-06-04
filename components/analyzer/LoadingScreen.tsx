@@ -3,14 +3,15 @@
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { motion } from 'motion/react';
+import { Rocket, Zap, FileCode, Search, ScanLine, BarChart2 } from 'lucide-react';
 
 const STEPS = [
-  { label: 'Starting analysis', icon: '🚀' },
-  { label: 'Running speed tests', icon: '⚡' },
-  { label: 'Fetching page source', icon: '📄' },
-  { label: 'Analyzing headings & SEO', icon: '🔍' },
-  { label: 'Scanning images & links', icon: '🖼️' },
-  { label: 'Building your report', icon: '📊' },
+  { label: 'Starting analysis',       Icon: Rocket },
+  { label: 'Running speed tests',     Icon: Zap },
+  { label: 'Fetching page source',    Icon: FileCode },
+  { label: 'Analyzing headings & SEO',Icon: Search },
+  { label: 'Scanning images & links', Icon: ScanLine },
+  { label: 'Building your report',    Icon: BarChart2 },
 ];
 
 function ResultSkeleton() {
@@ -69,8 +70,8 @@ export default function LoadingScreen({ step }: { step: number }) {
             <div className="absolute inset-0 rounded-full border-t-2 border-indigo-400 animate-spin" />
             <div className="absolute inset-2 rounded-full border-t-2 border-cyan-400 animate-spin"
               style={{ animationDuration: '1.5s', animationDirection: 'reverse' }} />
-            <div className="absolute inset-0 flex items-center justify-center text-2xl">
-              {STEPS[Math.max(0, step - 1)]?.icon}
+            <div className="absolute inset-0 flex items-center justify-center">
+              {(() => { const S = STEPS[Math.max(0, step - 1)]?.Icon; return S ? <S size={20} color="#a5b4fc" /> : null; })()}
             </div>
           </div>
 

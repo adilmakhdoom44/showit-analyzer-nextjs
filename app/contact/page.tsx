@@ -3,14 +3,15 @@
 import { useState } from 'react';
 import SiteHeader from '@/components/layout/SiteHeader';
 import SiteFooter from '@/components/layout/SiteFooter';
+import { Bug, Lightbulb, HelpCircle, Phone, Search, Zap, Image, MapPin, Bot, FileText, Link2, BarChart2, CheckCircle } from 'lucide-react';
 
 const CALENDLY_URL = 'https://calendly.com/adil-makhdoom44/30min';
 
 const TYPES = [
-  { value: 'bug',      label: '🐛 Bug Report' },
-  { value: 'feature',  label: '💡 Feature Request' },
-  { value: 'general',  label: '❓ General Question' },
-  { value: 'strategy', label: '📞 Strategy Call' },
+  { value: 'bug',      label: 'Bug Report',       Icon: Bug },
+  { value: 'feature',  label: 'Feature Request',  Icon: Lightbulb },
+  { value: 'general',  label: 'General Question', Icon: HelpCircle },
+  { value: 'strategy', label: 'Strategy Call',    Icon: Phone },
 ];
 
 export default function ContactPage() {
@@ -110,7 +111,7 @@ export default function ContactPage() {
                 style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
                 onClick={() => { set('type', 'bug'); document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' }); }}
               >
-                <div className="text-2xl mb-3">🐛</div>
+                <div className="mb-3"><Bug size={24} style={{ color: '#ef4444' }} /></div>
                 <h2 className="font-semibold text-base mb-2" style={{ color: 'var(--text-primary)' }}>Report a Bug</h2>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
                   Found something broken? Tell us what URL you were analyzing and what went wrong. We fix bugs quickly.
@@ -124,7 +125,7 @@ export default function ContactPage() {
                 style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
                 onClick={() => { set('type', 'feature'); document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' }); }}
               >
-                <div className="text-2xl mb-3">💡</div>
+                <div className="mb-3"><Lightbulb size={24} style={{ color: '#f59e0b' }} /></div>
                 <h2 className="font-semibold text-base mb-2" style={{ color: 'var(--text-primary)' }}>Feature Request</h2>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
                   Have an idea to make this tool better for Showit creators? We read every suggestion and build the most-requested features first.
@@ -138,7 +139,7 @@ export default function ContactPage() {
                 style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
                 onClick={() => { set('type', 'general'); document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' }); }}
               >
-                <div className="text-2xl mb-3">❓</div>
+                <div className="mb-3"><HelpCircle size={24} style={{ color: '#6366f1' }} /></div>
                 <h2 className="font-semibold text-base mb-2" style={{ color: 'var(--text-primary)' }}>General Question</h2>
                 <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>
                   Something unclear about your results or how to fix an issue in Showit? Send us a message and we will explain it in plain English.
@@ -158,17 +159,17 @@ export default function ContactPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
-                { icon: '🔍', text: 'Understanding your SEO score and which issues to fix first' },
-                { icon: '⚡', text: 'Improving page speed and Core Web Vitals on Showit' },
-                { icon: '📸', text: 'Optimizing portfolio images for faster loading and Google Images' },
-                { icon: '🗺️', text: 'Setting up schema markup (LocalBusiness, FAQ) in Showit' },
-                { icon: '🤖', text: 'Getting your site ready for AI Overviews and AI search citations' },
-                { icon: '📝', text: 'Writing and structuring blog posts on the Showit + WordPress platform' },
-                { icon: '🔗', text: 'Fixing broken links and improving internal linking structure' },
-                { icon: '📊', text: 'Setting up Google Analytics 4 and Search Console on Showit' },
+                { Icon: Search,    text: 'Understanding your SEO score and which issues to fix first' },
+                { Icon: Zap,       text: 'Improving page speed and Core Web Vitals on Showit' },
+                { Icon: Image,     text: 'Optimizing portfolio images for faster loading and Google Images' },
+                { Icon: MapPin,    text: 'Setting up schema markup (LocalBusiness, FAQ) in Showit' },
+                { Icon: Bot,       text: 'Getting your site ready for AI Overviews and AI search citations' },
+                { Icon: FileText,  text: 'Writing and structuring blog posts on the Showit + WordPress platform' },
+                { Icon: Link2,     text: 'Fixing broken links and improving internal linking structure' },
+                { Icon: BarChart2, text: 'Setting up Google Analytics 4 and Search Console on Showit' },
               ].map(item => (
                 <div key={item.text} className="flex gap-3 items-start">
-                  <span className="text-lg flex-shrink-0 mt-0.5">{item.icon}</span>
+                  <item.Icon size={16} className="flex-shrink-0 mt-0.5" style={{ color: '#6366f1' }} />
                   <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{item.text}</p>
                 </div>
               ))}
@@ -195,7 +196,7 @@ export default function ContactPage() {
                 background: 'rgba(22,163,74,0.07)', border: '1px solid rgba(22,163,74,0.25)',
                 borderRadius: '16px', padding: '48px 32px', textAlign: 'center',
               }}>
-                <div style={{ fontSize: '48px', marginBottom: '16px' }}>✅</div>
+                <div style={{ marginBottom: '16px', display: 'flex', justifyContent: 'center' }}><CheckCircle size={48} style={{ color: '#16a34a' }} /></div>
                 <h3 style={{ fontFamily: 'var(--font-serif), Georgia, serif', fontSize: '1.4rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '10px' }}>
                   Message sent!
                 </h3>
@@ -228,10 +229,12 @@ export default function ContactPage() {
                           padding: '10px 14px', borderRadius: '10px', textAlign: 'left',
                           fontFamily: 'inherit', fontSize: '13px', fontWeight: 600,
                           cursor: 'pointer', transition: 'all 0.12s',
+                          display: 'flex', alignItems: 'center', gap: '8px',
                           border: form.type === t.value ? '2px solid #6366f1' : '1.5px solid var(--border-card)',
                           background: form.type === t.value ? 'rgba(99,102,241,0.08)' : 'var(--input-bg)',
                           color: form.type === t.value ? '#6366f1' : 'var(--text-primary)',
                         }}>
+                        <t.Icon size={14} />
                         {t.label}
                       </button>
                     ))}

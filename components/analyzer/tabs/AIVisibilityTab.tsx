@@ -2,17 +2,24 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import type { AnalysisResult } from '@/types/analyzer';
+import { CheckCircle2, XCircle, Info, Bot } from 'lucide-react';
 
 function SignalRow({ label, ok, tip }: { label: string; ok: boolean; tip?: string }) {
   return (
     <div className="py-2.5 border-b border-white/5 last:border-0">
       <div className="flex items-center gap-2">
-        <span className="text-base">{ok ? '✅' : '❌'}</span>
+        {ok
+          ? <CheckCircle2 size={16} style={{ color: '#10b981', flexShrink: 0 }} />
+          : <XCircle size={16} style={{ color: '#ef4444', flexShrink: 0 }} />
+        }
         <span className="text-sm flex-1" style={{ color: 'var(--text-primary)' }}>{label}</span>
         <span className="text-xs font-medium" style={{ color: ok ? '#10b981' : '#ef4444' }}>{ok ? 'Pass' : 'Fail'}</span>
       </div>
       {!ok && tip && (
-        <div className="mt-1 ml-6 text-xs text-indigo-300">💡 {tip}</div>
+        <div className="mt-1 ml-6 flex items-start gap-1.5">
+          <Info size={11} style={{ color: '#818cf8', flexShrink: 0, marginTop: 1 }} />
+          <span className="text-xs text-indigo-300">{tip}</span>
+        </div>
       )}
     </div>
   );
@@ -74,7 +81,7 @@ export default function AIVisibilityTab({ result }: { result: AnalysisResult }) 
         <CardHeader>
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
-              <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🤖 AI Visibility Score</CardTitle>
+              <CardTitle style={{ color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' }} className="text-base"><Bot size={16} style={{ color: '#8b5cf6' }} /> AI Visibility Score</CardTitle>
               <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>How likely AI tools (ChatGPT, Perplexity, Google AI Overview) are to cite or reference your site</p>
             </div>
             <div className="text-4xl font-black" style={{ color: scoreColor(overallAI) }}>{overallAI}%</div>

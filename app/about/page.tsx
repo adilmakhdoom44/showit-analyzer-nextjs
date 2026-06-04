@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import SiteHeader from '@/components/layout/SiteHeader';
 import SiteFooter from '@/components/layout/SiteFooter';
-import { Search, Zap, Bot, Link2, Wrench, Settings2, CheckCircle2, Clock } from 'lucide-react';
+import { Search, Zap, Bot, Link2, Wrench, Settings2, CheckCircle2, Clock, Target, FileText, User, Printer } from 'lucide-react';
 
 const STATS = [
   { value: '40+', label: 'Checks per audit' },
@@ -14,12 +14,12 @@ const STATS = [
 ];
 
 const WHAT_WE_CHECK = [
-  { icon: '🔍', title: 'SEO Deep Dive', desc: 'Title tags, meta descriptions, H1-H4 structure, keyword density, Open Graph, canonical URLs - every signal Google uses to rank your Showit site.' },
-  { icon: '⚡', title: 'Core Web Vitals', desc: 'LCP, CLS, TBT, FCP - the exact performance metrics Google measures. We tell you what is slow and which Showit panel to fix it in.' },
-  { icon: '🤖', title: 'AI Visibility', desc: 'Is ChatGPT, Perplexity, or Google AI Overview citing your competitors? We score how ready your site is to appear in AI-generated answers.' },
-  { icon: '🔗', title: 'Link Health', desc: 'Broken links, empty anchors, placeholder hrefs - Showit sites are notorious for these. We catch every one.' },
-  { icon: '🛠️', title: 'Technical Audit', desc: 'Schema markup, analytics setup, robots/sitemap, HTTPS, booking tools, and over 15 more technical checks specific to Showit.' },
-  { icon: '🔧', title: 'Action Plan', desc: 'Not just a score dump. Quick wins ranked by effort, a SERP position estimator, and a printable fix checklist.' },
+  { Icon: Search,   title: 'SEO Deep Dive',    desc: 'Title tags, meta descriptions, H1-H4 structure, keyword density, Open Graph, canonical URLs - every signal Google uses to rank your Showit site.' },
+  { Icon: Zap,      title: 'Core Web Vitals',  desc: 'LCP, CLS, TBT, FCP - the exact performance metrics Google measures. We tell you what is slow and which Showit panel to fix it in.' },
+  { Icon: Bot,      title: 'AI Visibility',    desc: 'Is ChatGPT, Perplexity, or Google AI Overview citing your competitors? We score how ready your site is to appear in AI-generated answers.' },
+  { Icon: Link2,    title: 'Link Health',      desc: 'Broken links, empty anchors, placeholder hrefs - Showit sites are notorious for these. We catch every one.' },
+  { Icon: Wrench,   title: 'Technical Audit',  desc: 'Schema markup, analytics setup, robots/sitemap, HTTPS, booking tools, and over 15 more technical checks specific to Showit.' },
+  { Icon: Settings2,title: 'Action Plan',      desc: 'Not just a score dump. Quick wins ranked by effort, a SERP position estimator, and a printable fix checklist.' },
 ];
 
 const SHOWIT_PROBLEMS = [
@@ -224,7 +224,7 @@ function AnalysisEngine() {
                   </div>
                   <div className="mt-5 pt-4" style={{ borderTop: '1px solid var(--divider)' }}>
                     <div className="text-xs" style={{ color: 'var(--text-faint)' }}>
-                      💡 Click any engine on the left to explore what it checks
+                      Click any engine on the left to explore what it checks
                     </div>
                   </div>
                 </>
@@ -400,7 +400,7 @@ export default function AboutPage() {
                   className="flex-1 p-6 rounded-2xl"
                   style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
                 >
-                  <div className="text-3xl mb-3">🎯</div>
+                  <div className="mb-3"><Target size={28} style={{ color: '#6366f1' }} /></div>
                   <h3 className="font-bold text-base mb-2" style={{ color: 'var(--text-primary)' }}>Showit-specific fixes only</h3>
                   <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                     Every recommendation links to the exact Showit panel — Page Settings, Site Settings, canvas editor — not generic developer advice.
@@ -410,7 +410,7 @@ export default function AboutPage() {
                   className="flex-1 p-6 rounded-2xl"
                   style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}
                 >
-                  <div className="text-3xl mb-3">⚡</div>
+                  <div className="mb-3"><Zap size={28} style={{ color: '#f59e0b' }} /></div>
                   <h3 className="font-bold text-base mb-2" style={{ color: 'var(--text-primary)' }}>Results in 30 seconds</h3>
                   <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                     Powered by Google PageSpeed Insights API. Real data, real scores, not simulated estimates.
@@ -423,7 +423,7 @@ export default function AboutPage() {
                 className="md:col-span-4 p-6 rounded-2xl"
                 style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--divider)' }}
               >
-                <div className="text-3xl mb-3">🤖</div>
+                <div className="mb-3"><Bot size={28} style={{ color: '#8b5cf6' }} /></div>
                 <h3 className="font-bold text-base mb-2" style={{ color: 'var(--text-primary)' }}>AI search ready</h3>
                 <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                   We score your site against the exact signals ChatGPT, Perplexity, and Google AI Overview use to decide who gets cited.
@@ -433,7 +433,7 @@ export default function AboutPage() {
                 className="md:col-span-4 p-6 rounded-2xl"
                 style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--divider)' }}
               >
-                <div className="text-3xl mb-3">📋</div>
+                <div className="mb-3"><Printer size={28} style={{ color: '#06b6d4' }} /></div>
                 <h3 className="font-bold text-base mb-2" style={{ color: 'var(--text-primary)' }}>Print &amp; fix checklist</h3>
                 <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                   Export a prioritized PDF fix list. Check off items as you complete them. Track your score improving over time.
@@ -443,7 +443,7 @@ export default function AboutPage() {
                 className="md:col-span-4 p-6 rounded-2xl"
                 style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--divider)' }}
               >
-                <div className="text-3xl mb-3">👤</div>
+                <div className="mb-3"><User size={28} style={{ color: '#10b981' }} /></div>
                 <h3 className="font-bold text-base mb-2" style={{ color: 'var(--text-primary)' }}>Expert help available</h3>
                 <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
                   Need hands-on help? Book a free 30-minute strategy call with someone who builds on Showit daily.
@@ -460,7 +460,7 @@ export default function AboutPage() {
 
             {/* Platform pills */}
             <div className="flex flex-wrap justify-center gap-3 mb-12">
-              {['📷 Photographers', '🎥 Videographers', '💍 Wedding Pros', '🎨 Designers', '💼 Coaches', '✍️ Bloggers'].map(label => (
+              {['Photographers', 'Videographers', 'Wedding Pros', 'Designers', 'Coaches', 'Bloggers'].map(label => (
                 <span
                   key={label}
                   className="px-4 py-2 rounded-full text-sm font-medium"
