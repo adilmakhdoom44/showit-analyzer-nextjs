@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useCallback, useEffect } fr
 import type { AnalysisResult } from '@/types/analyzer';
 import { saveUrlHistory, saveScoreHistory } from '@/lib/storage';
 import { getGrade, countIssues } from '@/lib/scoring';
+import { checkAndRecord, getChecksRemaining, getResetMs } from '@/lib/rateLimit';
 
 interface AnalyzerState {
   result: AnalysisResult | null;
@@ -12,6 +13,8 @@ interface AnalyzerState {
   error: string | null;
   analyze: (url: string) => Promise<void>;
   reset: () => void;
+  getChecksLeft: (url: string) => number;
+  getResetTime: (url: string) => number;
 }
 
 const AnalyzerContext = createContext<AnalyzerState | null>(null);
@@ -32,7 +35,17 @@ export function AnalyzerProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, []);
 
+  const getChecksLeft = useCallback((url: string) => getChecksRemaining(url), []);
+  const getResetTime  = useCallback((url: string) => getResetMs(url), []);
+
   const analyze = useCallback(async (url: string) => {
+    // Enforce rate limit before hitting the API
+    const allowed = checkAndRecord(url);
+    if (!allowed) {
+      setError(`RATE_LIMITED:${url}`);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setResult(null);
@@ -91,7 +104,7 @@ export function AnalyzerProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AnalyzerContext.Provider value={{ result, loading, loadingStep, error, analyze, reset }}>
+    <AnalyzerContext.Provider value={{ result, loading, loadingStep, error, analyze, reset, getChecksLeft, getResetTime }}>
       {children}
     </AnalyzerContext.Provider>
   );

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAnalyzer } from '@/lib/analyzer-context';
 import { getUrlHistory } from '@/lib/storage';
+import { getChecksRemaining, getResetMs, formatCountdown, MAX_CHECKS } from '@/lib/rateLimit';
 
 interface Vec2 { x: number; y: number; }
 
@@ -40,6 +41,9 @@ export default function HeroSection() {
   const [url, setUrl] = useState('');
   const [history, setHistory] = useState<string[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [checksLeft, setChecksLeft] = useState<number>(MAX_CHECKS);
+  const [resetMs, setResetMs] = useState<number>(0);
+  const [countdown, setCountdown] = useState<string>('');
   const { analyze } = useAnalyzer();
   const inputRef = useRef<HTMLInputElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
@@ -50,6 +54,25 @@ export default function HeroSection() {
   const cardD = useFleeCard(160, 90);
 
   useEffect(() => { setHistory(getUrlHistory()); }, []);
+
+  // Update checks remaining whenever URL changes
+  useEffect(() => {
+    if (!url.trim()) { setChecksLeft(MAX_CHECKS); setResetMs(0); return; }
+    setChecksLeft(getChecksRemaining(url.trim()));
+    setResetMs(getResetMs(url.trim()));
+  }, [url]);
+
+  // Live countdown ticker
+  useEffect(() => {
+    if (resetMs <= 0) { setCountdown(''); return; }
+    setCountdown(formatCountdown(resetMs));
+    const interval = setInterval(() => {
+      const remaining = getResetMs(url.trim());
+      if (remaining <= 0) { setResetMs(0); setChecksLeft(MAX_CHECKS); clearInterval(interval); return; }
+      setCountdown(formatCountdown(remaining));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [resetMs, url]);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     cardA.onMouseMove(e.clientX, e.clientY);
@@ -63,6 +86,7 @@ export default function HeroSection() {
     if (url.trim()) analyze(url.trim());
   };
 
+  const isBlocked = checksLeft === 0;
   const filtered = history.filter(u => u.toLowerCase().includes(url.toLowerCase()));
 
   return (
@@ -325,7 +349,7 @@ export default function HeroSection() {
             margin: '0 auto 40px',
           }}
         >
-          Paste your URL and get a Showit-specific breakdown of every SEO, speed, and AI visibility issue — with exact fixes, in 30 seconds.
+          Paste your URL and get a Showit-specific breakdown of every SEO, speed, and AI visibility issue with exact fixes, in 30 seconds.
         </p>
 
         {/* Category pills */}
@@ -354,16 +378,20 @@ export default function HeroSection() {
               onFocus={() => setShowHistory(true)}
               onBlur={() => setTimeout(() => setShowHistory(false), 200)}
               placeholder="https://yoursite.com"
+              disabled={isBlocked}
               style={{
                 width: '100%', height: '54px', padding: '0 20px',
-                borderRadius: '14px', border: '1.5px solid var(--input-border)',
-                background: 'var(--input-bg)', color: 'var(--text-primary)',
+                borderRadius: '14px',
+                border: `1.5px solid ${isBlocked ? 'rgba(239,68,68,0.4)' : 'var(--input-border)'}`,
+                background: isBlocked ? 'rgba(239,68,68,0.04)' : 'var(--input-bg)',
+                color: 'var(--text-primary)',
                 fontSize: '0.95rem', fontFamily: 'inherit', outline: 'none',
                 boxSizing: 'border-box', boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                 transition: 'border-color 0.15s, box-shadow 0.15s',
+                opacity: isBlocked ? 0.6 : 1,
               }}
             />
-            {showHistory && filtered.length > 0 && (
+            {showHistory && filtered.length > 0 && !isBlocked && (
               <div style={{
                 position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4,
                 background: 'var(--bg-card)', border: '1px solid var(--border-card)',
@@ -384,24 +412,73 @@ export default function HeroSection() {
           </div>
           <button
             type="submit"
+            disabled={isBlocked}
             className="analyze-btn"
             style={{
               height: '54px', padding: '0 28px', borderRadius: '14px',
-              background: 'var(--btn-primary-bg)', color: 'var(--btn-primary-text)',
-              border: '1px solid var(--btn-primary-border)',
+              background: isBlocked ? 'rgba(239,68,68,0.15)' : 'var(--btn-primary-bg)',
+              color: isBlocked ? '#ef4444' : 'var(--btn-primary-text)',
+              border: isBlocked ? '1px solid rgba(239,68,68,0.3)' : '1px solid var(--btn-primary-border)',
               fontSize: '14px', fontWeight: 700, fontFamily: 'inherit',
-              letterSpacing: '0.01em', cursor: 'pointer', whiteSpace: 'nowrap',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.18)',
+              letterSpacing: '0.01em',
+              cursor: isBlocked ? 'not-allowed' : 'pointer',
+              whiteSpace: 'nowrap',
+              boxShadow: isBlocked ? 'none' : '0 4px 16px rgba(0,0,0,0.18)',
+              opacity: isBlocked ? 0.8 : 1,
             }}
           >
-            Analyze my site →
+            {isBlocked ? `Locked` : 'Analyze my site →'}
           </button>
         </form>
 
-        {/* Trust note */}
-        <p className="h-fade-6" style={{ marginTop: 24, fontSize: '12px', color: 'var(--text-faint)', position: 'relative', zIndex: 1 }}>
-          Made for Showit creators by someone who builds on Showit.
-        </p>
+        {/* Rate limit indicator */}
+        <div className="h-fade-6" style={{ marginTop: 16, display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 8, position: 'relative', zIndex: 1 }}>
+          {isBlocked ? (
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8,
+              padding: '8px 16px', borderRadius: 99,
+              background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)',
+            }}>
+              <svg width="13" height="13" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="7" stroke="#ef4444" strokeWidth="1.5"/>
+                <path d="M8 5v4M8 11v.5" stroke="#ef4444" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+              <span style={{ fontSize: '12px', color: '#ef4444', fontWeight: 600 }}>
+                Daily limit reached{countdown ? ` · Resets in ${countdown}` : ''}
+              </span>
+            </div>
+          ) : url.trim() ? (
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '6px 14px', borderRadius: 99,
+              background: checksLeft <= 1 ? 'rgba(249,115,22,0.08)' : 'rgba(99,102,241,0.08)',
+              border: `1px solid ${checksLeft <= 1 ? 'rgba(249,115,22,0.2)' : 'rgba(99,102,241,0.2)'}`,
+            }}>
+              {/* Dots */}
+              <div style={{ display: 'flex', gap: 3 }}>
+                {Array.from({ length: MAX_CHECKS }).map((_, i) => (
+                  <div key={i} style={{
+                    width: 6, height: 6, borderRadius: '50%',
+                    background: i < checksLeft
+                      ? (checksLeft <= 1 ? '#f97316' : '#6366f1')
+                      : 'var(--border-card)',
+                    transition: 'background 0.2s',
+                  }} />
+                ))}
+              </div>
+              <span style={{
+                fontSize: '12px', fontWeight: 600,
+                color: checksLeft <= 1 ? '#f97316' : 'var(--text-secondary)',
+              }}>
+                {checksLeft} of {MAX_CHECKS} checks remaining today
+              </span>
+            </div>
+          ) : (
+            <p style={{ fontSize: '12px', color: 'var(--text-faint)' }}>
+              Made for Showit creators · 5 free checks per URL per day
+            </p>
+          )}
+        </div>
       </div>
     </section>
   );
