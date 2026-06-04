@@ -33,12 +33,15 @@ export function getGrade(categories: PSIResult['categories'], issueCount: number
     categories['best-practices']?.score ?? 0,
   ];
   const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
-  const adjusted = avg - issueCount * 0.02;
+  // Small penalty per issue: capped at 0.10 max so issues never override real scores
+  const penalty = Math.min(issueCount * 0.003, 0.10);
+  const adjusted = avg - penalty;
 
-  if (adjusted >= 0.9) return { grade: 'A', color: '#10b981' };
-  if (adjusted >= 0.75) return { grade: 'B', color: '#34d399' };
-  if (adjusted >= 0.6) return { grade: 'C', color: '#f59e0b' };
-  if (adjusted >= 0.45) return { grade: 'D', color: '#f97316' };
+  if (adjusted >= 0.90) return { grade: 'A+', color: '#10b981' };
+  if (adjusted >= 0.80) return { grade: 'A',  color: '#10b981' };
+  if (adjusted >= 0.70) return { grade: 'B',  color: '#34d399' };
+  if (adjusted >= 0.60) return { grade: 'C',  color: '#f59e0b' };
+  if (adjusted >= 0.50) return { grade: 'D',  color: '#f97316' };
   return { grade: 'F', color: '#ef4444' };
 }
 
