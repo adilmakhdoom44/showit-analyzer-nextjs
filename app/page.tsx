@@ -47,31 +47,31 @@ export default function HomePage() {
             onClick={reset}
             className="flex items-center gap-2 flex-shrink-0 no-underline bg-transparent border-none cursor-pointer hover:opacity-80 transition-opacity p-0"
           >
-            {/* Combined wordmark: [S icon] + "howit Analyzer" */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 0 }}>
+            {/* Logo: S icon + Showit Analyzer */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <div style={{
-                width: 26, height: 26, borderRadius: 7, flexShrink: 0,
+                width: 28, height: 28, borderRadius: 8, flexShrink: 0,
                 background: 'linear-gradient(145deg, #0f0f0f 0%, #1a1a2e 100%)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                position: 'relative', overflow: 'hidden', marginRight: 1,
+                position: 'relative', overflow: 'hidden',
               }}>
                 <div style={{
-                  position: 'absolute', top: -3, left: -3, width: 16, height: 16,
+                  position: 'absolute', top: -3, left: -3, width: 18, height: 18,
                   borderRadius: '50%',
                   background: 'radial-gradient(circle, rgba(99,102,241,0.6) 0%, transparent 70%)',
                 }} />
                 <span style={{
-                  fontSize: 15, fontWeight: 900, color: 'white', lineHeight: 1,
+                  fontSize: 16, fontWeight: 900, color: 'white', lineHeight: 1,
                   fontFamily: 'serif', letterSpacing: '-1px', position: 'relative', zIndex: 2,
                   textShadow: '0 0 10px rgba(139,92,246,0.9)',
                 }}>S</span>
                 <div style={{
-                  position: 'absolute', bottom: 3, right: 3, width: 4, height: 4,
+                  position: 'absolute', bottom: 4, right: 4, width: 4, height: 4,
                   borderRadius: '50%', background: 'linear-gradient(135deg, #a78bfa, #6366f1)',
                 }} />
               </div>
               <span className="font-semibold text-sm" style={{ color: 'var(--text-primary)', letterSpacing: '-0.02em', fontFamily: 'var(--font-serif), Georgia, serif' }}>
-                howit Analyzer
+                Showit Analyzer
               </span>
             </div>
           </button>
