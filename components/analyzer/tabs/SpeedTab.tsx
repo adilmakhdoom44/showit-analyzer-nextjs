@@ -6,6 +6,10 @@ import { Badge } from '@/components/ui/badge';
 import { sClass, sColor, vitalsThresholds } from '@/lib/scoring';
 import { detectFonts, detectThirdPartyScripts } from '@/lib/analysis-helpers';
 import type { AnalysisResult } from '@/types/analyzer';
+import {
+  Zap, Smartphone, Monitor, BarChart2, Target, AlertTriangle, Image, Type, Package,
+  ClipboardList, Info, BarChart2 as BarChart2Alt
+} from 'lucide-react';
 
 const VITALS = [
   { id: 'first-contentful-paint', label: 'First Contentful Paint', abbr: 'FCP', unit: 's', div: 1000, goodMs: 1800, poorMs: 3000 },
@@ -154,18 +158,37 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
     ],
   };
 
+  // Recommended tools data with icons
+  const recommendedTools = [
+    { name: 'Google Analytics 4', Icon: BarChart2Alt, desc: 'Track visitors, traffic sources, and conversions. The most important free analytics tool.', link: 'https://analytics.google.com', detected: scripts.some(s => s.name?.toLowerCase().includes('analytics') || s.name?.toLowerCase().includes('ga4') || s.name?.toLowerCase().includes('gtag')) },
+    { name: 'Google Tag Manager', Icon: Package, desc: 'Manage all tracking scripts in one place without editing code. Works with Showit via custom code.', link: 'https://tagmanager.google.com', detected: scripts.some(s => s.name?.toLowerCase().includes('tag manager') || s.name?.toLowerCase().includes('gtm')) },
+    { name: 'Meta Pixel (Facebook)', Icon: Smartphone, desc: 'Track conversions and create retargeting audiences for Facebook and Instagram ads.', link: 'https://business.facebook.com/events_manager', detected: scripts.some(s => s.name?.toLowerCase().includes('meta') || s.name?.toLowerCase().includes('facebook') || s.name?.toLowerCase().includes('pixel')) },
+    { name: 'Hotjar', Icon: Target, desc: 'Free heatmaps and session recordings - see exactly how visitors use your site.', link: 'https://hotjar.com', detected: scripts.some(s => s.name?.toLowerCase().includes('hotjar')) },
+    { name: 'Pinterest Tag', Icon: Image, desc: 'Essential if you market on Pinterest. Tracks conversions from Pinterest traffic.', link: 'https://analytics.pinterest.com', detected: scripts.some(s => s.name?.toLowerCase().includes('pinterest')) },
+    { name: 'TikTok Pixel', Icon: Zap, desc: 'Track conversions and build retargeting audiences from TikTok ads.', link: 'https://ads.tiktok.com', detected: scripts.some(s => s.name?.toLowerCase().includes('tiktok')) },
+  ];
+
   return (
     <div className="space-y-6">
 
       {/* Performance score */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">⚡ Performance Score</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <Zap size={16} style={{ color: '#f59e0b' }} /> Performance Score
+          </CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 gap-6 mb-4">
-            {[{ label: '📱 Mobile', score: mobPerf }, { label: '🖥️ Desktop', score: dskPerf }].map(({ label, score }) => (
+            {[
+              { label: 'Mobile', Icon: Smartphone, score: mobPerf },
+              { label: 'Desktop', Icon: Monitor, score: dskPerf },
+            ].map(({ label, Icon, score }) => (
               <div key={label} className="text-center">
                 <div className="text-5xl font-black mb-2" style={{ color: sColor(score / 100) }}>{score}</div>
-                <div className="text-sm" style={{ color: 'var(--text-secondary)' }}>{label}</div>
+                <div className="text-sm flex items-center justify-center gap-1" style={{ color: 'var(--text-secondary)' }}>
+                  <Icon size={14} style={{ color: '#6366f1' }} /> {label}
+                </div>
                 <div className="mt-2 h-2 rounded-full overflow-hidden" style={{ background: 'var(--bg-card)' }}>
                   <div className="h-full rounded-full transition-all" style={{ width: `${score}%`, background: sColor(score / 100) }} />
                 </div>
@@ -190,15 +213,19 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
 
       {/* Core Web Vitals */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📊 Core Web Vitals</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <BarChart2 size={16} style={{ color: '#6366f1' }} /> Core Web Vitals
+          </CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="overflow-x-auto mb-4">
             <table className="w-full text-sm">
               <thead>
                 <tr className="text-xs uppercase" style={{ color: 'var(--text-muted)' }}>
                   <th className="text-left pb-3">Metric</th>
-                  <th className="text-center pb-3">📱 Mobile</th>
-                  <th className="text-center pb-3">🖥️ Desktop</th>
+                  <th className="text-center pb-3 flex items-center justify-center gap-1"><Smartphone size={12} style={{ color: '#6366f1' }} /> Mobile</th>
+                  <th className="text-center pb-3">Desktop</th>
                   <th className="text-center pb-3">Status</th>
                 </tr>
               </thead>
@@ -276,7 +303,11 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
       {/* LCP Element */}
       {lcpElement && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🎯 LCP Element (Largest Contentful Paint)</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Target size={16} style={{ color: '#6366f1' }} /> LCP Element (Largest Contentful Paint)
+            </CardTitle>
+          </CardHeader>
           <CardContent>
             <p className="text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>This element triggers your LCP - it must load fast as it&apos;s what Google measures for perceived speed.</p>
             <div className="p-3 rounded-lg font-mono text-xs text-indigo-300 overflow-x-auto mb-3"
@@ -300,13 +331,17 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
       {/* Render-blocking resources */}
       {renderBlockingAudits.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🚧 Render-Blocking Resources</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <AlertTriangle size={16} style={{ color: '#f97316' }} /> Render-Blocking Resources
+            </CardTitle>
+          </CardHeader>
           <CardContent className="space-y-3">
             {renderBlockingAudits.map(a => (
               <div key={a.id} className="p-3 rounded-xl"
                 style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)' }}>
                 <div className="flex items-start gap-3 mb-2">
-                  <span className="text-red-400 mt-0.5">🚧</span>
+                  <AlertTriangle size={16} color="#f97316" className="mt-0.5 flex-shrink-0" />
                   <div>
                     <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{a.title}</div>
                     {a.displayValue && <div className="text-xs text-red-400 mt-0.5">{a.displayValue}</div>}
@@ -341,13 +376,17 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
       {/* Image optimization */}
       {imageAudits.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🖼️ Image Optimization Opportunities</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Image size={16} style={{ color: '#6366f1' }} /> Image Optimization Opportunities
+            </CardTitle>
+          </CardHeader>
           <CardContent className="space-y-3">
             {imageAudits.map(a => (
               <div key={a.id} className="p-3 rounded-xl"
                 style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
                 <div className="flex items-start gap-3 mb-2">
-                  <span className="text-amber-400 mt-0.5">⚠️</span>
+                  <AlertTriangle size={16} color="#f59e0b" className="mt-0.5 flex-shrink-0" />
                   <div>
                     <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{a.title}</div>
                     {a.displayValue && <div className="text-xs text-amber-400 mt-0.5">Potential saving: {a.displayValue}</div>}
@@ -368,13 +407,17 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
 
       {/* Font Detector */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🔤 Font Detection</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <Type size={16} style={{ color: '#6366f1' }} /> Font Detection
+          </CardTitle>
+        </CardHeader>
         <CardContent className="space-y-2">
           {fonts.map((f, i) => (
             <div key={i} className="p-3 rounded-xl"
               style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
               <div className="flex items-center gap-3 mb-1">
-                <span className="text-lg">🔤</span>
+                <Type size={18} style={{ color: '#6366f1' }} />
                 <div className="flex-1 flex items-center gap-2">
                   <span className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{f.name}</span>
                   <Badge variant="outline" className="text-xs">{f.type}</Badge>
@@ -382,7 +425,7 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
               </div>
               {f.warning && (
                 <div className="ml-9 text-xs text-amber-400 flex items-start gap-1">
-                  <span>⚠️</span>
+                  <AlertTriangle size={11} color="#f59e0b" className="flex-shrink-0 mt-0.5" />
                   <div>
                     <div>{f.warning}</div>
                     {f.name === 'Google Fonts' && (
@@ -403,7 +446,9 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
           {fonts.some(f => f.type === 'CDN') && (
             <div className="p-3 rounded-lg text-xs"
               style={{ background: 'var(--bg-sidebar)', border: '1px dashed var(--border-card)' }}>
-              <div className="font-medium mb-1" style={{ color: 'var(--text-primary)' }}>💡 How to self-host fonts for best speed:</div>
+              <div className="font-medium mb-1 flex items-start gap-1" style={{ color: 'var(--text-primary)' }}>
+                <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" /> How to self-host fonts for best speed:
+              </div>
               <ol className="space-y-0.5 list-decimal ml-4" style={{ color: 'var(--text-secondary)' }}>
                 <li>Use google-webfonts-helper.herokuapp.com to download font files</li>
                 <li>Upload the .woff2 files to your Showit site&apos;s assets</li>
@@ -419,7 +464,9 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📦 Third-Party Script Audit</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Package size={16} style={{ color: '#6366f1' }} /> Third-Party Script Audit
+            </CardTitle>
             {highImpact > 0 && (
               <Badge style={{ background: 'rgba(239,68,68,0.15)', color: '#ef4444' }}>
                 {highImpact} high impact
@@ -455,7 +502,9 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
           {highImpact > 0 && (
             <div className="p-3 rounded-lg text-xs"
               style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
-              <div className="font-medium text-amber-300 mb-1">💡 How to fix high-impact scripts:</div>
+              <div className="font-medium text-amber-300 mb-1 flex items-start gap-1">
+                <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" /> How to fix high-impact scripts:
+              </div>
               <ol className="space-y-0.5 list-decimal ml-4" style={{ color: 'var(--text-secondary)' }}>
                 <li>Audit which scripts you actually use - remove anything inactive</li>
                 <li>Lazy-load chat widgets: only load them after the visitor interacts with the page</li>
@@ -470,21 +519,18 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
 
       {/* Recommended tools not detected */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">💡 Recommended Tracking Tools Not Detected</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <Info size={16} style={{ color: '#818cf8' }} /> Recommended Tracking Tools Not Detected
+          </CardTitle>
+        </CardHeader>
         <CardContent>
           <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>These free tools are not currently detected on your site. Adding them can improve your marketing, analytics, and conversion tracking.</p>
           <div className="space-y-2">
-            {[
-              { name: 'Google Analytics 4', icon: '📊', desc: 'Track visitors, traffic sources, and conversions. The most important free analytics tool.', link: 'https://analytics.google.com', detected: scripts.some(s => s.name?.toLowerCase().includes('analytics') || s.name?.toLowerCase().includes('ga4') || s.name?.toLowerCase().includes('gtag')) },
-              { name: 'Google Tag Manager', icon: '🏷️', desc: 'Manage all tracking scripts in one place without editing code. Works with Showit via custom code.', link: 'https://tagmanager.google.com', detected: scripts.some(s => s.name?.toLowerCase().includes('tag manager') || s.name?.toLowerCase().includes('gtm')) },
-              { name: 'Meta Pixel (Facebook)', icon: '👤', desc: 'Track conversions and create retargeting audiences for Facebook and Instagram ads.', link: 'https://business.facebook.com/events_manager', detected: scripts.some(s => s.name?.toLowerCase().includes('meta') || s.name?.toLowerCase().includes('facebook') || s.name?.toLowerCase().includes('pixel')) },
-              { name: 'Hotjar', icon: '🔥', desc: 'Free heatmaps and session recordings - see exactly how visitors use your site.', link: 'https://hotjar.com', detected: scripts.some(s => s.name?.toLowerCase().includes('hotjar')) },
-              { name: 'Pinterest Tag', icon: '📌', desc: 'Essential if you market on Pinterest. Tracks conversions from Pinterest traffic.', link: 'https://analytics.pinterest.com', detected: scripts.some(s => s.name?.toLowerCase().includes('pinterest')) },
-              { name: 'TikTok Pixel', icon: '🎵', desc: 'Track conversions and build retargeting audiences from TikTok ads.', link: 'https://ads.tiktok.com', detected: scripts.some(s => s.name?.toLowerCase().includes('tiktok')) },
-            ].filter(t => !t.detected).map((tool, i) => (
+            {recommendedTools.filter(t => !t.detected).map((tool, i) => (
               <div key={i} className="flex items-start gap-3 p-3 rounded-xl"
                 style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
-                <span className="text-xl flex-shrink-0">{tool.icon}</span>
+                <tool.Icon size={20} style={{ color: '#6366f1', flexShrink: 0 }} />
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{tool.name}</div>
                   <div className="text-xs mt-0.5" style={{ color: 'var(--text-secondary)' }}>{tool.desc}</div>
@@ -502,7 +548,11 @@ export default function SpeedTab({ result }: { result: AnalysisResult }) {
 
       {/* General speed improvement checklist */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📋 Complete Speed Improvement Checklist</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <ClipboardList size={16} style={{ color: '#6366f1' }} /> Complete Speed Improvement Checklist
+          </CardTitle>
+        </CardHeader>
         <CardContent>
           {[
             { category: 'Images', items: [

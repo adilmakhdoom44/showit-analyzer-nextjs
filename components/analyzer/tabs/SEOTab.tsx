@@ -8,6 +8,10 @@ import {
   detectBookingTool, detectContactForm, getFilteredKeywords
 } from '@/lib/analysis-helpers';
 import type { AnalysisResult } from '@/types/analyzer';
+import {
+  Search, Globe, MapPin, Megaphone, Smartphone, Image, ClipboardList, Tag, FileEdit,
+  CheckCircle2, XCircle, Info, AlertTriangle, Award
+} from 'lucide-react';
 
 export default function SEOTab({ result }: { result: AnalysisResult }) {
   const { pageData, url, mobile } = result;
@@ -60,7 +64,11 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
 
       {/* Google Search Preview */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🔍 Google Search Preview</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <Search size={16} style={{ color: '#6366f1' }} /> Google Search Preview
+          </CardTitle>
+        </CardHeader>
         <CardContent>
           {/* What Google currently shows */}
           <div className="text-xs mb-2 font-medium uppercase tracking-wide" style={{ color: 'var(--text-muted)' }}>What Google is currently showing:</div>
@@ -78,8 +86,9 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
           {descStatus !== 'good' && (
             <div className="p-3 rounded-xl mb-4 text-xs"
               style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
-              <div className="text-indigo-300 font-semibold mb-1">
-                💡 {descStatus === 'missing' ? 'No meta description found - here\'s what yours should look like:' :
+              <div className="text-indigo-300 font-semibold mb-1 flex items-start gap-1">
+                <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" />
+                {descStatus === 'missing' ? 'No meta description found - here\'s what yours should look like:' :
                   descStatus === 'short' ? `Your description is only ${metaDesc.length} chars - aim for 150–160. Example format:` :
                   `Your description is ${metaDesc.length} chars - Google truncates at ~160. Trim to:`}
               </div>
@@ -98,8 +107,9 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
           {titleStatus !== 'good' && titleStatus !== 'missing' && (
             <div className="p-3 rounded-xl mb-4 text-xs"
               style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.15)' }}>
-              <div className="text-amber-300 font-semibold mb-1">
-                ⚠️ Page title is {titleStatus === 'short' ? `only ${title.length} chars (aim for 50–60)` : `${title.length} chars - Google truncates at 60`}
+              <div className="text-amber-300 font-semibold mb-1 flex items-center gap-1">
+                <AlertTriangle size={13} color="#f59e0b" />
+                Page title is {titleStatus === 'short' ? `only ${title.length} chars (aim for 50–60)` : `${title.length} chars - Google truncates at 60`}
               </div>
               <div style={{ color: 'var(--text-secondary)' }}>
                 {titleStatus === 'short'
@@ -115,7 +125,7 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
               <div className="flex justify-between text-xs mb-1" style={{ color: 'var(--text-muted)' }}>
                 <span>Title ({title.length} chars)</span>
                 <span className={titleStatus === 'good' ? 'text-green-400' : 'text-amber-400'}>
-                  {title.length === 0 ? '✗ Missing' : title.length < 50 ? 'Too short' : title.length <= 60 ? '✓ Good' : 'Too long'}
+                  {title.length === 0 ? 'Missing' : title.length < 50 ? 'Too short' : title.length <= 60 ? 'Good' : 'Too long'}
                 </span>
               </div>
               <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -127,7 +137,7 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
               <div className="flex justify-between text-xs mb-1" style={{ color: 'var(--text-muted)' }}>
                 <span>Description ({metaDesc.length} chars)</span>
                 <span className={descStatus === 'good' ? 'text-green-400' : 'text-amber-400'}>
-                  {metaDesc.length === 0 ? '✗ Missing' : metaDesc.length < 150 ? 'Too short' : metaDesc.length <= 160 ? '✓ Good' : 'Too long'}
+                  {metaDesc.length === 0 ? 'Missing' : metaDesc.length < 150 ? 'Too short' : metaDesc.length <= 160 ? 'Good' : 'Too long'}
                 </span>
               </div>
               <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
@@ -141,11 +151,15 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
           <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
             <div className="p-2 rounded-lg flex justify-between" style={{ background: 'var(--bg-sidebar)' }}>
               <span style={{ color: 'var(--text-muted)' }}>Canonical URL</span>
-              <span className={pageData?.canonical ? 'text-green-400' : 'text-red-400'}>{pageData?.canonical ? '✓ Set' : '✗ Missing'}</span>
+              <span className={pageData?.canonical ? 'text-green-400' : 'text-red-400'}>{pageData?.canonical ? 'Set' : 'Missing'}</span>
             </div>
             <div className="p-2 rounded-lg flex justify-between" style={{ background: 'var(--bg-sidebar)' }}>
               <span style={{ color: 'var(--text-muted)' }}>NoIndex</span>
-              <span className={pageData?.hasNoIndex ? 'text-red-400' : 'text-green-400'}>{pageData?.hasNoIndex ? '⚠️ Blocked' : '✓ Indexable'}</span>
+              <span className={pageData?.hasNoIndex ? 'text-red-400' : 'text-green-400'}>
+                {pageData?.hasNoIndex
+                  ? <span className="flex items-center gap-1"><AlertTriangle size={11} color="#f59e0b" /> Blocked</span>
+                  : 'Indexable'}
+              </span>
             </div>
             <div className="p-2 rounded-lg flex justify-between" style={{ background: 'var(--bg-sidebar)' }}>
               <span style={{ color: 'var(--text-muted)' }}>Meta Robots</span>
@@ -154,7 +168,7 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
             <div className="p-2 rounded-lg flex justify-between" style={{ background: 'var(--bg-sidebar)' }}>
               <span style={{ color: 'var(--text-muted)' }}>Word Count</span>
               <span className={(pageData?.wordCount ?? 0) >= 300 ? 'text-green-400' : 'text-amber-400'}>
-                {pageData?.wordCount ?? 0} {(pageData?.wordCount ?? 0) >= 300 ? '✓' : '(aim for 300+)'}
+                {pageData?.wordCount ?? 0} {(pageData?.wordCount ?? 0) >= 300 ? '' : '(aim for 300+)'}
               </span>
             </div>
           </div>
@@ -167,7 +181,9 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
         <Card className="glass border-0">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🌍 Global / Technical SEO</CardTitle>
+              <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+                <Globe size={16} style={{ color: '#6366f1' }} /> Global / Technical SEO
+              </CardTitle>
               <div className="text-2xl font-black" style={{ color: globalColor }}>{globalScore}/100</div>
             </div>
           </CardHeader>
@@ -176,7 +192,7 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
             <div className="space-y-1.5">
               {globalSignals.map((s, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs py-1.5 border-b border-white/5 last:border-0">
-                  <span>{s.found ? '✅' : '❌'}</span>
+                  {s.found ? <CheckCircle2 size={14} color="#10b981" /> : <XCircle size={14} color="#ef4444" />}
                   <span className="flex-1" style={{ color: s.found ? 'var(--text-primary)' : 'var(--text-secondary)' }}>{s.label}</span>
                   <span className="font-bold flex-shrink-0" style={{ color: s.found ? '#10b981' : 'var(--text-muted)' }}>+{s.pts}</span>
                 </div>
@@ -189,7 +205,9 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
         <Card className="glass border-0">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📍 Local SEO Score</CardTitle>
+              <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+                <MapPin size={16} style={{ color: '#6366f1' }} /> Local SEO Score
+              </CardTitle>
               <div className="text-2xl font-black" style={{ color: localColor }}>{localScore}/100</div>
             </div>
           </CardHeader>
@@ -198,16 +216,16 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
             <div className="space-y-1.5">
               {localSignals.map((s, i) => (
                 <div key={i} className="flex items-center gap-2 text-xs py-1.5 border-b border-white/5 last:border-0">
-                  <span>{s.found ? '✅' : '❌'}</span>
+                  {s.found ? <CheckCircle2 size={14} color="#10b981" /> : <XCircle size={14} color="#ef4444" />}
                   <span className="flex-1" style={{ color: s.found ? 'var(--text-primary)' : 'var(--text-secondary)' }}>{s.label}</span>
                   <span className="font-bold flex-shrink-0" style={{ color: s.found ? '#10b981' : 'var(--text-muted)' }}>+{s.pts}</span>
                 </div>
               ))}
             </div>
             {localScore < 40 && (
-              <div className="mt-3 p-2 rounded-lg text-xs text-amber-300"
+              <div className="mt-3 p-2 rounded-lg text-xs text-amber-300 flex items-start gap-1"
                 style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
-                💡 Add your city name to your title, H1, and meta description.
+                <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" /> Add your city name to your title, H1, and meta description.
               </div>
             )}
           </CardContent>
@@ -216,11 +234,14 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
 
       {/* CTA Analysis */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📣 Conversion Elements (CTA Check)</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <Megaphone size={16} style={{ color: '#6366f1' }} /> Conversion Elements (CTA Check)
+          </CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
             {ctas.map((c, i) => {
-              // Enrich booking and contact labels with detected tool
               let displayLabel = c.label;
               let detail = '';
               if (c.label.includes('Booking')) {
@@ -238,8 +259,8 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
                   <div className="flex items-center gap-2">
                     <span>{c.icon}</span>
                     <span className="flex-1 text-xs" style={{ color: 'var(--text-primary)' }}>{displayLabel}</span>
-                    <span className="text-xs font-bold" style={{ color: c.found ? '#10b981' : '#ef4444' }}>
-                      {c.found ? '✓' : '✗'}
+                    <span className="text-xs font-bold flex items-center" style={{ color: c.found ? '#10b981' : '#ef4444' }}>
+                      {c.found ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
                     </span>
                   </div>
                   {detail && (
@@ -257,7 +278,9 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
           {ctas.filter(c => !c.found).length > 0 && (
             <div className="p-3 rounded-lg text-xs"
               style={{ background: 'var(--bg-sidebar)', border: '1px dashed var(--border-card)' }}>
-              <div className="font-medium mb-1" style={{ color: 'var(--text-primary)' }}>💡 Missing elements to add:</div>
+              <div className="font-medium mb-1 flex items-start gap-1" style={{ color: 'var(--text-primary)' }}>
+                <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" /> Missing elements to add:
+              </div>
               <ul className="space-y-1" style={{ color: 'var(--text-secondary)' }}>
                 {!bookingTool.found && <li>• <strong>Booking tool:</strong> Embed Sprout Studio, HoneyBook, Calendly, or Dubsado for direct bookings</li>}
                 {!contactForm.found && <li>• <strong>Contact form:</strong> Add a native Showit form or embed Typeform/JotForm</li>}
@@ -272,7 +295,11 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
       {/* Social Preview */}
       {(og?.title || og?.image || og?.description) && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📱 Social Share Preview</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Smartphone size={16} style={{ color: '#6366f1' }} /> Social Share Preview
+            </CardTitle>
+          </CardHeader>
           <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <div className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>Facebook / Open Graph</div>
@@ -326,22 +353,25 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📋 Heading Structure</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <ClipboardList size={16} style={{ color: '#6366f1' }} /> Heading Structure
+            </CardTitle>
             <div className="flex gap-2 text-xs">
               <span className={h1Count === 1 ? 'text-green-400' : 'text-red-400'}>
-                {h1Count === 1 ? '✓ 1 H1' : h1Count === 0 ? '✗ No H1' : `⚠️ ${h1Count} H1s (only 1 allowed)`}
+                {h1Count === 1 ? '1 H1' : h1Count === 0 ? 'No H1' : `${h1Count} H1s (only 1 allowed)`}
               </span>
               <span className={headingOrderOk ? 'text-green-400' : 'text-amber-400'}>
-                {headingOrderOk ? '✓ Good order' : '⚠️ Order issue'}
+                {headingOrderOk ? 'Good order' : 'Order issue'}
               </span>
             </div>
           </div>
         </CardHeader>
         <CardContent>
           {headings.length === 0 ? (
-            <div className="p-3 rounded-lg text-xs text-red-400"
+            <div className="p-3 rounded-lg text-xs text-red-400 flex items-start gap-2"
               style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)' }}>
-              ❌ No headings found on this page. Add an H1 with your main keyword and H2s for each section.
+              <XCircle size={14} color="#ef4444" className="flex-shrink-0 mt-0.5" />
+              No headings found on this page. Add an H1 with your main keyword and H2s for each section.
             </div>
           ) : (
             <>
@@ -358,17 +388,19 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
                 ))}
               </div>
               {h1Count !== 1 && (
-                <div className="p-3 rounded-lg text-xs text-amber-300"
+                <div className="p-3 rounded-lg text-xs text-amber-300 flex items-start gap-1"
                   style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
-                  💡 {h1Count === 0
+                  <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" />
+                  {h1Count === 0
                     ? 'Add exactly one H1 heading - it\'s the most important on-page SEO signal. Include your main keyword and city.'
                     : `You have ${h1Count} H1 headings - Google expects only one per page. Demote the extras to H2.`}
                 </div>
               )}
               {!headingOrderOk && (
-                <div className="mt-2 p-3 rounded-lg text-xs text-amber-300"
+                <div className="mt-2 p-3 rounded-lg text-xs text-amber-300 flex items-start gap-1"
                   style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
-                  💡 Heading order jumps (e.g., H2 → H4). Keep a logical hierarchy: H1 → H2 → H3 to help Google understand your content structure.
+                  <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" />
+                  Heading order jumps (e.g., H2 → H4). Keep a logical hierarchy: H1 → H2 → H3 to help Google understand your content structure.
                 </div>
               )}
             </>
@@ -379,7 +411,11 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
       {/* Featured Snippet Opportunities */}
       {snippetOpportunities.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🏆 Featured Snippet Opportunities</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Award size={16} style={{ color: '#f59e0b' }} /> Featured Snippet Opportunities
+            </CardTitle>
+          </CardHeader>
           <CardContent>
             <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>
               Google shows featured snippets (answer boxes) for question-based searches. These headings on your page are good candidates.
@@ -406,8 +442,9 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
                         {type}
                       </span>
                     </div>
-                    <div className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                      💡 Add a {type.includes('List') ? 'numbered or bulleted list' : '40–60 word direct answer paragraph'} immediately below this heading to compete for this snippet.
+                    <div className="text-xs flex items-start gap-1" style={{ color: 'var(--text-muted)' }}>
+                      <Info size={11} color="#818cf8" className="flex-shrink-0 mt-0.5" />
+                      Add a {type.includes('List') ? 'numbered or bulleted list' : '40–60 word direct answer paragraph'} immediately below this heading to compete for this snippet.
                     </div>
                   </div>
                 );
@@ -415,7 +452,9 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
             </div>
             <div className="p-3 rounded-lg text-xs"
               style={{ background: 'var(--bg-sidebar)', border: '1px dashed var(--border-card)' }}>
-              <div className="font-medium mb-2" style={{ color: 'var(--text-primary)' }}>📝 How to optimize for snippets in Showit:</div>
+              <div className="font-medium mb-2 flex items-center gap-1" style={{ color: 'var(--text-primary)' }}>
+                <FileEdit size={12} color="#6366f1" /> How to optimize for snippets in Showit:
+              </div>
               <ol className="space-y-1 list-decimal ml-4" style={{ color: 'var(--text-secondary)' }}>
                 <li>In Showit, add a Text element immediately below the heading widget</li>
                 <li>Write a 2–3 sentence plain-text answer (40–60 words) - avoid fancy styling</li>
@@ -433,7 +472,7 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
         <Card className="glass border-0">
           <CardHeader>
             <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
-              🏷️ Structured Data (Schema)
+              <Tag size={16} style={{ color: '#6366f1' }} /> Structured Data (Schema)
               <Badge style={{ background: 'rgba(99,102,241,0.2)', color: '#4f46e5' }}>{pageData?.schema} type{(pageData?.schema ?? 0) > 1 ? 's' : ''}</Badge>
             </CardTitle>
           </CardHeader>
@@ -441,7 +480,9 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
             <p className="text-xs mb-2" style={{ color: 'var(--text-secondary)' }}>Schema markup helps Google understand your business and can unlock rich results (star ratings, FAQs, etc.) in search.</p>
             <div className="p-3 rounded-lg text-xs"
               style={{ background: 'var(--bg-sidebar)', border: '1px dashed var(--border-card)' }}>
-              <div className="font-medium mb-1" style={{ color: 'var(--text-primary)' }}>💡 Recommended schema types to add:</div>
+              <div className="font-medium mb-1 flex items-start gap-1" style={{ color: 'var(--text-primary)' }}>
+                <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" /> Recommended schema types to add:
+              </div>
               <ul className="space-y-0.5" style={{ color: 'var(--text-secondary)' }}>
                 <li>• <strong>LocalBusiness</strong> or <strong>ProfessionalService</strong> - name, address, phone, hours</li>
                 <li>• <strong>FAQPage</strong> - answer common questions (unlocks FAQ rich results)</li>
@@ -458,7 +499,7 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
         <Card className="glass border-0">
           <CardHeader>
             <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
-              🖼️ Images Missing Alt Text <Badge variant="destructive">{missingAlt.length}</Badge>
+              <Image size={16} style={{ color: '#6366f1' }} /> Images Missing Alt Text <Badge variant="destructive">{missingAlt.length}</Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -504,7 +545,11 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
       {/* Keyword Density */}
       {topKeywords.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🔑 Top Keywords on This Page</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Search size={16} style={{ color: '#6366f1' }} /> Top Keywords on This Page
+            </CardTitle>
+          </CardHeader>
           <CardContent>
             <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>Words your page is being indexed for. Ensure your target keywords (service + city) appear in the top 10.</p>
             <div className="overflow-x-auto">
@@ -538,8 +583,8 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
                 </tbody>
               </table>
             </div>
-            <div className="mt-3 p-2 rounded text-xs" style={{ color: 'var(--text-muted)', background: 'var(--bg-sidebar)' }}>
-              💡 Ideal keyword density is 1–3%. If your main service keyword is missing from this list, add it to your page content, H1, and meta description.
+            <div className="mt-3 p-2 rounded text-xs flex items-start gap-1" style={{ color: 'var(--text-muted)', background: 'var(--bg-sidebar)' }}>
+              <Info size={11} color="#818cf8" className="flex-shrink-0 mt-0.5" /> Ideal keyword density is 1–3%. If your main service keyword is missing from this list, add it to your page content, H1, and meta description.
             </div>
           </CardContent>
         </Card>
@@ -547,7 +592,11 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
 
       {/* Additional SEO Tools / Checks */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🛠️ More SEO Signals</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <Search size={16} style={{ color: '#6366f1' }} /> More SEO Signals
+          </CardTitle>
+        </CardHeader>
         <CardContent className="space-y-2">
           {(() => {
             const seoSignals = [
@@ -617,7 +666,7 @@ export default function SEOTab({ result }: { result: AnalysisResult }) {
                 <button
                   className="w-full flex items-center gap-2 p-3 text-left"
                   onClick={() => !item.found && setExpandedSignal(expandedSignal === i ? null : i)}>
-                  <span>{item.found ? '✅' : '❌'}</span>
+                  {item.found ? <CheckCircle2 size={14} color="#10b981" /> : <XCircle size={14} color="#ef4444" />}
                   <span className="text-sm flex-1" style={{ color: 'var(--text-primary)' }}>{item.label}</span>
                   {!item.found && <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{expandedSignal === i ? '▲' : '▼'}</span>}
                 </button>

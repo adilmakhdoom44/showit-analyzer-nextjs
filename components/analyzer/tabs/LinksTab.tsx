@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import type { AnalysisResult } from '@/types/analyzer';
+import { AlertTriangle, Link2, Globe, Info, CheckCircle2, XCircle, Mail, Smartphone, FileEdit, Lock } from 'lucide-react';
 
 export default function LinksTab({ result }: { result: AnalysisResult }) {
   const links = result.pageData?.links ?? [];
@@ -46,22 +47,25 @@ export default function LinksTab({ result }: { result: AnalysisResult }) {
 
       {/* Contact info */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📞 Contact Detection</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2"><CheckCircle2 size={16} style={{ color: '#6366f1' }} /> Contact Detection</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
             {[
-              { label: 'Email Link', found: pageData?.hasMailto, icon: '📧', fix: 'Add a mailto: link. In Showit, add a button or text with link set to "Email" and enter your email address.' },
-              { label: 'Phone Link', found: pageData?.hasTel, icon: '📱', fix: 'Add a tel: link. In Showit, set a button link to "Phone" so mobile visitors can tap to call.' },
-              { label: 'Contact Form', found: (pageData?.forms ?? 0) > 0, icon: '📝', fix: 'Add a Showit native form or embed a contact form from Typeform, JotForm, or your CRM.' },
-              { label: 'Privacy Link', found: pageData?.privacyLink, icon: '🔒', fix: 'Add a Privacy Policy page and link it in your footer - required for GDPR compliance and trust.' },
+              { label: 'Email Link', found: pageData?.hasMailto, Icon: Mail, fix: 'Add a mailto: link. In Showit, add a button or text with link set to "Email" and enter your email address.' },
+              { label: 'Phone Link', found: pageData?.hasTel, Icon: Smartphone, fix: 'Add a tel: link. In Showit, set a button link to "Phone" so mobile visitors can tap to call.' },
+              { label: 'Contact Form', found: (pageData?.forms ?? 0) > 0, Icon: FileEdit, fix: 'Add a Showit native form or embed a contact form from Typeform, JotForm, or your CRM.' },
+              { label: 'Privacy Link', found: pageData?.privacyLink, Icon: Lock, fix: 'Add a Privacy Policy page and link it in your footer - required for GDPR compliance and trust.' },
             ].map(c => (
               <div key={c.label} className="p-3 rounded-xl"
                 style={{ background: c.found ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.08)', border: `1px solid ${c.found ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.15)'}` }}>
                 <div className="flex items-center gap-2 mb-1">
-                  <span>{c.icon}</span>
+                  <c.Icon size={16} style={{ color: '#6366f1', flexShrink: 0 }} />
                   <div>
                     <div className="text-xs font-medium" style={{ color: 'var(--text-primary)' }}>{c.label}</div>
-                    <div className="text-xs" style={{ color: c.found ? '#10b981' : '#ef4444' }}>{c.found ? 'Found ✓' : 'Missing ✗'}</div>
+                    <div className="text-xs flex items-center gap-1" style={{ color: c.found ? '#10b981' : '#ef4444' }}>
+                      {c.found ? <CheckCircle2 size={11} /> : <XCircle size={11} />}
+                      {c.found ? 'Found' : 'Missing'}
+                    </div>
                   </div>
                 </div>
                 {c.found && c.label === 'Email Link' && emailAddress && (
@@ -84,7 +88,7 @@ export default function LinksTab({ result }: { result: AnalysisResult }) {
         <Card className="glass border-0">
           <CardHeader>
             <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
-              ⚠️ Empty or Placeholder Links <Badge variant="destructive">{brokenTotal}</Badge>
+              <AlertTriangle size={16} color="#f59e0b" /> Empty or Placeholder Links <Badge variant="destructive">{brokenTotal}</Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -121,12 +125,12 @@ export default function LinksTab({ result }: { result: AnalysisResult }) {
                   ) : (
                     <div key={i} className="flex items-center gap-2 text-xs font-mono text-amber-400 p-2 rounded"
                       style={{ background: 'rgba(239,68,68,0.06)' }}>
-                      <span>⚠️</span>
+                      <AlertTriangle size={13} color="#f59e0b" />
                       <span className="flex-1">{l.href || '(empty href)'}</span>
                       {l.text && <span style={{ color: 'var(--text-muted)' }}>&quot;{l.text}&quot;</span>}
                       <a href={pageSearchUrl} target="_blank" rel="noopener noreferrer"
                         className="flex-shrink-0 text-indigo-400 hover:text-indigo-300 underline whitespace-nowrap">
-                        🔍 View on page ↗
+                        View on page ↗
                       </a>
                     </div>
                   );
@@ -142,7 +146,7 @@ export default function LinksTab({ result }: { result: AnalysisResult }) {
         <Card className="glass border-0">
           <CardHeader>
             <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
-              🔗 Icon-Only Links <Badge style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: 'none' }}>{iconLinks.length}</Badge>
+              <Link2 size={16} style={{ color: '#6366f1' }} /> Icon-Only Links <Badge style={{ background: 'rgba(245,158,11,0.15)', color: '#f59e0b', border: 'none' }}>{iconLinks.length}</Badge>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -166,7 +170,7 @@ export default function LinksTab({ result }: { result: AnalysisResult }) {
       {/* External links */}
       {external.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🌍 External Links ({external.length})</CardTitle></CardHeader>
+          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2"><Globe size={16} style={{ color: '#6366f1' }} /> External Links ({external.length})</CardTitle></CardHeader>
           <CardContent>
             <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>
               External links should open in a new tab with <code className="text-indigo-300">target=&quot;_blank&quot;</code> and include <code className="text-indigo-300">rel=&quot;noopener noreferrer&quot;</code> for security.
@@ -195,14 +199,14 @@ export default function LinksTab({ result }: { result: AnalysisResult }) {
       {/* Internal link map */}
       {internal.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🗺️ Internal Link Map</CardTitle></CardHeader>
+          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2"><Link2 size={16} style={{ color: '#6366f1' }} /> Internal Link Map</CardTitle></CardHeader>
           <CardContent>
             <p className="text-xs mb-3" style={{ color: 'var(--text-secondary)' }}>
               Internal links help Google discover and understand your site structure. Link from every page to your key pages (portfolio, pricing, contact) with descriptive anchor text - not just &quot;click here&quot;.
             </p>
             <div className="p-3 rounded-lg text-xs mb-3"
               style={{ background: 'var(--bg-sidebar)', border: '1px dashed var(--border-card)' }}>
-              <div className="font-medium mb-1" style={{ color: 'var(--text-primary)' }}>💡 Internal linking best practices:</div>
+              <div className="font-medium mb-1 flex items-start gap-1" style={{ color: 'var(--text-primary)' }}><Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" /> Internal linking best practices:</div>
               <ul className="space-y-0.5" style={{ color: 'var(--text-secondary)' }}>
                 <li>• Use descriptive anchor text: &quot;View wedding portfolio&quot; not &quot;click here&quot;</li>
                 <li>• Link to your most important pages from multiple pages</li>

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { detailedDiff } from 'deep-object-diff';
 import type { ScoreEntry } from '@/lib/storage';
 import { motion, AnimatePresence } from 'motion/react';
+import { RefreshCw } from 'lucide-react';
 
 interface Props {
   history: ScoreEntry[];
@@ -55,7 +56,7 @@ export default function ScanDiff({ history }: Props) {
   return (
     <Card className="glass border-0">
       <CardHeader>
-        <CardTitle className="text-white text-base">🔄 Scan Comparison</CardTitle>
+        <CardTitle className="text-white text-base flex items-center gap-2"><RefreshCw size={16} style={{ color: '#6366f1' }} /> Scan Comparison</CardTitle>
         <p className="text-xs text-slate-500 mt-1">Compare any two scans to see exactly what changed</p>
       </CardHeader>
       <CardContent className="space-y-4">

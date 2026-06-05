@@ -12,7 +12,7 @@ import type { AnalysisResult, FixItem } from '@/types/analyzer';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { Zap, MonitorSmartphone, AlertTriangle, Wrench } from 'lucide-react';
+import { Zap, MonitorSmartphone, AlertTriangle, Wrench, Globe, TrendingUp, TrendingDown, CheckCircle2, Info, Clock } from 'lucide-react';
 
 interface ContrastItem {
   nodeLabel?: string;
@@ -75,7 +75,7 @@ function ContrastSamples({ items }: { items: ContrastItem[] }) {
       })}
       <a href="https://webaim.org/resources/contrastchecker/" target="_blank" rel="noopener noreferrer"
         className="inline-flex items-center gap-1 text-xs text-indigo-400 hover:text-indigo-300 mt-1">
-        🔗 Open WebAIM Contrast Checker →
+        Open WebAIM Contrast Checker →
       </a>
     </div>
   );
@@ -92,7 +92,7 @@ function FixCard({ fix, done, onToggle, auditItems }: { fix: FixItem; done: bool
           <div className="flex items-center gap-2 flex-wrap mb-1">
             <span className="font-semibold text-sm" style={{ color: done ? 'var(--text-muted)' : 'var(--text-primary)', textDecoration: done ? 'line-through' : 'none' }}>{fix.name}</span>
             <Badge variant="secondary" className="text-xs capitalize">{fix.difficulty}</Badge>
-            <span className="text-xs" style={{ color: 'var(--text-muted)' }}>⏱ {fix.time}</span>
+            <span className="text-xs flex items-center gap-0.5" style={{ color: 'var(--text-muted)' }}><Clock size={11} /> {fix.time}</span>
           </div>
           <p className="text-xs line-clamp-2" style={{ color: 'var(--text-secondary)' }}>{fix.impact}</p>
         </div>
@@ -118,7 +118,7 @@ function FixCard({ fix, done, onToggle, auditItems }: { fix: FixItem; done: bool
             {fix.tip && (
               <div className="mt-3 flex gap-2 p-3 rounded-lg text-xs"
                 style={{ background: 'rgba(6,182,212,0.08)', border: '1px solid rgba(6,182,212,0.15)' }}>
-                <span style={{ color: '#0891b2' }}>💡</span>
+                <Info size={12} style={{ color: '#0891b2', flexShrink: 0 }} />
                 <span style={{ color: '#0891b2' }}>{fix.tip}</span>
               </div>
             )}
@@ -279,7 +279,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
 
       {/* Page Details Snapshot */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🌐 Page Details</CardTitle></CardHeader>
+        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2"><Globe size={16} style={{ color: '#6366f1' }} /> Page Details</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
             <StatPill label="Domain" value={domain} />
@@ -288,9 +288,9 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
             <StatPill label="HTTPS" value={audits['is-on-https']?.score === 1 ? 'Secure ✓' : 'Not secure ✗'} ok={audits['is-on-https']?.score === 1} />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <StatPill label="Page Title" value={titleLen > 0 ? `${titleLen} chars ${titleLen >= 50 && titleLen <= 60 ? '✓' : '⚠️'}` : 'Missing ✗'} ok={titleLen >= 50 && titleLen <= 60} />
-            <StatPill label="Meta Description" value={descLen > 0 ? `${descLen} chars ${descLen >= 150 && descLen <= 160 ? '✓' : '⚠️'}` : 'Missing ✗'} ok={descLen >= 150 && descLen <= 160} />
-            <StatPill label="H1 Heading" value={h1Count === 1 ? '1 ✓ Good' : h1Count === 0 ? 'Missing ✗' : `${h1Count} (only 1 needed) ⚠️`} ok={h1Count === 1} />
+            <StatPill label="Page Title" value={titleLen > 0 ? `${titleLen} chars ${titleLen >= 50 && titleLen <= 60 ? '(Good)' : '(Improve)'}` : 'Missing'} ok={titleLen >= 50 && titleLen <= 60} />
+            <StatPill label="Meta Description" value={descLen > 0 ? `${descLen} chars ${descLen >= 150 && descLen <= 160 ? '(Good)' : '(Improve)'}` : 'Missing'} ok={descLen >= 150 && descLen <= 160} />
+            <StatPill label="H1 Heading" value={h1Count === 1 ? '1 Good' : h1Count === 0 ? 'Missing' : `${h1Count} (only 1 needed)`} ok={h1Count === 1} />
             <StatPill label="Word Count" value={`${pageData?.wordCount ?? 0} words ${(pageData?.wordCount ?? 0) >= 300 ? '✓' : '(aim 300+)'}`} ok={(pageData?.wordCount ?? 0) >= 300} />
             <StatPill label="Images" value={`${imageCount} total, ${missingAltCount} missing alt`} ok={missingAltCount === 0} />
             <StatPill label="Schema Markup" value={(pageData?.schema ?? 0) > 0 ? `${pageData?.schema} type(s) ✓` : 'None found ✗'} ok={(pageData?.schema ?? 0) > 0} />
@@ -325,7 +325,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
         <Card className="glass border-0">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📈 Score History</CardTitle>
+              <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2"><TrendingUp size={16} style={{ color: '#10b981' }} /> Score History</CardTitle>
               {history.length > 1 && (
                 <span className="text-xs font-medium px-2 py-1 rounded-full"
                   style={{
@@ -337,10 +337,10 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
                       ? '#ef4444' : '#a5b4fc',
                   }}>
                   {history[0].score > (history[1]?.score ?? 0)
-                    ? `📈 +${history[0].score - history[1].score} pts since last scan`
+                    ? `+${history[0].score - history[1].score} pts since last scan`
                     : history[0].score < (history[1]?.score ?? 0)
-                    ? `📉 ${history[0].score - history[1].score} pts since last scan`
-                    : '➡️ No change since last scan'}
+                    ? `${history[0].score - history[1].score} pts since last scan`
+                    : 'No change since last scan'}
                 </span>
               )}
             </div>
@@ -532,7 +532,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
             {history.length === 1 && (
               <div className="mt-3 p-3 rounded-lg text-xs text-center"
                 style={{ color: 'var(--text-muted)', background: 'var(--bg-sidebar)', border: '1px dashed var(--border-card)' }}>
-                💡 Re-analyze this site after making improvements to track your progress over time.
+                <span className="inline-flex items-center gap-1"><Info size={11} color="#818cf8" /></span> Re-analyze this site after making improvements to track your progress over time.
               </div>
             )}
           </CardContent>
@@ -548,8 +548,8 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
               <thead>
                 <tr className="text-xs uppercase" style={{ color: 'var(--text-muted)' }}>
                   <th className="text-left pb-3">Category</th>
-                  <th className="text-center pb-3">📱 Mobile</th>
-                  <th className="text-center pb-3">🖥️ Desktop</th>
+                  <th className="text-center pb-3">Mobile</th>
+                  <th className="text-center pb-3">Desktop</th>
                   <th className="text-center pb-3">Gap</th>
                 </tr>
               </thead>
@@ -583,7 +583,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
           {(desktopCats?.performance?.score ?? 0) - (categories?.performance?.score ?? 0) > 0.2 && (
             <div className="mt-3 p-3 rounded-lg text-xs text-amber-300"
               style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
-              ⚠️ Your mobile performance is significantly lower than desktop. Most Google searches are on mobile - prioritize mobile speed improvements.
+              <span className="inline-flex items-center gap-1"><AlertTriangle size={12} color="#f59e0b" /></span> Your mobile performance is significantly lower than desktop. Most Google searches are on mobile - prioritize mobile speed improvements.
             </div>
           )}
         </CardContent>
@@ -592,7 +592,7 @@ export default function OverviewTab({ result, onNavigateToTab }: { result: Analy
       {/* What's Working */}
       {passing.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">✅ What&apos;s Working</CardTitle></CardHeader>
+          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2"><CheckCircle2 size={16} color="#10b981" /> What&apos;s Working</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {passing.map((p, i) => (

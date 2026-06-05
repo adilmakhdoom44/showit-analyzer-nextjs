@@ -4,20 +4,27 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { checkBusinessEssentials } from '@/lib/analysis-helpers';
 import type { AnalysisResult } from '@/types/analyzer';
+import {
+  BarChart2, TrendingUp, Tag, TrendingDown, Users, Flame, Building2, Bot, Award,
+  LayoutTemplate, Globe, Link2, ArrowUp, FolderOpen, FileText, ArrowDown, Ban,
+  Lock, Accessibility, FileEdit, Image, ClipboardList, Video, CheckCircle2, XCircle,
+  Info, AlertTriangle, HelpCircle, Type, Package
+} from 'lucide-react';
 
-function CheckRow({ label, found, icon, good = true, detail }: {
-  label: string; found: boolean; icon: string; good?: boolean; detail?: string;
+function CheckRow({ label, found, Icon, iconColor, good = true, detail }: {
+  label: string; found: boolean; Icon: React.ElementType; iconColor: string; good?: boolean; detail?: string;
 }) {
   const ok = good ? found : !found;
   return (
     <div className="flex items-center gap-3 py-2.5 border-b border-white/5 last:border-0">
-      <span className="text-xl">{icon}</span>
+      <Icon size={18} style={{ color: iconColor, flexShrink: 0 }} />
       <div className="flex-1">
         <span className="text-sm" style={{ color: 'var(--text-primary)' }}>{label}</span>
         {detail && <div className="text-xs mt-0.5 truncate max-w-xs" style={{ color: 'var(--text-muted)' }}>{detail}</div>}
       </div>
-      <span className="text-xs font-medium" style={{ color: ok ? '#10b981' : '#ef4444' }}>
-        {ok ? '✓ Found' : '✗ Missing'}
+      <span className="text-xs font-medium flex items-center gap-1" style={{ color: ok ? '#10b981' : '#ef4444' }}>
+        {ok ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
+        {ok ? 'Found' : 'Missing'}
       </span>
     </div>
   );
@@ -88,21 +95,35 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
   const wc = pageData?.wordCount ?? 0;
   const wcColor = wc >= 600 ? '#10b981' : wc >= 300 ? '#f59e0b' : '#ef4444';
 
+  // Content stats data
+  const contentStats = [
+    { label: 'Word Count', value: pageData?.wordCount ?? 'N/A', Icon: FileEdit, color: wcColor },
+    { label: 'Images', value: pageData?.images.length ?? 'N/A', Icon: Image, color: '#10b981' },
+    { label: 'Links', value: pageData?.links?.length ?? 'N/A', Icon: Link2, color: '#10b981' },
+    { label: 'Videos', value: (pageData as any)?.videos ?? (pageData as any)?.videoCount ?? 'N/A', Icon: Video, color: '#10b981' },
+    { label: 'Forms', value: pageData?.forms ?? 0, Icon: ClipboardList, color: '#10b981' },
+    { label: 'Schema Types', value: pageData?.schema ?? 0, Icon: Tag, color: (pageData?.schema ?? 0) > 0 ? '#10b981' : '#f59e0b' },
+  ];
+
   return (
     <div className="space-y-6">
 
       {/* Analytics */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📊 Analytics &amp; Tracking</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <BarChart2 size={16} style={{ color: '#6366f1' }} /> Analytics &amp; Tracking
+          </CardTitle>
+        </CardHeader>
         <CardContent>
-          <CheckRow label="Google Analytics 4 (GA4)" found={!!analytics?.ga4} icon="📈" />
-          <CheckRow label="Google Tag Manager (GTM)" found={!!analytics?.gtm} icon="🏷️" />
-          <CheckRow label="Universal Analytics (UA - legacy)" found={!!analytics?.ua} icon="📉" />
-          <CheckRow label="Meta Pixel (Facebook)" found={!!analytics?.metaPixel} icon="👥" />
-          <CheckRow label="Hotjar" found={!!analytics?.hotjar} icon="🔥" />
+          <CheckRow label="Google Analytics 4 (GA4)" found={!!analytics?.ga4} Icon={TrendingUp} iconColor="#10b981" />
+          <CheckRow label="Google Tag Manager (GTM)" found={!!analytics?.gtm} Icon={Tag} iconColor="#6366f1" />
+          <CheckRow label="Universal Analytics (UA - legacy)" found={!!analytics?.ua} Icon={TrendingDown} iconColor="#ef4444" />
+          <CheckRow label="Meta Pixel (Facebook)" found={!!analytics?.metaPixel} Icon={Users} iconColor="#6366f1" />
+          <CheckRow label="Hotjar" found={!!analytics?.hotjar} Icon={Flame} iconColor="#f97316" />
           {(!analytics?.ga4 && !analytics?.gtm) && (
             <div className="mt-3 p-3 rounded-lg text-xs text-indigo-300" style={{ background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)' }}>
-              💡 Add GA4 or GTM in Showit: <strong style={{ color: 'var(--text-primary)' }}>Site Settings → Integrations → Google Analytics</strong> or paste the GTM snippet in <strong style={{ color: 'var(--text-primary)' }}>Site Settings → SEO → Custom Code (Head)</strong>
+              <span className="inline-flex items-center gap-1"><Info size={12} color="#818cf8" /> Add GA4 or GTM in Showit:</span> <strong style={{ color: 'var(--text-primary)' }}>Site Settings → Integrations → Google Analytics</strong> or paste the GTM snippet in <strong style={{ color: 'var(--text-primary)' }}>Site Settings → SEO → Custom Code (Head)</strong>
             </div>
           )}
         </CardContent>
@@ -112,7 +133,9 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🏢 Business Page Essentials</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Building2 size={16} style={{ color: '#6366f1' }} /> Business Page Essentials
+            </CardTitle>
             <span className="text-xs" style={{ color: passedBusiness >= 6 ? '#10b981' : passedBusiness >= 4 ? '#f59e0b' : '#ef4444' }}>
               {passedBusiness}/{businessChecks.length} found
             </span>
@@ -128,8 +151,8 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
                 }}>
                 <span>{c.icon}</span>
                 <span className="flex-1 text-xs" style={{ color: 'var(--text-primary)' }}>{c.label}</span>
-                <span className="text-xs font-bold" style={{ color: c.found ? '#10b981' : '#ef4444' }}>
-                  {c.found ? '✓' : '✗'}
+                <span className="text-xs font-bold flex items-center" style={{ color: c.found ? '#10b981' : '#ef4444' }}>
+                  {c.found ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
                 </span>
               </div>
             ))}
@@ -137,7 +160,7 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
           {passedBusiness < 5 && (
             <div className="mt-3 p-3 rounded-lg text-xs text-amber-300"
               style={{ background: 'rgba(245,158,11,0.08)', border: '1px solid rgba(245,158,11,0.2)' }}>
-              💡 Showit creators with more page types (portfolio, pricing, testimonials) convert significantly more visitors into inquiries.
+              <span className="inline-flex items-center gap-1"><Info size={12} color="#818cf8" /></span> Showit creators with more page types (portfolio, pricing, testimonials) convert significantly more visitors into inquiries.
             </div>
           )}
         </CardContent>
@@ -147,7 +170,9 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🤖 AI &amp; Answer Engine Optimization (AEO)</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Bot size={16} style={{ color: '#8b5cf6' }} /> AI &amp; Answer Engine Optimization (AEO)
+            </CardTitle>
             <div className="text-2xl font-black" style={{ color: aeoScore >= 70 ? '#10b981' : aeoScore >= 40 ? '#f59e0b' : '#ef4444' }}>
               {aeoScore}%
             </div>
@@ -159,10 +184,14 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
             {aeoSignals.map((s, i) => (
               <div key={i} className="py-1.5 border-b border-white/5 last:border-0">
                 <div className="flex items-center gap-2 text-xs">
-                  <span>{s.ok ? '✅' : '❌'}</span>
+                  {s.ok ? <CheckCircle2 size={14} color="#10b981" /> : <XCircle size={14} color="#ef4444" />}
                   <span style={{ color: 'var(--text-primary)' }}>{s.label}</span>
                 </div>
-                {!s.ok && <div className="text-xs text-indigo-300 mt-1 pl-1">💡 {s.tip}</div>}
+                {!s.ok && (
+                  <div className="text-xs text-indigo-300 mt-1 pl-1 flex items-start gap-1">
+                    <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" /> {s.tip}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -173,7 +202,9 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🏅 E-E-A-T Trust Signals</CardTitle>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Award size={16} style={{ color: '#f59e0b' }} /> E-E-A-T Trust Signals
+            </CardTitle>
             <div className="text-2xl font-black" style={{ color: eeatScore >= 70 ? '#10b981' : eeatScore >= 40 ? '#f59e0b' : '#ef4444' }}>
               {eeatScore}%
             </div>
@@ -185,10 +216,14 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
             {eeatSignals.map((s, i) => (
               <div key={i} className="py-1.5 border-b border-white/5 last:border-0">
                 <div className="flex items-center gap-2 text-xs">
-                  <span>{s.ok ? '✅' : '❌'}</span>
+                  {s.ok ? <CheckCircle2 size={14} color="#10b981" /> : <XCircle size={14} color="#ef4444" />}
                   <span style={{ color: 'var(--text-primary)' }}>{s.label}</span>
                 </div>
-                {!s.ok && <div className="text-xs text-indigo-300 mt-1 pl-1">💡 {s.tip}</div>}
+                {!s.ok && (
+                  <div className="text-xs text-indigo-300 mt-1 pl-1 flex items-start gap-1">
+                    <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" /> {s.tip}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -197,30 +232,38 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
 
       {/* Page Structure */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🏗️ Page Structure</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <LayoutTemplate size={16} style={{ color: '#6366f1' }} /> Page Structure
+          </CardTitle>
+        </CardHeader>
         <CardContent>
-          <CheckRow label="Language attribute (lang=)" found={!!pageData?.lang} icon="🌐" detail={pageData?.lang} />
-          <CheckRow label="Favicon" found={!!pageData?.favicon} icon="🖼️" />
-          <CheckRow label="Canonical URL" found={!!pageData?.canonical} icon="🔗" detail={pageData?.canonical} />
-          <CheckRow label="Header region (<header>)" found={!!pageData?.regions?.header} icon="🔝" />
-          <CheckRow label="Navigation region (<nav>)" found={!!pageData?.regions?.nav} icon="🗂️" />
-          <CheckRow label="Main region (<main>)" found={!!pageData?.regions?.main} icon="📄" />
-          <CheckRow label="Footer region (<footer>)" found={!!pageData?.regions?.footer} icon="🔚" />
-          <CheckRow label="Schema / Structured Data" found={(pageData?.schema ?? 0) > 0} icon="🏷️"
+          <CheckRow label="Language attribute (lang=)" found={!!pageData?.lang} Icon={Globe} iconColor="#6366f1" detail={pageData?.lang} />
+          <CheckRow label="Favicon" found={!!pageData?.favicon} Icon={Image} iconColor="#6366f1" />
+          <CheckRow label="Canonical URL" found={!!pageData?.canonical} Icon={Link2} iconColor="#6366f1" detail={pageData?.canonical} />
+          <CheckRow label="Header region (<header>)" found={!!pageData?.regions?.header} Icon={ArrowUp} iconColor="#6366f1" />
+          <CheckRow label="Navigation region (<nav>)" found={!!pageData?.regions?.nav} Icon={FolderOpen} iconColor="#6366f1" />
+          <CheckRow label="Main region (<main>)" found={!!pageData?.regions?.main} Icon={FileText} iconColor="#6366f1" />
+          <CheckRow label="Footer region (<footer>)" found={!!pageData?.regions?.footer} Icon={ArrowDown} iconColor="#6366f1" />
+          <CheckRow label="Schema / Structured Data" found={(pageData?.schema ?? 0) > 0} Icon={Tag} iconColor="#6366f1"
             detail={(pageData?.schema ?? 0) > 0 ? `${pageData?.schema} type(s) detected` : undefined} />
-          <CheckRow label="NoIndex tag" found={!!pageData?.hasNoIndex} icon="🚫" good={false} />
+          <CheckRow label="NoIndex tag" found={!!pageData?.hasNoIndex} Icon={Ban} iconColor="#ef4444" good={false} />
         </CardContent>
       </Card>
 
       {/* Technical Standards */}
       {techAudits.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🔐 Technical Standards</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Lock size={16} style={{ color: '#6366f1' }} /> Technical Standards
+            </CardTitle>
+          </CardHeader>
           <CardContent className="space-y-2">
             {techAudits.map(a => (
               <div key={a.id} className="flex items-start gap-3 py-2 border-b border-white/5 last:border-0">
-                <span className="text-sm mt-0.5" style={{ color: a.score === 1 ? '#10b981' : '#ef4444' }}>
-                  {a.score === 1 ? '✓' : '✗'}
+                <span className="mt-0.5">
+                  {a.score === 1 ? <CheckCircle2 size={14} color="#10b981" /> : <XCircle size={14} color="#ef4444" />}
                 </span>
                 <div>
                   <div className="text-sm" style={{ color: 'var(--text-primary)' }}>{a.title}</div>
@@ -234,7 +277,11 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
 
       {/* Security Quick Check */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🔐 Security Quick Check</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <Lock size={16} style={{ color: '#6366f1' }} /> Security Quick Check
+          </CardTitle>
+        </CardHeader>
         <CardContent>
           <div className="grid grid-cols-3 gap-3">
             {securityAudits.map(s => {
@@ -246,7 +293,13 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
                     background: unknown ? 'var(--bg-sidebar)' : passed ? 'rgba(16,185,129,0.07)' : 'rgba(239,68,68,0.06)',
                     border: `1px solid ${unknown ? 'var(--border-card)' : passed ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.12)'}`,
                   }}>
-                  <div className="text-lg mb-1">{unknown ? '❓' : passed ? '✅' : '❌'}</div>
+                  <div className="flex justify-center mb-1">
+                    {unknown
+                      ? <HelpCircle size={20} color="#6366f1" />
+                      : passed
+                      ? <CheckCircle2 size={20} color="#10b981" />
+                      : <XCircle size={20} color="#ef4444" />}
+                  </div>
                   <div className="text-xs font-medium leading-tight" style={{ color: 'var(--text-primary)' }}>{s.label}</div>
                   <div className="text-xs mt-0.5 leading-tight" style={{ color: 'var(--text-muted)' }}>{s.desc}</div>
                   {!unknown && (
@@ -263,7 +316,11 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
 
       {/* Robots & Sitemap quick links */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">🗂️ Robots.txt &amp; Sitemap</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <FolderOpen size={16} style={{ color: '#6366f1' }} /> Robots.txt &amp; Sitemap
+          </CardTitle>
+        </CardHeader>
         <CardContent className="space-y-2">
           {[
             { label: 'robots.txt', href: `${rootUrl}/robots.txt`, desc: 'Check if Googlebot can crawl your site' },
@@ -286,14 +343,22 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
       {/* Accessibility Issues */}
       {accessibilityAudits.length > 0 && (
         <Card className="glass border-0">
-          <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">♿ Accessibility Issues</CardTitle></CardHeader>
+          <CardHeader>
+            <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+              <Accessibility size={16} style={{ color: '#6366f1' }} /> Accessibility Issues
+            </CardTitle>
+          </CardHeader>
           <CardContent className="space-y-2">
             {accessibilityAudits.map(a => (
               <div key={a.id} className="p-3 rounded-xl"
                 style={{ background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.12)' }}>
                 <div className="text-sm font-medium" style={{ color: 'var(--text-primary)' }}>{a.title}</div>
                 {a.description && <div className="text-xs mt-1 line-clamp-2" style={{ color: 'var(--text-secondary)' }}>{a.description.replace(/\[.*?\]/g, '')}</div>}
-                {a11yFixes[a.id] && <div className="text-xs text-indigo-300 mt-1">💡 Fix in Showit: {a11yFixes[a.id]}</div>}
+                {a11yFixes[a.id] && (
+                  <div className="text-xs text-indigo-300 mt-1 flex items-start gap-1">
+                    <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" /> Fix in Showit: {a11yFixes[a.id]}
+                  </div>
+                )}
               </div>
             ))}
           </CardContent>
@@ -302,18 +367,17 @@ export default function TechnicalTab({ result }: { result: AnalysisResult }) {
 
       {/* Content Stats */}
       <Card className="glass border-0">
-        <CardHeader><CardTitle style={{ color: 'var(--text-primary)' }} className="text-base">📝 Content Stats</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle style={{ color: 'var(--text-primary)' }} className="text-base flex items-center gap-2">
+            <FileEdit size={16} style={{ color: '#6366f1' }} /> Content Stats
+          </CardTitle>
+        </CardHeader>
         <CardContent className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {[
-            { label: 'Word Count', value: pageData?.wordCount ?? 'N/A', icon: '📝', color: wcColor },
-            { label: 'Images', value: pageData?.images.length ?? 'N/A', icon: '🖼️', color: '#10b981' },
-            { label: 'Links', value: pageData?.links?.length ?? 'N/A', icon: '🔗', color: '#10b981' },
-            { label: 'Videos', value: (pageData as any)?.videos ?? (pageData as any)?.videoCount ?? 'N/A', icon: '🎥', color: '#10b981' },
-            { label: 'Forms', value: pageData?.forms ?? 0, icon: '📋', color: '#10b981' },
-            { label: 'Schema Types', value: pageData?.schema ?? 0, icon: '🏷️', color: (pageData?.schema ?? 0) > 0 ? '#10b981' : '#f59e0b' },
-          ].map(s => (
+          {contentStats.map(s => (
             <div key={s.label} className="text-center p-3 rounded-xl" style={{ background: 'var(--bg-sidebar)' }}>
-              <div className="text-2xl mb-1">{s.icon}</div>
+              <div className="flex justify-center mb-1">
+                <s.Icon size={22} style={{ color: s.color }} />
+              </div>
               <div className="text-xl font-bold" style={{ color: s.color }}>{s.value}</div>
               <div className="text-xs" style={{ color: 'var(--text-muted)' }}>{s.label}</div>
             </div>

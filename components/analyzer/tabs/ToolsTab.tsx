@@ -12,7 +12,11 @@ import type { AnalysisResult } from '@/types/analyzer';
 import BulkAnalyzer from '@/components/analyzer/BulkAnalyzer';
 import ScanDiff from '@/components/analyzer/ScanDiff';
 import { exportToExcel } from '@/lib/excel-export';
-import { Rocket, Target, MapPin, History, BarChart2, Share2, ExternalLink, TrendingUp, Download, Compass, RefreshCw } from 'lucide-react';
+import {
+  Rocket, Target, MapPin, History, BarChart2, Share2, ExternalLink, TrendingUp, Download,
+  Compass, RefreshCw, Search, Zap, Globe, Tag, CheckCircle2, XCircle, Info,
+  Clock, Printer, Mail, ClipboardList, Accessibility
+} from 'lucide-react';
 import CompetitorAnalysis from '@/components/analyzer/CompetitorAnalysis';
 
 export default function ToolsTab({ result }: { result: AnalysisResult }) {
@@ -56,12 +60,34 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
   if (perf < 50) quickWins.push({ label: 'Compress & optimize hero images', time: '20 min', impact: 'High' });
 
   const freeTools = [
-    { name: 'Google Search Console', desc: 'Monitor search performance & crawl errors', href: 'https://search.google.com/search-console', icon: '🔍' },
-    { name: 'Google PageSpeed', desc: 'Test any URL for speed scores', href: `https://pagespeed.web.dev/?url=${encodeURIComponent(result.url)}`, icon: '⚡' },
-    { name: 'Bing Webmaster', desc: 'Submit to Bing & check index status', href: 'https://www.bing.com/webmasters', icon: '🌐' },
-    { name: 'Schema Markup Validator', desc: 'Test your structured data', href: `https://validator.schema.org/#url=${encodeURIComponent(result.url)}`, icon: '🏷️' },
-    { name: 'Google Rich Results Test', desc: 'Check rich snippet eligibility', href: `https://search.google.com/test/rich-results?url=${encodeURIComponent(result.url)}`, icon: '✨' },
-    { name: 'GTmetrix', desc: 'Detailed waterfall speed analysis', href: `https://gtmetrix.com/?url=${encodeURIComponent(result.url)}`, icon: '📊' },
+    { name: 'Google Search Console', desc: 'Monitor search performance & crawl errors', href: 'https://search.google.com/search-console', Icon: Search },
+    { name: 'Google PageSpeed', desc: 'Test any URL for speed scores', href: `https://pagespeed.web.dev/?url=${encodeURIComponent(result.url)}`, Icon: Zap },
+    { name: 'Bing Webmaster', desc: 'Submit to Bing & check index status', href: 'https://www.bing.com/webmasters', Icon: Globe },
+    { name: 'Schema Markup Validator', desc: 'Test your structured data', href: `https://validator.schema.org/#url=${encodeURIComponent(result.url)}`, Icon: Tag },
+    { name: 'Google Rich Results Test', desc: 'Check rich snippet eligibility', href: `https://search.google.com/test/rich-results?url=${encodeURIComponent(result.url)}`, Icon: CheckCircle2 },
+    { name: 'GTmetrix', desc: 'Detailed waterfall speed analysis', href: `https://gtmetrix.com/?url=${encodeURIComponent(result.url)}`, Icon: BarChart2 },
+  ];
+
+  // Current score summary data
+  const scoreSummary = [
+    { label: 'Performance', value: perf, Icon: Zap },
+    { label: 'SEO', value: seo, Icon: Search },
+    { label: 'Accessibility', value: a11y, Icon: Accessibility },
+    { label: 'Best Practices', value: bp, Icon: CheckCircle2 },
+  ];
+
+  // Backlink tools data
+  const backlinkTools = [
+    { name: 'Ahrefs Free', desc: 'Free backlink checker', href: `https://ahrefs.com/backlink-checker?input=${encodeURIComponent(result.url)}`, Icon: BarChart2 },
+    { name: 'Moz Link Explorer', desc: 'Domain authority + links', href: `https://moz.com/link-explorer/overview?site=${encodeURIComponent(result.url)}`, Icon: Search },
+    { name: 'SEMrush', desc: 'Full backlink analytics', href: `https://www.semrush.com/analytics/backlinks/?target=${encodeURIComponent(result.url)}`, Icon: TrendingUp },
+  ];
+
+  // GBP links data
+  const gbpLinks = [
+    { label: 'Check GBP listing', Icon: Search, href: `https://www.google.com/search?q=${encodeURIComponent(businessName)}` },
+    { label: 'Manage your profile', Icon: Target, href: 'https://business.google.com' },
+    { label: 'Find on Google Maps', Icon: MapPin, href: `https://maps.google.com/search?q=${encodeURIComponent(businessName)}` },
   ];
 
   return (
@@ -92,9 +118,9 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
                       <span className="text-sm" style={{ color: 'var(--text-primary)' }}>{w.label}</span>
                     )}
                   </div>
-                  <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0"
+                  <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0 flex items-center gap-1"
                     style={{ background: 'rgba(245,158,11,0.15)', color: '#d97706', border: '1px solid rgba(245,158,11,0.25)' }}>
-                    ⏱ {w.time}
+                    <Clock size={10} /> {w.time}
                   </span>
                   <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0 font-medium"
                     style={{ background: 'rgba(16,185,129,0.12)', color: '#059669', border: '1px solid rgba(16,185,129,0.25)' }}>
@@ -131,10 +157,16 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
                   background: f.passed ? 'rgba(16,185,129,0.06)' : 'rgba(239,68,68,0.06)',
                   border: `1px solid ${f.passed ? 'rgba(16,185,129,0.15)' : 'rgba(239,68,68,0.1)'}`,
                 }}>
-                <span className="flex-shrink-0 mt-0.5">{f.passed ? '✅' : '❌'}</span>
+                <span className="flex-shrink-0 mt-0.5">
+                  {f.passed ? <CheckCircle2 size={14} color="#10b981" /> : <XCircle size={14} color="#ef4444" />}
+                </span>
                 <div className="flex-1">
                   <span className={f.passed ? 'text-slate-300' : 'text-slate-400'}>{f.label}</span>
-                  {!f.passed && <div className="text-xs  mt-0.5" style={{ color: 'var(--text-secondary)' }}>💡 {f.tip}</div>}
+                  {!f.passed && (
+                    <div className="text-xs mt-0.5 flex items-start gap-1" style={{ color: 'var(--text-secondary)' }}>
+                      <Info size={11} color="#818cf8" className="flex-shrink-0 mt-0.5" /> {f.tip}
+                    </div>
+                  )}
                 </div>
                 <span className="text-xs font-bold flex-shrink-0" style={{ color: f.passed ? '#10b981' : '#64748b' }}>
                   +{f.pts} pts
@@ -150,16 +182,12 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
         <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><MapPin size={16} className="inline mr-1.5" /> Google Business Profile</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-            {[
-              { label: 'Check GBP listing', icon: '🔍', href: `https://www.google.com/search?q=${encodeURIComponent(businessName)}` },
-              { label: 'Manage your profile', icon: '⚙️', href: 'https://business.google.com' },
-              { label: 'Find on Google Maps', icon: '🗺️', href: `https://maps.google.com/search?q=${encodeURIComponent(businessName)}` },
-            ].map(link => (
+            {gbpLinks.map(link => (
               <a key={link.label} href={link.href} target="_blank" rel="noopener noreferrer"
                 className="flex flex-col items-center gap-2 p-4 rounded-xl text-center transition-all hover:bg-white/5"
                 style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
-                <span className="text-2xl">{link.icon}</span>
-                <span className="text-xs " style={{ color: 'var(--text-primary)' }}>{link.label}</span>
+                <link.Icon size={22} style={{ color: '#6366f1' }} />
+                <span className="text-xs" style={{ color: 'var(--text-primary)' }}>{link.label}</span>
               </a>
             ))}
           </div>
@@ -171,7 +199,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
               { step: '4', label: 'Collect Google reviews from clients', done: false },
               { step: '5', label: 'Post updates weekly to stay active', done: false },
             ].map((s, i) => (
-              <div key={i} className="flex items-center gap-3 text-sm  p-2" style={{ color: 'var(--text-secondary)' }}>
+              <div key={i} className="flex items-center gap-3 text-sm p-2" style={{ color: 'var(--text-secondary)' }}>
                 <span className="w-6 h-6 rounded-full text-xs flex items-center justify-center font-bold flex-shrink-0"
                   style={{ background: 'rgba(99,102,241,0.2)', color: '#4f46e5' }}>{s.step}</span>
                 {s.label}
@@ -181,11 +209,11 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
           <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
             <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(99,102,241,0.08)' }}>
               <div className="text-indigo-400 font-bold text-lg">+42%</div>
-              <div className="" style={{ color: 'var(--text-secondary)' }}>more direction requests with photos</div>
+              <div style={{ color: 'var(--text-secondary)' }}>more direction requests with photos</div>
             </div>
             <div className="p-3 rounded-lg text-center" style={{ background: 'rgba(99,102,241,0.08)' }}>
               <div className="text-indigo-400 font-bold text-lg">#1</div>
-              <div className="" style={{ color: 'var(--text-secondary)' }}>local ranking factor: Google reviews</div>
+              <div style={{ color: 'var(--text-secondary)' }}>local ranking factor: Google reviews</div>
             </div>
           </div>
         </CardContent>
@@ -201,7 +229,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
                 <div key={i} className="flex items-center gap-3 p-3 rounded-xl"
                   style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
                   <div className="flex-1">
-                    <div className="text-xs " style={{ color: 'var(--text-secondary)' }}>{h.date} at {h.time}</div>
+                    <div className="text-xs" style={{ color: 'var(--text-secondary)' }}>{h.date} at {h.time}</div>
                     <div className="flex gap-1 mt-1 flex-wrap">
                       {h.perf !== undefined && (
                         <span className="text-xs px-1.5 py-0.5 rounded"
@@ -236,7 +264,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
                   }}>
                     Grade {h.grade} - {h.score}/100
                   </Badge>
-                  {i === 0 && <span className="text-xs " style={{ color: 'var(--text-muted)' }}>latest</span>}
+                  {i === 0 && <span className="text-xs" style={{ color: 'var(--text-muted)' }}>latest</span>}
                 </div>
               ))}
             </div>
@@ -249,18 +277,15 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
         <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><BarChart2 size={16} className="inline mr-1.5" /> Current Score Summary</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mb-4">
-            {[
-              { label: 'Performance', value: perf, icon: '⚡' },
-              { label: 'SEO', value: seo, icon: '🔍' },
-              { label: 'Accessibility', value: a11y, icon: '♿' },
-              { label: 'Best Practices', value: bp, icon: '✅' },
-            ].map(s => (
+            {scoreSummary.map(s => (
               <div key={s.label} className="p-4 rounded-xl" style={{ background: 'var(--bg-sidebar)' }}>
-                <div className="text-2xl mb-1">{s.icon}</div>
+                <div className="flex justify-center mb-1">
+                  <s.Icon size={22} style={{ color: s.value >= 90 ? '#10b981' : s.value >= 50 ? '#f59e0b' : '#ef4444' }} />
+                </div>
                 <div className="text-3xl font-black" style={{ color: s.value >= 90 ? '#10b981' : s.value >= 50 ? '#f59e0b' : '#ef4444' }}>
                   {s.value}
                 </div>
-                <div className="text-xs  mt-1" style={{ color: 'var(--text-secondary)' }}>{s.label}</div>
+                <div className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>{s.label}</div>
               </div>
             ))}
           </div>
@@ -275,25 +300,25 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><Share2 size={16} className="inline mr-1.5" /> Share This Report</CardTitle></CardHeader>
         <CardContent>
-          <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Share your analysis with your designer or client.</p>
+          <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Share your analysis with your designer or client.</p>
           <div className="flex gap-2">
             <Input value={shareUrl} readOnly className="text-xs"
               style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', color: 'var(--text-secondary)' }} />
-            <Button onClick={copyShare} variant="outline" className="flex-shrink-0"
+            <Button onClick={copyShare} variant="outline" className="flex-shrink-0 flex items-center gap-1.5"
               style={{ borderColor: '#6366f1', color: '#4f46e5' }}>
-              {copied ? '✓ Copied!' : '📋 Copy'}
+              {copied ? <><CheckCircle2 size={13} /> Copied!</> : <><ClipboardList size={13} /> Copy</>}
             </Button>
           </div>
           <div className="flex gap-2 mt-3">
-            <Button onClick={handlePrint} variant="outline" className="flex-1 text-sm"
+            <Button onClick={handlePrint} variant="outline" className="flex-1 text-sm flex items-center gap-1.5"
               style={{ borderColor: 'var(--border-card)', color: 'var(--text-secondary)' }}>
-              🖨️ Print / Save as PDF
+              <Printer size={14} /> Print / Save as PDF
             </Button>
             <a href={`mailto:?subject=SEO Report for ${domain}&body=Here is the full SEO report for ${result.url}%0A%0AOverall Grade: ${(() => { try { const c = result.mobile.lighthouseResult?.categories ?? result.mobile.categories; const avg = Math.round(((c?.performance?.score??0)+(c?.seo?.score??0)+(c?.accessibility?.score??0)+(c?.['best-practices']?.score??0))/4*100); return avg>=90?'A':avg>=80?'B':avg>=70?'C':avg>=60?'D':'F'; } catch { return '—'; } })()}%0APerformance: ${Math.round((result.mobile.lighthouseResult?.categories?.performance?.score??result.mobile.categories?.performance?.score??0)*100)}%2F100%0ASEO: ${Math.round((result.mobile.lighthouseResult?.categories?.seo?.score??result.mobile.categories?.seo?.score??0)*100)}%2F100%0AAccessibility: ${Math.round((result.mobile.lighthouseResult?.categories?.accessibility?.score??result.mobile.categories?.accessibility?.score??0)*100)}%2F100%0A%0AView full report: ${shareUrl}%0A%0AGenerated by Showit Site Analyzer — showitanalyzer.com`}
               className="flex-1">
-              <Button variant="outline" className="w-full text-sm"
+              <Button variant="outline" className="w-full text-sm flex items-center gap-1.5"
                 style={{ borderColor: 'var(--border-card)', color: 'var(--text-secondary)' }}>
-                ✉️ Email Report
+                <Mail size={14} /> Email Report
               </Button>
             </a>
           </div>
@@ -304,26 +329,24 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><ExternalLink size={16} className="inline mr-1.5" /> Backlink Research Tools</CardTitle></CardHeader>
         <CardContent>
-          <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Check your backlink profile using these free tools:</p>
+          <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Check your backlink profile using these free tools:</p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-            {[
-              { name: 'Ahrefs Free', desc: 'Free backlink checker', href: `https://ahrefs.com/backlink-checker?input=${encodeURIComponent(result.url)}`, icon: '📊' },
-              { name: 'Moz Link Explorer', desc: 'Domain authority + links', href: `https://moz.com/link-explorer/overview?site=${encodeURIComponent(result.url)}`, icon: '🔍' },
-              { name: 'SEMrush', desc: 'Full backlink analytics', href: `https://www.semrush.com/analytics/backlinks/?target=${encodeURIComponent(result.url)}`, icon: '📈' },
-            ].map(tool => (
+            {backlinkTools.map(tool => (
               <a key={tool.name} href={tool.href} target="_blank" rel="noopener noreferrer"
                 className="flex flex-col items-center gap-2 p-4 rounded-xl text-center transition-all hover:bg-white/5"
                 style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
-                <span className="text-2xl">{tool.icon}</span>
+                <tool.Icon size={22} style={{ color: '#6366f1' }} />
                 <span className="text-xs font-medium text-white">{tool.name}</span>
-                <span className="text-xs " style={{ color: 'var(--text-secondary)' }}>{tool.desc}</span>
+                <span className="text-xs" style={{ color: 'var(--text-secondary)' }}>{tool.desc}</span>
               </a>
             ))}
           </div>
           <div className="p-3 rounded-lg text-xs"
             style={{ color: 'var(--text-secondary)', background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
-            <div className="font-medium  mb-2" style={{ color: 'var(--text-primary)' }}>💡 Quick backlink wins for photographers &amp; creatives:</div>
-            <ul className="space-y-1 " style={{ color: 'var(--text-secondary)' }}>
+            <div className="font-medium mb-2 flex items-start gap-1" style={{ color: 'var(--text-primary)' }}>
+              <Info size={12} color="#818cf8" className="flex-shrink-0 mt-0.5" /> Quick backlink wins for photographers &amp; creatives:
+            </div>
+            <ul className="space-y-1" style={{ color: 'var(--text-secondary)' }}>
               <li>• Get listed in local business directories (Yelp, Google, Bing)</li>
               <li>• Ask past clients to link from their website to yours</li>
               <li>• Submit to photography community sites and vendor lists</li>
@@ -351,26 +374,26 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><Download size={16} className="inline mr-1.5" /> Export Report</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          <p className="text-sm " style={{ color: 'var(--text-secondary)' }}>Download a full professional report with 5 sheets - Summary, SEO, Speed, Issues, and Score History.</p>
+          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Download a full professional report with 5 sheets - Summary, SEO, Speed, Issues, and Score History.</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Button
               onClick={async () => {
                 try { await exportToExcel(result, history); }
                 catch (e) { console.error(e); }
               }}
-              className="w-full font-semibold text-white"
+              className="w-full font-semibold text-white flex items-center gap-1.5"
               style={{ background: 'linear-gradient(135deg,#10b981,#059669)' }}>
-              📥 Download Excel (.xlsx)
+              <Download size={14} /> Download Excel (.xlsx)
             </Button>
-            <Button onClick={handlePrint} variant="outline" className="w-full"
+            <Button onClick={handlePrint} variant="outline" className="w-full flex items-center gap-1.5"
               style={{ borderColor: 'var(--border-card)', color: 'var(--text-secondary)' }}>
-              🖨️ Print / Save as PDF
+              <Printer size={14} /> Print / Save as PDF
             </Button>
           </div>
           <div className="grid grid-cols-3 gap-2 text-xs text-center">
             {['Summary sheet', 'SEO Details', 'Speed & CWV', 'All Issues', 'Score History', 'Color-coded cells'].map(f => (
-              <div key={f} className="p-2 rounded-lg" style={{ color: 'var(--text-secondary)', background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.1)' }}>
-                ✓ {f}
+              <div key={f} className="p-2 rounded-lg flex items-center justify-center gap-1" style={{ color: 'var(--text-secondary)', background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.1)' }}>
+                <CheckCircle2 size={11} color="#10b981" /> {f}
               </div>
             ))}
           </div>
@@ -386,7 +409,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
               <a key={tool.name} href={tool.href} target="_blank" rel="noopener noreferrer"
                 className="flex items-start gap-3 p-3 rounded-xl transition-all hover:bg-white/5"
                 style={{ background: 'var(--bg-sidebar)', border: '1px solid var(--border-card)' }}>
-                <span className="text-xl flex-shrink-0">{tool.icon}</span>
+                <tool.Icon size={18} style={{ color: '#6366f1', flexShrink: 0 }} />
                 <div>
                   <div className="text-xs font-medium" style={{ color: '#4f46e5' }}>{tool.name} ↗</div>
                   <div className="text-xs mt-0.5" style={{ color: '#64748b' }}>{tool.desc}</div>
@@ -401,7 +424,7 @@ export default function ToolsTab({ result }: { result: AnalysisResult }) {
       <Card className="glass border-0">
         <CardHeader><CardTitle className="text-base" style={{ color: 'var(--text-primary)' }}><RefreshCw size={16} className="inline mr-1.5" /> Re-Analyze</CardTitle></CardHeader>
         <CardContent>
-          <p className="text-sm  mb-4" style={{ color: 'var(--text-secondary)' }}>Run a fresh scan after making changes to see your improvement.</p>
+          <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>Run a fresh scan after making changes to see your improvement.</p>
           <Button onClick={() => analyze(result.url)} className="w-full"
             style={{ background: 'linear-gradient(135deg,#6366f1,#06b6d4)', color: 'white' }}>
             Re-Analyze {domain}
