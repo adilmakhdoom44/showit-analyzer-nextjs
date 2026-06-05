@@ -58,14 +58,14 @@ export default function LoadingScreen({ step }: { step: number }) {
   const showSkeleton = step >= 4;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center"
+    <div className="fixed inset-0 z-50 flex items-start md:items-center justify-center overflow-y-auto"
       style={{ background: 'var(--bg-body)', backdropFilter: 'blur(12px)' }}>
-      <div className="max-w-xl w-full mx-4 flex flex-col gap-6">
+      <div className="max-w-xl w-full mx-4 flex flex-col gap-4 py-8 md:py-6">
 
         {/* Main loading card */}
-        <div className="glass p-8 text-center">
+        <div className="glass p-6 md:p-8 text-center">
           {/* Orbit spinner */}
-          <div className="relative w-20 h-20 mx-auto mb-6">
+          <div className="relative w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 md:mb-6">
             <div className="absolute inset-0 rounded-full border-2 border-indigo-500/30" />
             <div className="absolute inset-0 rounded-full border-t-2 border-indigo-400 animate-spin" />
             <div className="absolute inset-2 rounded-full border-t-2 border-cyan-400 animate-spin"
@@ -75,10 +75,10 @@ export default function LoadingScreen({ step }: { step: number }) {
             </div>
           </div>
 
-          <h2 className="text-xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>Analyzing Your Site</h2>
-          <p className="text-sm mb-6" style={{ color: 'var(--text-muted)' }}>This takes about 30–45 seconds</p>
+          <h2 className="text-lg md:text-xl font-bold mb-1" style={{ color: 'var(--text-primary)' }}>Analyzing Your Site</h2>
+          <p className="text-sm mb-4 md:mb-6" style={{ color: 'var(--text-muted)' }}>This takes about 30–45 seconds</p>
 
-          <div className="space-y-3 text-left">
+          <div className="space-y-2 md:space-y-3 text-left">
             {STEPS.map((s, i) => {
               const done = i < step - 1;
               const active = i === step - 1;
@@ -107,7 +107,7 @@ export default function LoadingScreen({ step }: { step: number }) {
           </div>
 
           {/* Progress bar */}
-          <div className="mt-6 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--input-bg)' }}>
+          <div className="mt-4 md:mt-6 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--input-bg)' }}>
             <motion.div
               className="h-full rounded-full"
               style={{ background: 'linear-gradient(90deg,#6366f1,#06b6d4)' }}
@@ -118,12 +118,12 @@ export default function LoadingScreen({ step }: { step: number }) {
           </div>
         </div>
 
-        {/* Skeleton preview - fades in after step 4 */}
+        {/* Skeleton preview - fades in after step 4, hidden on mobile */}
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: showSkeleton ? 1 : 0, y: showSkeleton ? 0 : 8 }}
           transition={{ duration: 0.5 }}
-          className="glass p-5"
+          className="glass p-5 hidden md:block"
           style={{ pointerEvents: 'none' }}>
           <p className="text-xs mb-3 text-center" style={{ color: 'var(--text-faint)' }}>Preparing your report…</p>
           <ResultSkeleton />
