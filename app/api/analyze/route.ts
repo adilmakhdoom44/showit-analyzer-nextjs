@@ -14,7 +14,7 @@ const limiter = new Bottleneck({
   reservoirRefreshInterval: 24 * 60 * 60 * 1000,
 });
 
-const CORS_PROXIES = [
+const FALLBACK_PROXIES = [
   (u: string) => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
   (u: string) => `https://corsproxy.io/?${encodeURIComponent(u)}`,
   (u: string) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
@@ -34,10 +34,32 @@ const fetchPSI = limiter.wrap(async (url: string, strategy: 'mobile' | 'desktop'
 });
 
 async function fetchPageHTML(url: string): Promise<string | null> {
-  for (const proxy of CORS_PROXIES) {
+  // Direct server-side fetch first — no CORS restriction on server
+  try {
+    const res = await fetch(url, {
+      signal: AbortSignal.timeout(10000),
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; ShowitAnalyzer/1.0; +https://showitanalyzer.com)',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+      },
+    });
+    if (res.ok) {
+      const text = await res.text();
+      if (text.length > 500) return text;
+    }
+  } catch {
+    // fall through to proxies
+  }
+
+  // Fallback: CORS proxies
+  for (const proxy of FALLBACK_PROXIES) {
     try {
       const res = await fetch(proxy(url), { signal: AbortSignal.timeout(8000) });
-      if (res.ok) return res.text();
+      if (res.ok) {
+        const text = await res.text();
+        if (text.length > 500) return text;
+      }
     } catch {
       // try next proxy
     }
@@ -67,7 +89,7 @@ function extractPageData(html: string, url: string) {
 
   // Headings
   const headings: { tag: string; text: string }[] = [];
-  const headingRe = /<(h[1-4])[^>]*>([\s\S]*?)<\/h[1-4]>/gi;
+  const headingRe = /<(h[1-4])[^>]*>([\s\S]*?)<\/\1>/gi;
   let m;
   while ((m = headingRe.exec(html)) !== null) {
     headings.push({ tag: m[1].toUpperCase(), text: m[2].replace(/<[^>]+>/g, '').trim() });
