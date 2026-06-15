@@ -8,6 +8,8 @@ const CALENDLY_URL = 'https://calendly.com/adil-makhdoom44/30min';
 export default function CalendlyButton() {
   const [hovered, setHovered] = useState(false);
 
+  return null;
+
   return (
     <div
       style={{

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import { AnalyzerProvider } from '@/lib/analyzer-context';
 import { ThemeProvider } from '@/lib/theme-context';
@@ -95,11 +96,25 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-4DGQ5L9GDD"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-4DGQ5L9GDD');
+          `}
+        </Script>
+      </head>
       <body className="min-h-screen antialiased">
         <ThemeProvider>
           <AnalyzerProvider>
             {children}
-            <CalendlyButton />
+            {/* <CalendlyButton /> */}
           </AnalyzerProvider>
         </ThemeProvider>
       </body>
